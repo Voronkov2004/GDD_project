@@ -1,39 +1,49 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Add this namespace
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public GameObject panel; // Reference to the panel
-    public GameObject keyImagePrefab; // Reference to the key image prefab
-    public Transform inventoryUI; // Reference to the inventory UI
+    public GameObject panel;
+    public GameObject keyImagePrefab;
+    public Transform inventoryUI;
+    public string roomSceneName; // Reference to the room scene name
 
-    private bool isInsideKeyTrigger = false; // Track if the player is inside the key's trigger radius
-    private GameObject currentKey; // Reference to the current key GameObject
+    private bool isInsideKeyTrigger = false;
+    private bool isInsideKitchenTrigger = false;
+    private GameObject currentKey;
 
-    // Start is called before the first frame update
     void Start()
     {
         if (panel != null)
         {
-            panel.SetActive(false); // Ensure the panel is initially hidden
+            panel.SetActive(false);
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isInsideKeyTrigger && Input.GetKeyDown(KeyCode.F))
         {
             if (currentKey != null)
             {
-                Destroy(currentKey); // Make the key disappear from the game
+                Destroy(currentKey);
                 if (keyImagePrefab != null && inventoryUI != null)
                 {
-                    Instantiate(keyImagePrefab, inventoryUI); // Add the key image to the inventory UI
+                    Instantiate(keyImagePrefab, inventoryUI);
                 }
-                panel.SetActive(false); // Hide the panel
+                panel.SetActive(false);
             }
+        }
+
+        if (isInsideKitchenTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (inventoryUI.childCount > 0)
+            {
+                Transform lastKey = inventoryUI.GetChild(inventoryUI.childCount - 1);
+                Destroy(lastKey.gameObject);
+            }
+            SceneManager.LoadScene(roomSceneName);
         }
     }
 
@@ -45,7 +55,15 @@ public class PlayerInteraction : MonoBehaviour
             currentKey = collision.gameObject;
             if (panel != null)
             {
-                panel.SetActive(true); // Make the panel visible
+                panel.SetActive(true);
+            }
+        }
+        else if (collision.CompareTag("Kitchen"))
+        {
+            isInsideKitchenTrigger = true;
+            if (panel != null)
+            {
+                panel.SetActive(true);
             }
         }
     }
@@ -58,7 +76,15 @@ public class PlayerInteraction : MonoBehaviour
             currentKey = null;
             if (panel != null)
             {
-                panel.SetActive(false); // Hide the panel
+                panel.SetActive(false);
+            }
+        }
+        else if (collision.CompareTag("Kitchen"))
+        {
+            isInsideKitchenTrigger = false;
+            if (panel != null)
+            {
+                panel.SetActive(true);
             }
         }
     }
