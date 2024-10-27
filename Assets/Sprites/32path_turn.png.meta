@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: e3aa5e2cbe62cba49bc62e328e9e6eda
-=======
-guid: 10dfefc25ee2dab4c916977fdc03a730
->>>>>>> 3f8d385 (Adding tilemaps and making a first-level map)
+guid: 722cf9b7cc113c446a5b7d752f6f22d1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,22 +93,6 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< HEAD
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-=======
->>>>>>> 3f8d385 (Adding tilemaps and making a first-level map)
   spriteSheet:
     serializedVersion: 2
     sprites: []
