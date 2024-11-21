@@ -45,6 +45,11 @@ public class PlayerInteraction : MonoBehaviour
             }
             SceneManager.LoadScene(roomSceneName);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
