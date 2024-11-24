@@ -136,7 +136,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void CombineFlashlightAndBattery()
+private void CombineFlashlightAndBattery()
 {
     if (InventoryManager.Instance.HasItem("CombinedFlashlight"))
     {
@@ -150,7 +150,7 @@ public class PlayerInteraction : MonoBehaviour
     List<GameObject> itemsToRemove = new List<GameObject>();
     foreach (Transform child in inventoryUI)
     {
-        if (child.name == "Flashlight1" || child.name == "Battery")
+        if (child.name.Contains("Flashlight1") || child.name.Contains("Battery"))
         {
             itemsToRemove.Add(child.gameObject);
         }
