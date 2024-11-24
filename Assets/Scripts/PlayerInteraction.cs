@@ -214,7 +214,7 @@ public class PlayerInteraction : MonoBehaviour
 
         else if (collision.CompareTag("Board"))
         {
-            isInsideOutsideTrigger = false;
+            isInsideBoardTrigger = false;
             if (panel != null)
             {
                 panel.SetActive(false);
