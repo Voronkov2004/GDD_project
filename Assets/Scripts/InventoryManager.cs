@@ -14,20 +14,22 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     public void AddItem(string tag)
     {
-        collectedTags.Add(tag);
+        if (!collectedTags.Contains(tag))
+        {
+            collectedTags.Add(tag);
+        }
     }
 
     public void RemoveItem(string tag)
     {
-        collectedTags.Remove(tag);
+        if (collectedTags.Contains(tag))
+        {
+            collectedTags.Remove(tag);
+        }
     }
 
     public bool HasItem(string tag)

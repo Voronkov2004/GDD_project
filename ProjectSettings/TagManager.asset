@@ -10,6 +10,11 @@ TagManager:
   - LadderDown
   - Outside
   - Board
+  - Toilet
+  - Flashlight
+  - Flashlight1
+  - Battety
+  - Battery
   layers:
   - Default
   - TransparentFX
