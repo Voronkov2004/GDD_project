@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1281074827853251041}
   - component: {fileID: 8869970301776127945}
   - component: {fileID: 2781973134370221224}
+  - component: {fileID: -5020433046844254358}
   m_Layer: 0
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 3621462275998570073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: -0.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90,7 +91,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 2419177197a9b3249b15240021a81b90, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 89283cd25bcc4e547b94a63f8489678f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -160,8 +161,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.024561018, y: -0.030000001}
-  m_Size: {x: 0.2062827, y: 0.47999996}
+  m_Offset: {x: -0.0050299913, y: 0.000011116266}
+  m_Size: {x: 0.18436986, y: 0.33423167}
   m_Direction: 0
 --- !u!114 &2781973134370221224
 MonoBehaviour:
@@ -176,6 +177,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 0}
+  panelText: {fileID: 0}
   keyImagePrefab: {fileID: 9096735647813404745, guid: 03795c95adc5b4d90bff94f42fdf75d6, type: 3}
   inventoryUI: {fileID: 0}
-  roomSceneName: Room
+  kitchenSceneName: Kitchen
+  upstairsSceneName: Upstairs
+  downStairsSceneName: Kitchen
+  boardSceneName: Board
+--- !u!95 &-5020433046844254358
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3621462275998570073}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 66dc9fbe8c388104fa7627b0ffe8fa87, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
