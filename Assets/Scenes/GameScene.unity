@@ -2072,7 +2072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244162debc221e943a65c2de3dfd3dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1852331976}
+  target: {fileID: 2017193154}
   offset: {x: 0, y: 0, z: -10}
   smoothSpeed: 0.03
 --- !u!114 &1487899343
@@ -2552,11 +2552,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1852331976 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 327715404466650966, guid: 4486f8063116d46849db98957d48a681, type: 3}
-  m_PrefabInstance: {fileID: 1793998761880419901}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1858553525
 GameObject:
   m_ObjectHideFlags: 0
@@ -14816,6 +14811,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989742199}
   m_CullTransparentMesh: 1
+--- !u!4 &2017193154 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 327715404466650966, guid: 4486f8063116d46849db98957d48a681, type: 3}
+  m_PrefabInstance: {fileID: 3746539536099273569}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2050548827
 GameObject:
   m_ObjectHideFlags: 0
@@ -14862,7 +14862,7 @@ Transform:
   - {fileID: 1874303437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1793998761880419901
+--- !u!1001 &3746539536099273569
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -14872,11 +14872,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 327715404466650966, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 327715404466650966, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 327715404466650966, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14915,36 +14915,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 835242537}
     - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: panelText
+      value: 
+      objectReference: {fileID: 959602292}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 1858553526}
-    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
-      propertyPath: roomSceneName
-      value: Kitchen
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
-      propertyPath: kitchenSceneName
-      value: Kitchen
-      objectReference: {fileID: 0}
     - target: {fileID: 3621462275998570073, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: m_Name
       value: MainCharacter
-      objectReference: {fileID: 0}
-    - target: {fileID: 8869970301776127945, guid: 4486f8063116d46849db98957d48a681, type: 3}
-      propertyPath: m_Size.x
-      value: 0.1893254
-      objectReference: {fileID: 0}
-    - target: {fileID: 8869970301776127945, guid: 4486f8063116d46849db98957d48a681, type: 3}
-      propertyPath: m_Size.y
-      value: 0.34434187
-      objectReference: {fileID: 0}
-    - target: {fileID: 8869970301776127945, guid: 4486f8063116d46849db98957d48a681, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.0047775283
-      objectReference: {fileID: 0}
-    - target: {fileID: 8869970301776127945, guid: 4486f8063116d46849db98957d48a681, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.0017378926
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14956,7 +14936,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1487899341}
-  - {fileID: 1793998761880419901}
   - {fileID: 798081177}
   - {fileID: 1715613512}
   - {fileID: 1754021207}
@@ -14967,3 +14946,4 @@ SceneRoots:
   - {fileID: 1054705958}
   - {fileID: 1368037040}
   - {fileID: 249801538}
+  - {fileID: 3746539536099273569}
