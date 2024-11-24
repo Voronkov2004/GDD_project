@@ -9,6 +9,9 @@ public class PauseMenu : MonoBehaviour
 
     public GameObject pauseMenuUI;
 
+    public AudioClip mainMenuMusic;
+
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -46,8 +49,15 @@ public class PauseMenu : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1f;
+
+        if (AudioManager.instance != null && mainMenuMusic != null)
+        {
+            AudioManager.instance.PlayMusic(mainMenuMusic);
+        }
+
         SceneManager.LoadScene("MainMenu");
     }
+
 
     public void SaveGame()
     {
