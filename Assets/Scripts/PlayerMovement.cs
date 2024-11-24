@@ -8,10 +8,14 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 movement;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -19,11 +23,19 @@ public class PlayerMovement : MonoBehaviour
         // info from keyboard
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
+        bool isWalking = movement.x != 0 || movement.y != 0;
+        animator.SetBool("isWalking", isWalking);
+
+        if (movement.x != 0)
+        {
+            spriteRenderer.flipX = movement.x < 0;
+        }
     }
 
     void FixedUpdate()
     {
         // move the character
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
     }
 }
