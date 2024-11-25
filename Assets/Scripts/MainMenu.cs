@@ -5,11 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
+    public AudioClip mainMenuMusic;
+
+    void Start()
+    {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlayMusic(mainMenuMusic);
+            if (mainMenuMusic == null)
+            {
+                Debug.LogError("MainMenuMusic is null!");
+            }
+        }
+        else
+        {
+            Debug.LogError("AudioManager.instance is null in MainMenu");
+        }
+    }
+
     public void ContinueGame()
     {
-        // chech, if the game was saved
         if (PlayerPrefs.HasKey("SavedScene"))
         {
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.StopMusic();
+            }
+
             string sceneName = PlayerPrefs.GetString("SavedScene");
             SceneManager.LoadScene(sceneName);
         }
@@ -19,23 +42,35 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+
     public void NewGame()
     {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.StopMusic();
+        }
+
         // If necessary, reset saves
         PlayerPrefs.DeleteKey("SavedScene");
         // Load the opening scene of the game
         SceneManager.LoadScene("GameScene");
     }
 
-    public void OpenSettings()
-    {
-        SceneManager.LoadScene("SettingsScene");
-    }
-
     public void QuitGame()
     {
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.StopMusic();
+        }
+
         // Exit the game
         Application.Quit();
         Debug.Log("Game closed");
+    }
+
+
+    public void OpenSettings()
+    {
+        SceneManager.LoadScene("SettingsScene");
     }
 }
