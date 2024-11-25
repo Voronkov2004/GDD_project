@@ -15,6 +15,7 @@ TagManager:
   - Flashlight1
   - Battety
   - Battery
+  - Note
   layers:
   - Default
   - TransparentFX

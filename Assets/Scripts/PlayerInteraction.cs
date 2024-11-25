@@ -13,6 +13,8 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject batteryImagePrefab;
     public GameObject combinedFlashlightImagePrefab;
     public Transform inventoryUI;
+    public GameObject notePanel;
+    public TextMeshProUGUI noteTextUI;
 
     // Scene Names
     public string kitchenSceneName;  
@@ -31,11 +33,14 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideOutsideTrigger = false;
     private bool isInsideBoardTrigger = false; // Added for "Board" scene
     private bool isInsideToiletTrigger = false;
+    private bool isInsideNoteTrigger = false;
+    private bool isNoteOpen = false;
 
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
     private GameObject currentBattery;
+    private GameObject currentNote;
 
     void Start()
     {
@@ -48,6 +53,11 @@ public class PlayerInteraction : MonoBehaviour
         if (panel != null)
         {
             panel.SetActive(false);
+        }
+
+        if (notePanel != null)
+        {
+            notePanel.SetActive(false);
         }
 
         // Restore player's position
@@ -91,6 +101,7 @@ public class PlayerInteraction : MonoBehaviour
         HandleFlashlightInteraction();
         HandleBatteryInteraction();
         HandleSceneTransitions();
+        HandleNoteInteraction();
 
         if (InventoryManager.Instance.HasItem("Flashlight1") && InventoryManager.Instance.HasItem("Battery"))
         {
@@ -337,6 +348,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to enter the toilet!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Note"))
+        {
+            isInsideNoteTrigger = true;
+            currentNote = collision.gameObject;
+            panelText.text = "Press F to read the note. Press F again to close it.";
+            panel?.SetActive(true);
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)
@@ -380,7 +398,59 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideToiletTrigger = false;
         }
+        else if (collision.CompareTag("Note"))
+        {
+            isInsideNoteTrigger = false;
+            currentNote = null;
+            panel?.SetActive(false);
+        }
 
         panel?.SetActive(false);
+    }
+
+    private void HandleNoteInteraction()
+    {
+        if (isNoteOpen)
+        {
+            // If the note is open, check if you press F or Escape to close it
+            if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Escape))
+            {
+                CloseNoteUI();
+                Time.timeScale = 1f; // resume the game
+                isNoteOpen = false;
+            }
+        }
+        else if (isInsideNoteTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            // If the note is not open and we are in the trigger, we open the note
+            if (currentNote != null && currentNote.CompareTag("Note"))
+            {
+                Note noteComponent = currentNote.GetComponent<Note>();
+                if (noteComponent != null)
+                {
+                    OpenNoteUI(noteComponent.noteText);
+                    Time.timeScale = 0f; // stop the game
+                    isNoteOpen = true;
+                    panel?.SetActive(false); // hide the hint
+                }
+            }
+        }
+    }
+
+    private void OpenNoteUI(string text)
+    {
+        if (notePanel != null && noteTextUI != null)
+        {
+            notePanel.SetActive(true);
+            noteTextUI.text = text;
+        }
+    }
+
+    private void CloseNoteUI()
+    {
+        if (notePanel != null)
+        {
+            notePanel.SetActive(false);
+        }
     }
 }

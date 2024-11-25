@@ -31,6 +31,9 @@ public class PlayerMovement : MonoBehaviour
         {
             spriteRenderer.flipX = movement.x < 0;
         }
+
+        if (Time.timeScale == 0f)
+            return;
     }
 
     void FixedUpdate()
