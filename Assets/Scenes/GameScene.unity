@@ -15056,6 +15056,10 @@ PrefabInstance:
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 1858553526}
+    - target: {fileID: 3201512084936947725, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3621462275998570073, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: m_Name
       value: MainCharacter
