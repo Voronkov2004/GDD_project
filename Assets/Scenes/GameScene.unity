@@ -15715,6 +15715,7 @@ PrefabInstance:
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 1858553526}
+HEAD
     - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: openDoorSound
       value: 
