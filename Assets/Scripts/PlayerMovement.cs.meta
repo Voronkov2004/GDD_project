@@ -3,7 +3,11 @@ guid: 90de2d343ff474246a4fecfb12bad04c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - audioSource: {instanceID: 0}
+  - grassStepSound: {fileID: 8300000, guid: b2eeaef00bc2cb947bae3d5202376391, type: 3}
+  - woodStepSound: {fileID: 8300000, guid: 9f7af9b4cb0b31a438641d6ff0859d3e, type: 3}
+  - soundMixerGroup: {fileID: 280508694811508304, guid: 8a7f08bc2c5e76540a71f06aa881cbc8, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
