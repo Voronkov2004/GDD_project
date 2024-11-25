@@ -10,6 +10,11 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip openDoorSound;
     public AudioClip closedDoorSound;
     public AudioClip itemPickupSound;
+    public AudioClip notePickupSound;
+    public AudioClip batteryPickupSound;
+    public AudioClip flashlightPickupSound;
+
+
 
     // UI and Inventory
     public GameObject panel;
@@ -142,6 +147,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (currentFlashlight != null && currentFlashlight.CompareTag("Flashlight1"))
             {
+                if (audioSource != null && flashlightPickupSound != null)
+                {
+                    audioSource.PlayOneShot(flashlightPickupSound);
+                }
+
                 Destroy(currentFlashlight);
                 InventoryManager.Instance.AddItem("Flashlight1");
 
@@ -162,6 +172,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (currentBattery != null && currentBattery.CompareTag("Battery"))
             {
+
+                if (audioSource != null && batteryPickupSound != null)
+                {
+                    audioSource.PlayOneShot(batteryPickupSound);
+                }
+
                 Destroy(currentBattery);
                 InventoryManager.Instance.AddItem("Battery");
 
@@ -224,13 +240,19 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (StateManager.kitchenUnlocked)
                 {
-                    audioSource.PlayOneShot(openDoorSound);
+                    if (audioSource != null && openDoorSound != null)
+                    {
+                        audioSource.PlayOneShot(openDoorSound);
+                    }
                     SceneManager.LoadScene(kitchenSceneName);
                 }
                 else if (InventoryManager.Instance.HasItem("Key"))
                 {
                     InventoryManager.Instance.RemoveItem("Key");
-                    audioSource.PlayOneShot(openDoorSound);
+                    if (audioSource != null && openDoorSound != null)
+                    {
+                        audioSource.PlayOneShot(openDoorSound);
+                    }
 
                     // Remove one key icon from the inventory UI
                     RemoveItemIconFromUI("Key");
@@ -442,6 +464,12 @@ public class PlayerInteraction : MonoBehaviour
                     Time.timeScale = 0f; // stop the game
                     isNoteOpen = true;
                     panel?.SetActive(false); // hide the hint
+
+
+                    if (notePickupSound != null)
+                    {
+                        audioSource.PlayOneShot(notePickupSound);
+                    }
                 }
             }
         }
