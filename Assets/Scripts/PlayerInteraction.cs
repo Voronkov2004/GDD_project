@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    //Audio
+    public AudioSource audioSource;
+    public AudioClip openDoorSound;
+    public AudioClip closedDoorSound;
+    public AudioClip itemPickupSound;
+
     // UI and Inventory
     public GameObject panel;
     public TextMeshProUGUI panelText;
@@ -115,6 +121,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (currentKey != null && currentKey.CompareTag("Key"))
             {
+                audioSource.PlayOneShot(itemPickupSound);
                 Destroy(currentKey);
                 InventoryManager.Instance.AddItem("Key");
 
@@ -217,11 +224,13 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (StateManager.kitchenUnlocked)
                 {
+                    audioSource.PlayOneShot(openDoorSound);
                     SceneManager.LoadScene(kitchenSceneName);
                 }
                 else if (InventoryManager.Instance.HasItem("Key"))
                 {
                     InventoryManager.Instance.RemoveItem("Key");
+                    audioSource.PlayOneShot(openDoorSound);
 
                     // Remove one key icon from the inventory UI
                     RemoveItemIconFromUI("Key");
@@ -231,6 +240,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else
                 {
+                    audioSource.PlayOneShot(closedDoorSound);
                     panelText.text = "You need a key to unlock this door!";
                     panel.SetActive(true);
                 }
