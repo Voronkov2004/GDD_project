@@ -15761,6 +15761,18 @@ PrefabInstance:
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 1858553526}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: notePickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f1a2607440a7a0d49920deb58c9e583c, type: 3}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: batteryPickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: flashlightPickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
     - target: {fileID: 3201512084936947725, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: moveSpeed
       value: 1
