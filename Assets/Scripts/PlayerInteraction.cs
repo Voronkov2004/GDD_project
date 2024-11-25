@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    // UI and Inventory
     public GameObject panel;
     public TextMeshProUGUI panelText;
     public GameObject keyImagePrefab;
@@ -12,12 +13,15 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject batteryImagePrefab;
     public GameObject combinedFlashlightImagePrefab;
     public Transform inventoryUI;
-    public string kitchenSceneName;
+
+    // Scene Names
+    public string kitchenSceneName;  
     public string upstairsSceneName;
     public string downStairsSceneName;
-    public string boardSceneName;
+    public string boardSceneName;       // Set this to your static scene's name ("Board")
     public string toiletSceneName;
 
+    // Trigger Flags
     private bool isInsideKeyTrigger = false;
     private bool isInsideFlashlightTrigger = false;
     private bool isInsideBatteryTrigger = false;
@@ -25,9 +29,10 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideLadderTrigger = false;
     private bool isInsideLadderDownTrigger = false;
     private bool isInsideOutsideTrigger = false;
-    private bool isInsideBoardTrigger = false;
+    private bool isInsideBoardTrigger = false; // Added for "Board" scene
     private bool isInsideToiletTrigger = false;
 
+    // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
     private GameObject currentBattery;
@@ -45,23 +50,37 @@ public class PlayerInteraction : MonoBehaviour
             panel.SetActive(false);
         }
 
-        foreach (string tag in InventoryManager.Instance.collectedTags)
+        // Restore player's position
+        RestorePlayerPosition();
+
+        // Initialize inventory UI
+        foreach (KeyValuePair<string, int> entry in InventoryManager.Instance.collectedItems)
         {
-            if (tag == "Key" && keyImagePrefab != null && inventoryUI != null)
+            string tag = entry.Key;
+            int count = entry.Value;
+
+            for (int i = 0; i < count; i++)
             {
-                Instantiate(keyImagePrefab, inventoryUI);
-            }
-            else if (tag == "Flashlight1" && flashlightImagePrefab != null && inventoryUI != null)
-            {
-                Instantiate(flashlightImagePrefab, inventoryUI);
-            }
-            else if (tag == "Battery" && batteryImagePrefab != null && inventoryUI != null)
-            {
-                Instantiate(batteryImagePrefab, inventoryUI);
-            }
-            else if (tag == "CombinedFlashlight" && combinedFlashlightImagePrefab != null && inventoryUI != null)
-            {
-                Instantiate(combinedFlashlightImagePrefab, inventoryUI);
+                if (tag == "Key" && keyImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject keyIcon = Instantiate(keyImagePrefab, inventoryUI);
+                    keyIcon.name = "Key";
+                }
+                else if (tag == "Flashlight1" && flashlightImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
+                    flashlightIcon.name = "Flashlight1";
+                }
+                else if (tag == "Battery" && batteryImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject batteryIcon = Instantiate(batteryImagePrefab, inventoryUI);
+                    batteryIcon.name = "Battery";
+                }
+                else if (tag == "CombinedFlashlight" && combinedFlashlightImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject combinedIcon = Instantiate(combinedFlashlightImagePrefab, inventoryUI);
+                    combinedIcon.name = "CombinedFlashlight";
+                }
             }
         }
     }
@@ -90,7 +109,8 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (keyImagePrefab != null && inventoryUI != null)
                 {
-                    Instantiate(keyImagePrefab, inventoryUI);
+                    GameObject keyIcon = Instantiate(keyImagePrefab, inventoryUI);
+                    keyIcon.name = "Key";
                 }
 
                 panel.SetActive(false);
@@ -109,7 +129,8 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (flashlightImagePrefab != null && inventoryUI != null)
                 {
-                    Instantiate(flashlightImagePrefab, inventoryUI);
+                    GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
+                    flashlightIcon.name = "Flashlight1";
                 }
 
                 panel.SetActive(false);
@@ -128,7 +149,8 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (batteryImagePrefab != null && inventoryUI != null)
                 {
-                    Instantiate(batteryImagePrefab, inventoryUI);
+                    GameObject batteryIcon = Instantiate(batteryImagePrefab, inventoryUI);
+                    batteryIcon.name = "Battery";
                 }
 
                 panel.SetActive(false);
@@ -136,97 +158,123 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-private void CombineFlashlightAndBattery()
-{
-    if (InventoryManager.Instance.HasItem("CombinedFlashlight"))
+    private void CombineFlashlightAndBattery()
     {
-        Debug.Log("Combined flashlight already exists in inventory.");
-        return;
+        if (InventoryManager.Instance.HasItem("CombinedFlashlight"))
+        {
+            Debug.Log("Combined flashlight already exists in inventory.");
+            return;
+        }
+
+        InventoryManager.Instance.RemoveItem("Flashlight1");
+        InventoryManager.Instance.RemoveItem("Battery");
+
+        // Remove one flashlight and one battery icon from the inventory UI
+        RemoveItemIconFromUI("Flashlight1");
+        RemoveItemIconFromUI("Battery");
+
+        InventoryManager.Instance.AddItem("CombinedFlashlight");
+
+        if (combinedFlashlightImagePrefab != null && inventoryUI != null)
+        {
+            GameObject combinedIcon = Instantiate(combinedFlashlightImagePrefab, inventoryUI);
+            combinedIcon.name = "CombinedFlashlight";
+        }
+
+        Debug.Log("Flashlight and battery combined into a single item. Inventory updated.");
     }
 
-    InventoryManager.Instance.RemoveItem("Flashlight1");
-    InventoryManager.Instance.RemoveItem("Battery");
-
-    List<GameObject> itemsToRemove = new List<GameObject>();
-    foreach (Transform child in inventoryUI)
+    private void RemoveItemIconFromUI(string itemName)
     {
-        if (child.name.Contains("Flashlight1") || child.name.Contains("Battery"))
+        foreach (Transform child in inventoryUI)
         {
-            itemsToRemove.Add(child.gameObject);
+            if (child.name == itemName)
+            {
+                Destroy(child.gameObject);
+                break; // Remove only one icon
+            }
         }
     }
-
-    foreach (GameObject item in itemsToRemove)
-    {
-        Destroy(item);
-    }
-
-    InventoryManager.Instance.AddItem("CombinedFlashlight");
-
-    if (combinedFlashlightImagePrefab != null && inventoryUI != null)
-    {
-        GameObject combinedIcon = Instantiate(combinedFlashlightImagePrefab, inventoryUI);
-        combinedIcon.name = "CombinedFlashlight";
-    }
-
-    Debug.Log("Flashlight and battery combined into a single item. Inventory updated.");
-}
-
 
     private void HandleSceneTransitions()
     {
-        if (isInsideKitchenTrigger && Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            if (StateManager.kitchenUnlocked)
+            if (isInsideKitchenTrigger)
             {
-                SceneManager.LoadScene(kitchenSceneName);
-            }
-            else if (InventoryManager.Instance.HasItem("Key"))
-            {
-                InventoryManager.Instance.RemoveItem("Key");
-                StateManager.kitchenUnlocked = true;
+                SaveCurrentPlayerPosition();
 
-                foreach (Transform child in inventoryUI)
+                if (StateManager.kitchenUnlocked)
                 {
-                    if (child.name == "Key")
-                    {
-                        Destroy(child.gameObject);
-                        break;
-                    }
+                    SceneManager.LoadScene(kitchenSceneName);
                 }
+                else if (InventoryManager.Instance.HasItem("Key"))
+                {
+                    InventoryManager.Instance.RemoveItem("Key");
 
-                SceneManager.LoadScene(kitchenSceneName);
+                    // Remove one key icon from the inventory UI
+                    RemoveItemIconFromUI("Key");
+
+                    StateManager.kitchenUnlocked = true;
+                    SceneManager.LoadScene(kitchenSceneName);
+                }
+                else
+                {
+                    panelText.text = "You need a key to unlock this door!";
+                    panel.SetActive(true);
+                }
             }
-            else
+            else if (isInsideLadderTrigger)
             {
-                panelText.text = "You need a key to unlock this door!";
-                panel.SetActive(true);
+                SaveCurrentPlayerPosition();
+                SceneManager.LoadScene(upstairsSceneName);
+            }
+            else if (isInsideLadderDownTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                SceneManager.LoadScene(downStairsSceneName);
+            }
+            else if (isInsideOutsideTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                SceneManager.LoadScene("GameScene");
+            }
+            else if (isInsideBoardTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                SceneManager.LoadScene(boardSceneName); // Transition to "Board" scene
+            }
+            else if (isInsideToiletTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                SceneManager.LoadScene(toiletSceneName);
             }
         }
+    }
 
-        if (isInsideLadderTrigger && Input.GetKeyDown(KeyCode.F))
+    private void SaveCurrentPlayerPosition()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        Vector3 playerPosition = transform.position;
+
+        InventoryManager.Instance.SavePlayerPosition(currentSceneName, playerPosition);
+    }
+
+    private void RestorePlayerPosition()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        Vector3? savedPosition = InventoryManager.Instance.GetPlayerPosition(currentSceneName);
+
+        if (savedPosition.HasValue)
         {
-            SceneManager.LoadScene(upstairsSceneName);
+            transform.position = savedPosition.Value;
+            Debug.Log("Restored player position in " + currentSceneName + ": " + savedPosition.Value);
         }
-
-        if (isInsideLadderDownTrigger && Input.GetKeyDown(KeyCode.F))
+        else
         {
-            SceneManager.LoadScene(downStairsSceneName);
-        }
-
-        if (isInsideOutsideTrigger && Input.GetKeyDown(KeyCode.F))
-        {
-            SceneManager.LoadScene("GameScene");
-        }
-
-        if (isInsideBoardTrigger && Input.GetKeyDown(KeyCode.F))
-        {
-            SceneManager.LoadScene(boardSceneName);
-        }
-
-        if (isInsideToiletTrigger && Input.GetKeyDown(KeyCode.F))
-        {
-            SceneManager.LoadScene(toiletSceneName);
+            // Optional: Set a default position if no saved position exists
+            // transform.position = new Vector3(0, 0, 0); // Replace with your desired default position
+            Debug.Log("No saved position for " + currentSceneName + ". Using default position.");
         }
     }
 
