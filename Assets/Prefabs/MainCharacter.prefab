@@ -185,6 +185,9 @@ MonoBehaviour:
   openDoorSound: {fileID: 8300000, guid: eccf2b8a62d094445ae8c907d54d3ccf, type: 3}
   closedDoorSound: {fileID: 8300000, guid: e914254f5ddcae2428fa2f5d81ee0e0e, type: 3}
   itemPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
+  notePickupSound: {fileID: 0}
+  batteryPickupSound: {fileID: 0}
+  flashlightPickupSound: {fileID: 0}
   panel: {fileID: 0}
   panelText: {fileID: 0}
   keyImagePrefab: {fileID: 9096735647813404745, guid: 03795c95adc5b4d90bff94f42fdf75d6, type: 3}
