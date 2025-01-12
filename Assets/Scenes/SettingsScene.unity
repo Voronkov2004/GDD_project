@@ -302,7 +302,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 187031907}
+  - component: {fileID: 187031910}
   - component: {fileID: 187031908}
+  - component: {fileID: 187031909}
   m_Layer: 5
   m_Name: SettingsMenuController
   m_TagString: Untagged
@@ -342,6 +344,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsMenuMusic: {fileID: 8300000, guid: bf33f816821d6bb4d9e5f25397188dfa, type: 3}
+--- !u!114 &187031909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187031906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94277722c7808ba44aa7e1ee94119eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panels:
+  - {fileID: 383006544}
+  - {fileID: 1872097356}
+  - {fileID: 1785301873}
+  buttons:
+  - {fileID: 234034157}
+  - {fileID: 649901639}
+  - {fileID: 1199337356}
+--- !u!114 &187031910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 187031906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6541d3748799bf749b37ba3e57085633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 234034159}
+  - {fileID: 649901641}
+  - {fileID: 1199337358}
+  - {fileID: 1092809139}
 --- !u!1 &234034157
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,9 +442,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.654088, g: 0.654088, b: 0.654088, a: 1}
+    m_PressedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
+    m_SelectedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -425,10 +464,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 487348837}
-        m_TargetAssemblyTypeName: TabsController, Assembly-CSharp
-        m_MethodName: ShowSettings
-        m_Mode: 1
+      - m_Target: {fileID: 187031909}
+        m_TargetAssemblyTypeName: SettingsMenuController, Assembly-CSharp
+        m_MethodName: SwitchPanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 187031910}
+        m_TargetAssemblyTypeName: ButtonTextController, Assembly-CSharp
+        m_MethodName: SelectButton
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1004,6 +1055,7 @@ GameObject:
   - component: {fileID: 383006541}
   - component: {fileID: 383006540}
   - component: {fileID: 383006543}
+  - component: {fileID: 383006544}
   m_Layer: 5
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -1107,6 +1159,18 @@ MonoBehaviour:
   largeButton: {fileID: 2022661667}
   activeColor: {r: 0.2901961, g: 0.2901961, b: 0.2901961, a: 1}
   inactiveColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!225 &383006544
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383006538}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &389817510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1418,6 @@ GameObject:
   - component: {fileID: 487348835}
   - component: {fileID: 487348834}
   - component: {fileID: 487348833}
-  - component: {fileID: 487348837}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1448,21 +1511,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &487348837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487348832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf933c48a34a4874082af62312046001, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingsPanel: {fileID: 383006538}
-  controlsPanel: {fileID: 1872097352}
-  audioPanel: {fileID: 1785301868}
 --- !u!1 &620631688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1693,9 +1741,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.654088, g: 0.654088, b: 0.654088, a: 1}
+    m_PressedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
+    m_SelectedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1715,14 +1763,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 487348837}
-        m_TargetAssemblyTypeName: TabsController, Assembly-CSharp
-        m_MethodName: ShowControls
-        m_Mode: 1
+      - m_Target: {fileID: 187031909}
+        m_TargetAssemblyTypeName: SettingsMenuController, Assembly-CSharp
+        m_MethodName: SwitchPanel
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 187031910}
+        m_TargetAssemblyTypeName: ButtonTextController, Assembly-CSharp
+        m_MethodName: SelectButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3155,9 +3215,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.654088, g: 0.654088, b: 0.654088, a: 1}
+    m_PressedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
+    m_SelectedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3185,6 +3245,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 187031910}
+        m_TargetAssemblyTypeName: ButtonTextController, Assembly-CSharp
+        m_MethodName: SelectButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3693,9 +3765,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.654088, g: 0.654088, b: 0.654088, a: 1}
+    m_PressedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
+    m_SelectedColor: {r: 0.28235295, g: 0.2784314, b: 0.2784314, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3715,14 +3787,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 487348837}
-        m_TargetAssemblyTypeName: TabsController, Assembly-CSharp
-        m_MethodName: ShowAudio
-        m_Mode: 1
+      - m_Target: {fileID: 187031909}
+        m_TargetAssemblyTypeName: SettingsMenuController, Assembly-CSharp
+        m_MethodName: SwitchPanel
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 187031910}
+        m_TargetAssemblyTypeName: ButtonTextController, Assembly-CSharp
+        m_MethodName: SelectButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5066,6 +5150,7 @@ GameObject:
   - component: {fileID: 1785301871}
   - component: {fileID: 1785301870}
   - component: {fileID: 1785301872}
+  - component: {fileID: 1785301873}
   m_Layer: 5
   m_Name: AudioPanel
   m_TagString: Untagged
@@ -5149,6 +5234,18 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 8a7f08bc2c5e76540a71f06aa881cbc8, type: 2}
   soundSlider: {fileID: 1608808375}
   musicSlider: {fileID: 862994518}
+--- !u!225 &1785301873
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785301868}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1801225995
 GameObject:
   m_ObjectHideFlags: 0
@@ -5369,6 +5466,7 @@ GameObject:
   - component: {fileID: 1872097353}
   - component: {fileID: 1872097355}
   - component: {fileID: 1872097354}
+  - component: {fileID: 1872097356}
   m_Layer: 5
   m_Name: ControlsPanel
   m_TagString: Untagged
@@ -5434,6 +5532,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872097352}
   m_CullTransparentMesh: 1
+--- !u!225 &1872097356
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872097352}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1881501262
 GameObject:
   m_ObjectHideFlags: 0
