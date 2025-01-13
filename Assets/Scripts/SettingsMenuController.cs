@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class SettingsMenuController : MonoBehaviour
 {
-    public CanvasGroup[] panels; 
-    public GameObject[] buttons; 
+    public CanvasGroup[] panels;
+    public ButtonTextController buttonTextController;
     private int activePanelIndex = 0; 
 
     public void SwitchPanel(int panelIndex)
     {
-        if (panelIndex == activePanelIndex) return; 
+        if (panelIndex == activePanelIndex) return;
 
         StartCoroutine(FadeOut(panels[activePanelIndex]));
-        //buttons[activePanelIndex].GetComponent<UnityEngine.UI.Image>().color = Color.white;
 
         activePanelIndex = panelIndex;
         StartCoroutine(FadeIn(panels[panelIndex]));
-        //buttons[panelIndex].GetComponent<UnityEngine.UI.Image>().color = Color.black;
+
+        buttonTextController.SelectButton(panelIndex);
     }
 
     private System.Collections.IEnumerator FadeOut(CanvasGroup panel)

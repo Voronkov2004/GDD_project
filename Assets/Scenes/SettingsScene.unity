@@ -360,10 +360,7 @@ MonoBehaviour:
   - {fileID: 383006544}
   - {fileID: 1872097356}
   - {fileID: 1785301873}
-  buttons:
-  - {fileID: 234034157}
-  - {fileID: 649901639}
-  - {fileID: 1199337356}
+  buttonTextController: {fileID: 187031910}
 --- !u!114 &187031910
 MonoBehaviour:
   m_ObjectHideFlags: 0
