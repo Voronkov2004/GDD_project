@@ -2006,7 +2006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 378126091}
   offset: {x: 0, y: 0, z: -10}
-  smoothSpeed: 0.01
+  smoothSpeed: 0.08
 --- !u!114 &578404184
 MonoBehaviour:
   m_ObjectHideFlags: 0
