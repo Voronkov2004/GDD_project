@@ -36,6 +36,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject lockerTrigger;
     public GameObject closedLockerPanel;
     public GameObject openLockerPanel;
+    public GameObject dirtPile;
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
     public GameObject mirrorCanvas; // Canvas displaying the mirror UI
@@ -102,7 +103,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedLocker.SetActive(false);
         }
-
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
 
@@ -116,6 +116,10 @@ public class PlayerInteraction : MonoBehaviour
         if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
         {
             openedLocker.SetActive(true);
+        }
+        if (GameStateManager.Instance.isDugUp && dirtPile != null)
+        {
+            dirtPile.SetActive(false);
         }
         if (InventoryManager.Instance == null)
         {
@@ -428,7 +432,20 @@ public class PlayerInteraction : MonoBehaviour
             else if (isTheaterTrigger)
             {
                 SaveCurrentPlayerPosition();
-                LoadSceneWithSavedPosition(theaterSceneName);
+                if (GameStateManager.Instance.isTheaterOpen)
+                {
+                    LoadSceneWithSavedPosition(theaterSceneName);
+                }
+                else if (InventoryManager.Instance.HasItem("Key_theatre_library"))
+                {
+                    GameStateManager.Instance.isTentLOpened = true;
+                    GameStateManager.Instance.SaveProgress();
+                    LoadSceneWithSavedPosition(theaterSceneName);
+                }
+                else{
+                    panelText.text = "You need a key to unlock the theater!";
+                    panel.SetActive(true);
+                }
             }
             else if (isInsideBoardTrigger)
             {
