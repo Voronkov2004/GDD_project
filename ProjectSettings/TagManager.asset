@@ -33,6 +33,7 @@ TagManager:
   - RealKithcen
   - Cupboard
   - Wood
+  - Mirror
   layers:
   - Default
   - TransparentFX

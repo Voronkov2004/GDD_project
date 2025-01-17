@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -37,6 +38,11 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject openLockerPanel;
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
+    public GameObject mirrorCanvas; // Canvas displaying the mirror UI
+    public Image mirrorImage; // Image for the zoomed-in mirror
+    public Image steamImage; // Image for the steam effect
+    public Image dimBackground; // Dimmed background for the mirror
+    public float steamAnimationDuration = 2f; // Duration of the steam animation
 
     // Scene Names
     public string kitchenSceneName;  
@@ -78,6 +84,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
     private bool isInsideCupboardTrigger = false;
+    private bool isNearMirror = false;
+    private bool hasSeenMirrorSteam = false;
 
 
     // Current Objects
@@ -94,6 +102,15 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedLocker.SetActive(false);
         }
+
+        if (mirrorCanvas != null)
+            mirrorCanvas.SetActive(false);
+
+        if (steamImage != null)
+            steamImage.gameObject.SetActive(false);
+
+        if (dimBackground != null)
+            dimBackground.gameObject.SetActive(false);
 
         // Check if the cupboard is already unlocked and make the openedLocker visible if it is
         if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
@@ -438,6 +455,17 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(storageSceneName);
             }
+            else if (isNearMirror)
+            {
+                if (mirrorCanvas != null && mirrorCanvas.activeSelf)
+                {
+                    CloseMirrorView();
+                }
+                else
+                {
+                    ShowMirrorView();
+                }
+            }
             else if (isLibraryTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -690,6 +718,15 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the theatre key.";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Mirror"))
+        {
+            isNearMirror = true;
+            if (panel != null && panelText != null)
+            {
+                panelText.text = "Press F to inspect the mirror.";
+                panel.SetActive(true);
+            }
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)
@@ -801,6 +838,14 @@ public class PlayerInteraction : MonoBehaviour
             isInsideTheatreKeyTrigger = false;
             currentTheatreKey = null;
             panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Mirror"))
+        {
+            isNearMirror = false;
+            if (panel != null)
+            {
+                panel.SetActive(false);
+            }
         }
 
         panel?.SetActive(false);
@@ -1056,4 +1101,85 @@ public class PlayerInteraction : MonoBehaviour
             isClosedLockerSceneOpen = false;
         }
     }
+
+    private void ShowMirrorView()
+    {
+        if (mirrorCanvas != null)
+            mirrorCanvas.SetActive(true);
+
+        if (dimBackground != null)
+            dimBackground.gameObject.SetActive(true);
+
+        if (mirrorImage != null)
+            mirrorImage.gameObject.SetActive(true);
+
+        if (hasSeenMirrorSteam || GameStateManager.Instance.hasSeenMirrorSteam)
+        {
+            // If the steam effect was already shown, display it immediately
+            hasSeenMirrorSteam = true;
+            if (steamImage != null)
+                steamImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            // If the steam effect has not been shown, start the animation
+            StartCoroutine(AnimateSteamEffect());
+        }
+
+        // Disable player movement during the interaction
+        DisablePlayerMovement();
+    }
+
+    private IEnumerator AnimateSteamEffect()
+    {
+        if (steamImage != null)
+        {
+            steamImage.gameObject.SetActive(true);
+
+            // Animate the steam effect from bottom to top
+            RectTransform steamRect = steamImage.GetComponent<RectTransform>();
+            Vector2 originalSize = steamRect.sizeDelta;
+            steamRect.sizeDelta = new Vector2(originalSize.x, 0);
+
+            float elapsedTime = 0f;
+
+            while (elapsedTime < steamAnimationDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float progress = Mathf.Clamp01(elapsedTime / steamAnimationDuration);
+                steamRect.sizeDelta = new Vector2(originalSize.x, originalSize.y * progress);
+                yield return null;
+            }
+
+            steamRect.sizeDelta = originalSize;
+
+            // Mark the steam effect as shown
+            hasSeenMirrorSteam = true;
+
+            // Optionally save the state if needed
+            GameStateManager.Instance.hasSeenMirrorSteam = true;
+        }
+    }
+
+    public void CloseMirrorView()
+    {
+        // Close the mirror view
+        if (mirrorCanvas != null)
+            mirrorCanvas.SetActive(false);
+
+        if (dimBackground != null)
+            dimBackground.gameObject.SetActive(false);
+
+        if (mirrorImage != null)
+            mirrorImage.gameObject.SetActive(false);
+
+        if (steamImage != null)
+            steamImage.gameObject.SetActive(false);
+
+        EnablePlayerMovement();
+
+        //if (!hasSeenMirrorSteam && steamImage != null)
+        //    steamImage.gameObject.SetActive(false);
+    }
+
 }
