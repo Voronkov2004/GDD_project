@@ -29,6 +29,8 @@ TagManager:
   - Storage
   - Library
   - Tent
+  - KitchenLockerPrefab
+  - RealKithcen
   layers:
   - Default
   - TransparentFX

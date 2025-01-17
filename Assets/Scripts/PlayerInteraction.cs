@@ -19,6 +19,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject panel;
     public TextMeshProUGUI panelText;
     public GameObject keyImagePrefab;
+    public GameObject keyKitchenLockerImagePrefab;
     public GameObject flashlightImagePrefab;
     public GameObject batteryImagePrefab;
     public GameObject combinedFlashlightImagePrefab;
@@ -69,6 +70,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isStorageTrigger = false;
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
+    private bool isInsideTentTrigger = false;
+    private bool isRealKitchenTrigger = false;
 
 
     // Current Objects
@@ -128,6 +131,11 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
                     flashlightIcon.name = "Flashlight1";
+                }
+                else if (tag == "KitchenLockerPrefab" && keyKitchenLockerImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject kitchenLockerKey = Instantiate(keyKitchenLockerImagePrefab, inventoryUI);
+                    kitchenLockerKey.name = "KitchenLockerPrefab";
                 }
                 else if (tag == "Battery" && batteryImagePrefab != null && inventoryUI != null)
                 {
@@ -331,6 +339,26 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(downStairsSceneName);
             }
+            else if (isInsideTentTrigger)
+            {
+                if (GameStateManager.Instance.isTentLOpened)
+                {
+                    panelText.text = "TentL is already opened and cannot be accessed again.";
+                    panel.SetActive(true);
+                }
+                else if (InventoryManager.Instance.HasItem("CombinedFlashlight"))
+                {
+                    SaveCurrentPlayerPosition();
+                    GameStateManager.Instance.SaveProgress();
+                    LoadSceneWithSavedPosition("TentL");
+                    GameStateManager.Instance.isTentLOpened = true;
+                }
+                else
+                {
+                    SaveCurrentPlayerPosition();
+                    LoadSceneWithSavedPosition("TentD");
+                }
+            }
             else if (isInsideOutsideTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -340,6 +368,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(theaterSceneName);
+            }
+            else if (isRealKitchenTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition("RealKitchen");
             }
             else if (isTheaterTrigger)
             {
@@ -458,6 +491,12 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = GameStateManager.Instance.isKitchenUnlocked ? "Press F to enter" : "Press F to unlock the door"; // StateManager.kitchenUnlocked
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("RealKithcen"))
+        {
+            isRealKitchenTrigger = true;
+            panelText.text = "Press F to enter the Kitchen!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("Ladder"))
         {
             isInsideLadderTrigger = true;
@@ -480,6 +519,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideBoardTrigger = true;
             panelText.text = "Press F to view the board!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Tent"))
+        {
+            isInsideTentTrigger = true;
+            panelText.text = "Press F to view the tent!";
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Towels"))
@@ -600,6 +645,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideOutsideTrigger = false;
         }
+        else if (collision.CompareTag("RealKithcen"))
+        {
+            isRealKitchenTrigger = false;
+        }
         else if (collision.CompareTag("Board"))
         {
             isInsideBoardTrigger = false;
@@ -608,9 +657,15 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideToiletTrigger = false;
         }
+        else if (collision.CompareTag("Tent"))
+        {
+            isInsideTentTrigger = false;
+        }
         else if (collision.CompareTag("Theater"))
         {
             isBackToTheaterTrigger = false;
+            isTheaterTrigger = false;
+
         }
         else if (collision.CompareTag("Storage"))
         {
