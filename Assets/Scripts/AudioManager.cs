@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            audioSource = gameObject.AddComponent<AudioSource>();
             Debug.Log("AudioManager instance set");
         }
         else
@@ -33,7 +34,24 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayMusic(AudioClip musicClip)
+    public void PlayRandomClip(AudioClipGroup clipGroup)
+    {
+        if (clipGroup == null || clipGroup.Clips.Count == 0)
+        {
+            Debug.LogWarning("PlayRandomClip: Clip group is null or empty!");
+            return;
+        }
+
+        AudioClip clip = clipGroup.Clips[Random.Range(0, clipGroup.Clips.Count)];
+        audioSource.pitch = Random.Range(clipGroup.PitchMin, clipGroup.PitchMax);
+        audioSource.volume = Random.Range(clipGroup.VolumeMin, clipGroup.VolumeMax);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
+
+public void PlayMusic(AudioClip musicClip)
     {
         if (musicClip == null)
         {
