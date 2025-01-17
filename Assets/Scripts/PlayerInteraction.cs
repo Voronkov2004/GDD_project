@@ -28,6 +28,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
+    public GameObject CrowBarImage;
     public Transform inventoryUI;
     public GameObject notePanel;
     public TextMeshProUGUI noteTextUI;
@@ -193,8 +194,13 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else if (tag == "Key_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
                 {
-                    GameObject boltCutterIcon = Instantiate(theatreKeyImagePrefab, inventoryUI);
-                    boltCutterIcon.name = "Key_theatre_library";
+                    GameObject theatreKey = Instantiate(theatreKeyImagePrefab, inventoryUI);
+                    theatreKey.name = "Key_theatre_library";
+                }
+                else if (tag == "Crowbar" && CrowBarImage != null && inventoryUI != null)
+                {
+                    GameObject crowBar = Instantiate(CrowBarImage, inventoryUI);
+                    crowBar.name = "Crowbar";
                 }
             }
         }
