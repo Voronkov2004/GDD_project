@@ -961,7 +961,7 @@ public class PlayerInteraction : MonoBehaviour
         InventoryManager.Instance.RemoveItem("BoltCutter");
         RemoveItemIconFromUI("BoltCutter");
 
-        //GameStateManager.Instance.SaveProgress();
+        GameStateManager.Instance.SaveProgress();
 
         DisableChainsTrigger();
 
@@ -1056,77 +1056,4 @@ public class PlayerInteraction : MonoBehaviour
             isClosedLockerSceneOpen = false;
         }
     }
-
-
-    //private void HandleKeyInteraction()
-    //{
-    //    if (isInsideKeyTrigger && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        if (currentKey != null && currentKey.CompareTag("Key"))
-    //        {
-    //            audioSource.PlayOneShot(itemPickupSound);
-    //            Destroy(currentKey);
-    //            InventoryManager.Instance.AddItem("Key");
-
-    //            if (keyImagePrefab != null && inventoryUI != null)
-    //            {
-    //                GameObject keyIcon = Instantiate(keyImagePrefab, inventoryUI);
-    //                keyIcon.name = "Key";
-    //            }
-
-    //            panel.SetActive(false);
-    //        }
-    //    }
-    //}
-
-    //private void HandleFlashlightInteraction()
-    //{
-    //    if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        if (currentFlashlight != null && currentFlashlight.CompareTag("Flashlight1"))
-    //        {
-    //            if (audioSource != null && flashlightPickupSound != null)
-    //            {
-    //                audioSource.PlayOneShot(flashlightPickupSound);
-    //            }
-
-    //            Destroy(currentFlashlight);
-    //            InventoryManager.Instance.AddItem("Flashlight1");
-
-    //            if (flashlightImagePrefab != null && inventoryUI != null)
-    //            {
-    //                GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
-    //                flashlightIcon.name = "Flashlight1";
-    //            }
-
-    //            panel.SetActive(false);
-    //        }
-    //    }
-    //}
-
-    //private void HandleBatteryInteraction()
-    //{
-    //    if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        if (currentBattery != null && currentBattery.CompareTag("Battery"))
-    //        {
-
-    //            if (audioSource != null && batteryPickupSound != null)
-    //            {
-    //                audioSource.PlayOneShot(batteryPickupSound);
-    //            }
-
-    //            Destroy(currentBattery);
-    //            InventoryManager.Instance.AddItem("Battery");
-
-    //            if (batteryImagePrefab != null && inventoryUI != null)
-    //            {
-    //                GameObject batteryIcon = Instantiate(batteryImagePrefab, inventoryUI);
-    //                batteryIcon.name = "Battery";
-    //            }
-
-    //            panel.SetActive(false);
-    //        }
-    //    }
-    //}
 }
