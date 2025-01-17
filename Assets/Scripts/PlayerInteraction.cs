@@ -117,7 +117,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedLocker.SetActive(true);
         }
-        if (GameStateManager.Instance.isDugUp && dirtPile != null)
+        if (!GameStateManager.Instance.isDugUp && dirtPile != null)
         {
             dirtPile.SetActive(false);
         }
