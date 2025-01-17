@@ -781,7 +781,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (collision.CompareTag("BackToTheater"))
         {
-            isTheaterTrigger = false;
+            isBackToTheaterTrigger = false;
         }
         else if (collision.CompareTag("Towels"))
         {
