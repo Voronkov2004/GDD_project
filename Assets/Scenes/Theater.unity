@@ -2653,7 +2653,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.8
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -3957,7 +3957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3201512084936947725, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: moveSpeed
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3621462275998570073, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: m_Name
