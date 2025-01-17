@@ -32,6 +32,7 @@ TagManager:
   - KitchenLockerPrefab
   - RealKithcen
   - Cupboard
+  - Wood
   layers:
   - Default
   - TransparentFX

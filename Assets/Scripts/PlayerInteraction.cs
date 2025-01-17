@@ -76,11 +76,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isLibraryTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isRealKitchenTrigger = false;
-<<<<<<< HEAD
     private bool isInsideTheatreKeyTrigger = false;
-=======
     private bool isInsideCupboardTrigger = false;
->>>>>>> 88d4883d2ffe6a8ad0e760ace85ab2137396b276
 
 
     // Current Objects
@@ -256,15 +253,12 @@ public class PlayerInteraction : MonoBehaviour
             }
             ProcessItemPickup(currentBoltCutter, "BoltCutter", boltCutterImagePrefab);
         }
-<<<<<<< HEAD
-        // medallion pick up sound dopisat kogda on budet gotov v igre
-=======
         else if (isInsideTheatreKeyTrigger && Input.GetKeyDown(KeyCode.F))
         {
             audioSource.PlayOneShot(itemPickupSound);
             ProcessItemPickup(currentTheatreKey, "Keys_theatre_library", theatreKeyImagePrefab);
         }
->>>>>>> c249ac7dde79d72823df58cc29d93a12fc507553
+        // medallion pick up sound dopisat kogda on budet gotov v igre
     }
 
     private void ProcessItemPickup(GameObject item, string defaultItemId, GameObject itemPrefab)
