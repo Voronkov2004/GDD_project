@@ -34,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -108,7 +108,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 89283cd25bcc4e547b94a63f8489678f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -208,13 +208,14 @@ MonoBehaviour:
   flashlightImagePrefab: {fileID: 7260888862901825936, guid: 6196f84eb5bae47eea2573c32a42529c, type: 3}
   batteryImagePrefab: {fileID: 4541410994518025369, guid: 0b3b4e7329b86420db65cd765fad92b4, type: 3}
   combinedFlashlightImagePrefab: {fileID: 5395974015940973992, guid: 57d07970aa2114c568d1bf4ae9d77af5, type: 3}
+  boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
+  theatreKeyImagePrefab: {fileID: 0}
   inventoryUI: {fileID: 0}
   notePanel: {fileID: 0}
   noteTextUI: {fileID: 0}
   lockerPicture: {fileID: 0}
   lockerNote: {fileID: 0}
   lockerTrigger: {fileID: 0}
-  boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
   closedLockerPanel: {fileID: 0}
   openLockerPanel: {fileID: 0}
   openedLockerInScene: {fileID: 0}

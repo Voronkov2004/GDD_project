@@ -23,13 +23,14 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject flashlightImagePrefab;
     public GameObject batteryImagePrefab;
     public GameObject combinedFlashlightImagePrefab;
+    public GameObject boltCutterImagePrefab;
+    public GameObject theatreKeyImagePrefab;
     public Transform inventoryUI;
     public GameObject notePanel;
     public TextMeshProUGUI noteTextUI;
     public GameObject lockerPicture;
     public GameObject lockerNote;
     public GameObject lockerTrigger;
-    public GameObject boltCutterImagePrefab;
     public GameObject closedLockerPanel;
     public GameObject openLockerPanel;
     public GameObject openedLockerInScene;
@@ -72,6 +73,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isLibraryTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isRealKitchenTrigger = false;
+    private bool isInsideTheatreKeyTrigger = false;
 
 
     // Current Objects
@@ -80,6 +82,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentBattery;
     private GameObject currentNote;
     private GameObject currentBoltCutter;
+    private GameObject currentTheatreKey;
 
     void Start()
     {
@@ -151,6 +154,11 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     GameObject boltCutterIcon = Instantiate(boltCutterImagePrefab, inventoryUI);
                     boltCutterIcon.name = "BoltCutter";
+                }
+                else if (tag == "Keys_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject boltCutterIcon = Instantiate(theatreKeyImagePrefab, inventoryUI);
+                    boltCutterIcon.name = "Keys_theatre_library";
                 }
             }
         }
@@ -224,6 +232,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             audioSource.PlayOneShot(itemPickupSound);
             ProcessItemPickup(currentBoltCutter, "BoltCutter", boltCutterImagePrefab);
+        }
+        else if (isInsideTheatreKeyTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentTheatreKey, "Keys_theatre_library", theatreKeyImagePrefab);
         }
     }
 
@@ -584,7 +597,6 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the bolt cutter!";
             panel?.SetActive(true);
         }
-        
         else if (collision.CompareTag("Chains"))
         {
             isInsideLocker_ChainsTrigger = true;
@@ -604,6 +616,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideChestTrigger = true;
             panelText.text = "Press F to inspect the chest.";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Keys_theatre_library"))
+        {
+            isInsideTheatreKeyTrigger = true;
+            currentTheatreKey = collision.gameObject;
+            panelText.text = "Press F to pick up the theatre key.";
             panel?.SetActive(true);
         }
     }
@@ -705,6 +724,12 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Chest"))
         {
             isInsideChestTrigger = false;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Keys_theatre_library"))
+        {
+            isInsideTheatreKeyTrigger = false;
+            currentTheatreKey = null;
             panel?.SetActive(false);
         }
 
@@ -863,16 +888,12 @@ public class PlayerInteraction : MonoBehaviour
 
         openedLockerInScene.SetActive(true);
 
-        //InventoryManager.Instance.RemoveItem("bolt_cutter_test");
-        //RemoveItemIconFromUI("bolt_cutter_test");
         InventoryManager.Instance.RemoveItem("BoltCutter");
         RemoveItemIconFromUI("BoltCutter");
 
+        //GameStateManager.Instance.SaveProgress();
+
         DisableChainsTrigger();
-
-        isLockerInteractionActive = false;
-
-        GameStateManager.Instance.SaveProgress();
 
         foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
         {
@@ -883,6 +904,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             activator.UpdateActivator();
         }
+
+
+        isLockerInteractionActive = false;
     }
 
     private void DisableChainsTrigger()
