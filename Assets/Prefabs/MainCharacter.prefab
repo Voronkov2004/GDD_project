@@ -211,7 +211,7 @@ MonoBehaviour:
   batteryImagePrefab: {fileID: 4541410994518025369, guid: 0b3b4e7329b86420db65cd765fad92b4, type: 3}
   combinedFlashlightImagePrefab: {fileID: 5395974015940973992, guid: 57d07970aa2114c568d1bf4ae9d77af5, type: 3}
   boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
-  theatreKeyImagePrefab: {fileID: 0}
+  theatreKeyImagePrefab: {fileID: 9096735647813404745, guid: 22a91d7f41193f142bce23c1ffd50723, type: 3}
   inventoryUI: {fileID: 0}
   notePanel: {fileID: 0}
   noteTextUI: {fileID: 0}
@@ -221,6 +221,12 @@ MonoBehaviour:
   closedLockerPanel: {fileID: 0}
   openLockerPanel: {fileID: 0}
   openedLockerInScene: {fileID: 0}
+  openedLocker: {fileID: 0}
+  mirrorCanvas: {fileID: 0}
+  mirrorImage: {fileID: 0}
+  steamImage: {fileID: 0}
+  dimBackground: {fileID: 0}
+  steamAnimationDuration: 2
   kitchenSceneName: Kitchen
   upstairsSceneName: Upstairs
   downStairsSceneName: Kitchen

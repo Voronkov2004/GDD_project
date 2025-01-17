@@ -46,6 +46,10 @@ public class ObjectActivator : MonoBehaviour
         {
             return GameStateManager.Instance.isLockerOpened;
         }
+        else if (requiredPuzzle == "Cupboard")
+        {
+            return GameStateManager.Instance.isCupboardUnlocked;
+        }
         return true;
     }
 }
