@@ -31,6 +31,7 @@ TagManager:
   - Tent
   - KitchenLockerPrefab
   - RealKithcen
+  - Cupboard
   layers:
   - Default
   - TransparentFX
