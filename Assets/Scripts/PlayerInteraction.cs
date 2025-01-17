@@ -34,6 +34,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject closedLockerPanel;
     public GameObject openLockerPanel;
     public GameObject openedLockerInScene;
+    public GameObject openedLocker;
 
     // Scene Names
     public string kitchenSceneName;  
@@ -73,7 +74,11 @@ public class PlayerInteraction : MonoBehaviour
     private bool isLibraryTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isRealKitchenTrigger = false;
+<<<<<<< HEAD
     private bool isInsideTheatreKeyTrigger = false;
+=======
+    private bool isInsideCupboardTrigger = false;
+>>>>>>> 88d4883d2ffe6a8ad0e760ace85ab2137396b276
 
 
     // Current Objects
@@ -86,6 +91,16 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start()
     {
+        if (openedLocker != null)
+        {
+            openedLocker.SetActive(false);
+        }
+
+        // Check if the cupboard is already unlocked and make the openedLocker visible if it is
+        if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
+        {
+            openedLocker.SetActive(true);
+        }
         if (InventoryManager.Instance == null)
         {
             Debug.LogError("InventoryManager.Instance is null. Ensure the InventoryManager exists in the scene.");
@@ -422,6 +437,30 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(librarySceneName);
             }
+            else if (isInsideCupboardTrigger)
+        {
+            if (GameStateManager.Instance.isCupboardUnlocked)
+            {
+                panelText.text = "Cupboard is already unlocked.";
+                panel.SetActive(true);
+            }
+            else if (InventoryManager.Instance.HasItem("KitchenLockerPrefab"))
+            {
+                InventoryManager.Instance.RemoveItem("KitchenLockerPrefab");
+                RemoveItemIconFromUI("KitchenLockerPrefab");
+                GameStateManager.Instance.isCupboardUnlocked = true;
+                GameStateManager.Instance.SaveProgress();
+                SaveCurrentPlayerPosition();
+                // Эта функция открывает шкаф на кухне, болторез добавляй после неё
+                UnlockCupboard();
+                LoadSceneWithSavedPosition("CupboardClosed");
+            }
+            else
+            {
+                panelText.text = "You need a key to unlock the cupboard!";
+                panel.SetActive(true);
+            }
+        }
         }
     }
 
@@ -453,6 +492,20 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             Debug.Log($"No saved position for scene {currentSceneName}. Using default position.");
+        }
+    }
+
+    private void UnlockCupboard()
+    {
+        GameObject cupboard = GameObject.FindWithTag("Cupboard");
+        if (cupboard != null)
+        {
+            cupboard.SetActive(true);
+            Debug.Log("Cupboard unlocked and made visible.");
+        }
+        else
+        {
+            Debug.LogWarning("Cupboard not found!");
         }
     }
 
@@ -489,6 +542,12 @@ public class PlayerInteraction : MonoBehaviour
             isInsideFlashlightTrigger = true;
             currentFlashlight = collision.gameObject;
             panelText.text = "Press F to pick up the flashlight!";
+            panel?.SetActive(true);
+        }
+        if (collision.CompareTag("Cupboard"))
+        {
+            isInsideCupboardTrigger = true;
+            panelText.text = "Press F to unlock the cupboard!";
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Battery"))
@@ -643,6 +702,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideBatteryTrigger = false;
             currentBattery = null;
+        }
+        if (collision.CompareTag("Cupboard"))
+        {
+            isInsideCupboardTrigger = false;
+            panel?.SetActive(false);
         }
         else if (collision.CompareTag("Kitchen"))
         {

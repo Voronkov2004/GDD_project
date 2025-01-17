@@ -50,4 +50,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RealKitchen.unity
     guid: 7e3ab846f30d64ba7a82a1064d741985
+  - enabled: 1
+    path: Assets/Scenes/CupboardClosed.unity
+    guid: a790096f8252a4ec38bbf57c929f11f1
+  - enabled: 1
+    path: Assets/Scenes/CupboardOpened.unity
+    guid: 22b09e7b3311d4020aabb9bba87c3858
   m_configObjects: {}
