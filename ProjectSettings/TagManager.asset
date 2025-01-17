@@ -18,6 +18,11 @@ TagManager:
   - Note
   - Towel
   - Hook
+  - Locker
+  - Chains
+  - BoltCutter
+  - Key_theatre_library
+  - Chest
   layers:
   - Default
   - TransparentFX

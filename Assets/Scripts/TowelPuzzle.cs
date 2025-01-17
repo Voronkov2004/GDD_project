@@ -16,7 +16,8 @@ public class TowelPuzzle : MonoBehaviour
         {
             Debug.Log("Puzzle solved!");
 
-            GameStateManager.Instance.isPuzzleSolved = true;
+            GameStateManager.Instance.isTowelPuzzleSolved = true;
+            GameStateManager.Instance.SaveProgress();
 
             // Spawn the key
             SpawnKey();

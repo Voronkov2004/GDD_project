@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,8 +15,6 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip batteryPickupSound;
     public AudioClip flashlightPickupSound;
 
-
-
     // UI and Inventory
     public GameObject panel;
     public TextMeshProUGUI panelText;
@@ -26,6 +25,13 @@ public class PlayerInteraction : MonoBehaviour
     public Transform inventoryUI;
     public GameObject notePanel;
     public TextMeshProUGUI noteTextUI;
+    public GameObject lockerPicture;
+    public GameObject lockerNote;
+    public GameObject lockerTrigger;
+    public GameObject boltCutterImagePrefab;
+    public GameObject closedLockerPanel;
+    public GameObject openLockerPanel;
+    public GameObject openedLockerInScene;
 
     // Scene Names
     public string kitchenSceneName;  
@@ -33,6 +39,7 @@ public class PlayerInteraction : MonoBehaviour
     public string downStairsSceneName;
     public string boardSceneName;       // Set this to your static scene's name ("Board")
     public string toiletSceneName;
+    public string chestPuzzleSceneName;
 
     // Trigger Flags
     private bool isInsideKeyTrigger = false;
@@ -46,12 +53,20 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideToiletTrigger = false;
     private bool isInsideNoteTrigger = false;
     private bool isNoteOpen = false;
+    private bool isInsideLockerTrigger = false;
+    private bool isInsideBoltCutterTrigger = false;
+    private bool isInsideLocker_ChainsTrigger = false;
+    private bool isLockerInteractionActive = false;
+    private bool isClosedLockerSceneOpen = false;
+    private bool isInsideChestTrigger = false;
+
 
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
     private GameObject currentBattery;
     private GameObject currentNote;
+    private GameObject currentBoltCutter;
 
     void Start()
     {
@@ -70,6 +85,18 @@ public class PlayerInteraction : MonoBehaviour
         {
             notePanel.SetActive(false);
         }
+
+        // cabinet in toilet
+        if (GameStateManager.Instance != null && GameStateManager.Instance.isOriginallyLockerOpened)
+        {
+            ActivateLockerContent();
+        }
+        else
+        {
+            DeactivateLockerContent();
+        }
+
+        if (GameStateManager.Instance.isLockerOpened) openedLockerInScene.SetActive(true);
 
         // Restore player's position
         RestorePlayerPosition();
@@ -102,15 +129,18 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject combinedIcon = Instantiate(combinedFlashlightImagePrefab, inventoryUI);
                     combinedIcon.name = "CombinedFlashlight";
                 }
+                else if (tag == "BoltCutter" && boltCutterImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject boltCutterIcon = Instantiate(boltCutterImagePrefab, inventoryUI);
+                    boltCutterIcon.name = "BoltCutter";
+                }
             }
         }
     }
 
     void Update()
     {
-        HandleKeyInteraction();
-        HandleFlashlightInteraction();
-        HandleBatteryInteraction();
+        HandleItemPickup();
         HandleSceneTransitions();
         HandleNoteInteraction();
 
@@ -118,75 +148,89 @@ public class PlayerInteraction : MonoBehaviour
         {
             CombineFlashlightAndBattery();
         }
+
+        if (isInsideLockerTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (!GameStateManager.Instance.isOriginallyLockerOpened)
+            {
+                GameStateManager.Instance.isOriginallyLockerOpened = true;
+                ActivateLockerContent();
+                GameStateManager.Instance.SaveProgress();
+            }
+        }
+
+        if (isInsideLocker_ChainsTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (isClosedLockerSceneOpen)
+            {
+                CloseClosedLockerUI();
+            }
+            else if (InventoryManager.Instance.HasItem("BoltCutter"))
+            {
+                // Bolt Cutter Scenario
+                StartCoroutine(HandleLockerWithBoltCutter());
+                //HandleLockerWithBoltCutter();
+            }
+            else
+            {
+                // Scenario without bolt cutters
+                OpenClosedLockerUI();
+            }
+        }
     }
 
-    private void HandleKeyInteraction()
+    private void HandleItemPickup()
     {
         if (isInsideKeyTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            if (currentKey != null && currentKey.CompareTag("Key"))
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentKey, "Key", keyImagePrefab);
+        }
+        else if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && flashlightPickupSound != null)
             {
-                audioSource.PlayOneShot(itemPickupSound);
-                Destroy(currentKey);
-                InventoryManager.Instance.AddItem("Key");
-
-                if (keyImagePrefab != null && inventoryUI != null)
-                {
-                    GameObject keyIcon = Instantiate(keyImagePrefab, inventoryUI);
-                    keyIcon.name = "Key";
-                }
-
-                panel.SetActive(false);
+                audioSource.PlayOneShot(flashlightPickupSound);
             }
+            ProcessItemPickup(currentFlashlight, "Flashlight1", flashlightImagePrefab);
+        }
+        else if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && batteryPickupSound != null)
+            {
+                audioSource.PlayOneShot(batteryPickupSound);
+            }
+            ProcessItemPickup(currentBattery, "Battery", batteryImagePrefab);
+        }
+        else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentBoltCutter, "BoltCutter", boltCutterImagePrefab);
         }
     }
 
-    private void HandleFlashlightInteraction()
+    private void ProcessItemPickup(GameObject item, string defaultItemId, GameObject itemPrefab)
     {
-        if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
+
+        if (item != null)
         {
-            if (currentFlashlight != null && currentFlashlight.CompareTag("Flashlight1"))
+            string itemId = item.name;
+
+            if (!GameStateManager.Instance.IsItemPickedUp(itemId))
             {
-                if (audioSource != null && flashlightPickupSound != null)
+                // save that item was picked up
+                GameStateManager.Instance.MarkItemPickedUp(itemId);
+                InventoryManager.Instance.AddItem(defaultItemId);
+
+                Destroy(item);
+
+                if (itemPrefab != null && inventoryUI != null)
                 {
-                    audioSource.PlayOneShot(flashlightPickupSound);
+                    GameObject itemIcon = Instantiate(itemPrefab, inventoryUI);
+                    itemIcon.name = itemId;
                 }
 
-                Destroy(currentFlashlight);
-                InventoryManager.Instance.AddItem("Flashlight1");
-
-                if (flashlightImagePrefab != null && inventoryUI != null)
-                {
-                    GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
-                    flashlightIcon.name = "Flashlight1";
-                }
-
-                panel.SetActive(false);
-            }
-        }
-    }
-
-    private void HandleBatteryInteraction()
-    {
-        if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
-        {
-            if (currentBattery != null && currentBattery.CompareTag("Battery"))
-            {
-
-                if (audioSource != null && batteryPickupSound != null)
-                {
-                    audioSource.PlayOneShot(batteryPickupSound);
-                }
-
-                Destroy(currentBattery);
-                InventoryManager.Instance.AddItem("Battery");
-
-                if (batteryImagePrefab != null && inventoryUI != null)
-                {
-                    GameObject batteryIcon = Instantiate(batteryImagePrefab, inventoryUI);
-                    batteryIcon.name = "Battery";
-                }
-
+                Debug.Log($"Item {itemId} picked up and saved.");
                 panel.SetActive(false);
             }
         }
@@ -236,15 +280,15 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (isInsideKitchenTrigger)
             {
-                SaveCurrentPlayerPosition();
+                SaveCurrentPlayerPosition(); 
 
-                if (StateManager.kitchenUnlocked)
+                if (GameStateManager.Instance.isKitchenUnlocked) // StateManager.kitchenUnlocked
                 {
                     if (audioSource != null && openDoorSound != null)
                     {
                         audioSource.PlayOneShot(openDoorSound);
                     }
-                    SceneManager.LoadScene(kitchenSceneName);
+                    LoadSceneWithSavedPosition(kitchenSceneName);
                 }
                 else if (InventoryManager.Instance.HasItem("Key"))
                 {
@@ -257,8 +301,8 @@ public class PlayerInteraction : MonoBehaviour
                     // Remove one key icon from the inventory UI
                     RemoveItemIconFromUI("Key");
 
-                    StateManager.kitchenUnlocked = true;
-                    SceneManager.LoadScene(kitchenSceneName);
+                    GameStateManager.Instance.isKitchenUnlocked = true; //StateManager.kitchenUnlocked = true;
+                    LoadSceneWithSavedPosition(kitchenSceneName);
                 }
                 else
                 {
@@ -275,22 +319,27 @@ public class PlayerInteraction : MonoBehaviour
             else if (isInsideLadderDownTrigger)
             {
                 SaveCurrentPlayerPosition();
-                SceneManager.LoadScene(downStairsSceneName);
+                LoadSceneWithSavedPosition(downStairsSceneName);
             }
             else if (isInsideOutsideTrigger)
             {
                 SaveCurrentPlayerPosition();
-                SceneManager.LoadScene("GameScene");
+                LoadSceneWithSavedPosition("GameScene");
             }
             else if (isInsideBoardTrigger)
             {
                 SaveCurrentPlayerPosition();
-                SceneManager.LoadScene(boardSceneName); // Transition to "Board" scene
+                LoadSceneWithSavedPosition(boardSceneName); // Transition to "Board" scene
             }
             else if (isInsideToiletTrigger)
             {
                 SaveCurrentPlayerPosition();
-                SceneManager.LoadScene(toiletSceneName);
+                LoadSceneWithSavedPosition(toiletSceneName);
+            }
+            else if (isInsideChestTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition(chestPuzzleSceneName);
             }
         }
     }
@@ -300,29 +349,53 @@ public class PlayerInteraction : MonoBehaviour
         string currentSceneName = SceneManager.GetActiveScene().name;
         Vector3 playerPosition = transform.position;
 
-        InventoryManager.Instance.SavePlayerPosition(currentSceneName, playerPosition);
+        //InventoryManager.Instance.SavePlayerPosition(currentSceneName, playerPosition);
+        GameStateManager.Instance.SavePlayerLocation(currentSceneName, playerPosition);
+    }
+
+    private void LoadSceneWithSavedPosition(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+        RestorePlayerPosition();
     }
 
     private void RestorePlayerPosition()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        Vector3? savedPosition = InventoryManager.Instance.GetPlayerPosition(currentSceneName);
+        Vector3? savedPosition = GameStateManager.Instance.GetPlayerPosition(currentSceneName);
 
         if (savedPosition.HasValue)
         {
             transform.position = savedPosition.Value;
-            Debug.Log("Restored player position in " + currentSceneName + ": " + savedPosition.Value);
+            Debug.Log($"Player position restored: {savedPosition.Value}");
         }
         else
         {
-            // Optional: Set a default position if no saved position exists
-            // transform.position = new Vector3(0, 0, 0); // Replace with your desired default position
-            Debug.Log("No saved position for " + currentSceneName + ". Using default position.");
+            Debug.Log($"No saved position for scene {currentSceneName}. Using default position.");
         }
     }
 
+    //private void RestorePlayerPosition()
+    //{
+    //    string currentSceneName = SceneManager.GetActiveScene().name;
+    //    Vector3? savedPosition = InventoryManager.Instance.GetPlayerPosition(currentSceneName);
+
+    //    if (savedPosition.HasValue)
+    //    {
+    //        transform.position = savedPosition.Value;
+    //        Debug.Log("Restored player position in " + currentSceneName + ": " + savedPosition.Value);
+    //    }
+    //    else
+    //    {
+    //        // Optional: Set a default position if no saved position exists
+    //        // transform.position = new Vector3(0, 0, 0); // Replace with your desired default position
+    //        Debug.Log("No saved position for " + currentSceneName + ". Using default position.");
+    //    }
+    //}
+
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log($"Collision detected with: {collision.gameObject.name}, Tag: {collision.tag}");
         if (collision.CompareTag("Key"))
         {
             isInsideKeyTrigger = true;
@@ -347,7 +420,7 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Kitchen"))
         {
             isInsideKitchenTrigger = true;
-            panelText.text = StateManager.kitchenUnlocked ? "Press F to enter" : "Press F to unlock the door";
+            panelText.text = GameStateManager.Instance.isKitchenUnlocked ? "Press F to enter" : "Press F to unlock the door"; // StateManager.kitchenUnlocked
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Ladder"))
@@ -385,6 +458,41 @@ public class PlayerInteraction : MonoBehaviour
             isInsideNoteTrigger = true;
             currentNote = collision.gameObject;
             panelText.text = "Press F to read the note. Press F again to close it.";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Locker"))
+        {
+            isInsideLockerTrigger = true;
+            panelText.text = "Press F to check the cabinet.";
+            panel?.SetActive(true);
+            Debug.Log("Player entered locker trigger area.");
+        }
+        else if (collision.CompareTag("BoltCutter"))
+        {
+            isInsideBoltCutterTrigger = true;
+            currentBoltCutter = collision.gameObject;
+            panelText.text = "Press F to pick up the bolt cutter!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Chains"))
+        {
+            isInsideLocker_ChainsTrigger = true;
+
+            if (InventoryManager.Instance.HasItem("BoltCutter"))
+            {
+                panelText.text = "Press F to break the chains.";
+            }
+            else
+            {
+                panelText.text = "Press F to take a closer look.";
+            }
+
+            panel.SetActive(true);
+        }
+        else if (collision.CompareTag("Chest"))
+        {
+            isInsideChestTrigger = true;
+            panelText.text = "Press F to inspect the chest.";
             panel?.SetActive(true);
         }
     }
@@ -436,6 +544,27 @@ public class PlayerInteraction : MonoBehaviour
             currentNote = null;
             panel?.SetActive(false);
         }
+        else if (collision.CompareTag("Locker"))
+        {
+            isInsideLockerTrigger = false;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("BoltCutter"))
+        {
+            isInsideBoltCutterTrigger = false;
+            currentBoltCutter = null;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Chains"))
+        {
+            isInsideLocker_ChainsTrigger = false;
+            panel.SetActive(false);
+        }
+        else if (collision.CompareTag("Chest"))
+        {
+            isInsideChestTrigger = false;
+            panel?.SetActive(false);
+        }
 
         panel?.SetActive(false);
     }
@@ -444,12 +573,22 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (isNoteOpen)
         {
-            // If the note is open, check if you press F or Escape to close it
+            // If the note is open, check if player press F or Escape to close it
             if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Escape))
             {
                 CloseNoteUI();
                 Time.timeScale = 1f; // resume the game
                 isNoteOpen = false;
+
+                // Show message if defined in the Note
+                if (currentNote != null && currentNote.CompareTag("Note"))
+                {
+                    Note noteComponent = currentNote.GetComponent<Note>();
+                    if (noteComponent != null && !string.IsNullOrEmpty(noteComponent.closeNoteMessage))
+                    {
+                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 2f));
+                    }
+                }
             }
         }
         else if (isInsideNoteTrigger && Input.GetKeyDown(KeyCode.F))
@@ -475,6 +614,38 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private IEnumerator ShowMessageSequence(string firstMessage, string secondMessage, float duration)
+    {
+        if (!string.IsNullOrEmpty(firstMessage))
+        {
+            // Show the first message
+            if (panel != null && panelText != null)
+            {
+                panelText.text = firstMessage;
+                panel.SetActive(true);
+
+                yield return new WaitForSeconds(duration);
+
+                panel.SetActive(false);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(secondMessage))
+        {
+            // Show the second message
+            if (panel != null && panelText != null)
+            {
+                panelText.text = secondMessage;
+                panel.SetActive(true);
+
+                yield return new WaitForSeconds(duration);
+
+                panel.SetActive(false);
+            }
+        }
+    }
+
+
     private void OpenNoteUI(string text)
     {
         if (notePanel != null && noteTextUI != null)
@@ -491,4 +662,233 @@ public class PlayerInteraction : MonoBehaviour
             notePanel.SetActive(false);
         }
     }
+
+    private void ActivateLockerContent()
+    {
+        if (lockerPicture != null)
+        {
+            lockerPicture.SetActive(true);
+        }
+
+        if (lockerNote != null)
+        {
+            lockerNote.SetActive(true);
+        }
+
+        if (lockerTrigger != null)
+        {
+            lockerTrigger.SetActive(false);
+        }
+    }
+
+    private void DeactivateLockerContent()
+    {
+        if (lockerPicture != null)
+        {
+            lockerPicture.SetActive(false);
+        }
+
+        if (lockerNote != null)
+        {
+            lockerNote.SetActive(false);
+        }
+
+        if (lockerTrigger != null)
+        {
+            lockerTrigger.SetActive(true); 
+        }
+    }
+
+    private IEnumerator HandleLockerWithBoltCutter()
+    {
+        if (isLockerInteractionActive) yield break;
+        isLockerInteractionActive = true;
+
+        ShowClosedLockerUI();
+
+        // wait 2 sec
+        yield return new WaitForSecondsRealtime(2f);
+
+        closedLockerPanel.SetActive(false);
+        openLockerPanel.SetActive(true);
+
+        // wait 1 sec
+        yield return new WaitForSecondsRealtime(1f);
+
+        HideLockerUI();
+
+        GameStateManager.Instance.isLockerOpened = true;
+
+        openedLockerInScene.SetActive(true);
+
+        InventoryManager.Instance.RemoveItem("BoltCutter");
+        RemoveItemIconFromUI("BoltCutter");
+
+        DisableChainsTrigger();
+
+        isLockerInteractionActive = false;
+
+        GameStateManager.Instance.SaveProgress();
+
+        foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+        {
+            spawner.UpdateItemSpawner();
+        }
+
+        foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+        {
+            activator.UpdateActivator();
+        }
+    }
+
+    private void DisableChainsTrigger()
+    {
+        var chainsTrigger = GameObject.FindWithTag("Chains");
+        if (chainsTrigger != null)
+        {
+            chainsTrigger.SetActive(false);
+            Debug.Log("Chains trigger has been disabled.");
+        }
+        else
+        {
+            Debug.LogWarning("Chains trigger not found!");
+        }
+    }
+
+
+    private void ShowClosedLockerUI()
+    {
+        closedLockerPanel.SetActive(true);
+        DisablePlayerMovement();
+
+    }
+
+    private void HideLockerUI()
+    {
+        closedLockerPanel.SetActive(false);
+        openLockerPanel.SetActive(false);
+        EnablePlayerMovement();
+
+    }
+
+    private void DisablePlayerMovement()
+    {
+
+        var movement = GetComponent<PlayerMovement>();
+        if (movement != null)
+        {
+            movement.enabled = false;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerMovement not found on MainCharacter!");
+        }
+    }
+
+    private void EnablePlayerMovement()
+    {
+
+        var movement = GetComponent<PlayerMovement>();
+        if (movement != null)
+        {
+            movement.enabled = true;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerMovement not found on MainCharacter!");
+        }
+    }
+
+    private void OpenClosedLockerUI()
+    {
+        if (closedLockerPanel != null)
+        {
+            closedLockerPanel.SetActive(true);
+            DisablePlayerMovement();
+            isClosedLockerSceneOpen = true;
+        }
+    }
+
+    private void CloseClosedLockerUI()
+    {
+        if (closedLockerPanel != null)
+        {
+            closedLockerPanel.SetActive(false);
+            EnablePlayerMovement();
+            isClosedLockerSceneOpen = false;
+        }
+    }
+
+
+    //private void HandleKeyInteraction()
+    //{
+    //    if (isInsideKeyTrigger && Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        if (currentKey != null && currentKey.CompareTag("Key"))
+    //        {
+    //            audioSource.PlayOneShot(itemPickupSound);
+    //            Destroy(currentKey);
+    //            InventoryManager.Instance.AddItem("Key");
+
+    //            if (keyImagePrefab != null && inventoryUI != null)
+    //            {
+    //                GameObject keyIcon = Instantiate(keyImagePrefab, inventoryUI);
+    //                keyIcon.name = "Key";
+    //            }
+
+    //            panel.SetActive(false);
+    //        }
+    //    }
+    //}
+
+    //private void HandleFlashlightInteraction()
+    //{
+    //    if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        if (currentFlashlight != null && currentFlashlight.CompareTag("Flashlight1"))
+    //        {
+    //            if (audioSource != null && flashlightPickupSound != null)
+    //            {
+    //                audioSource.PlayOneShot(flashlightPickupSound);
+    //            }
+
+    //            Destroy(currentFlashlight);
+    //            InventoryManager.Instance.AddItem("Flashlight1");
+
+    //            if (flashlightImagePrefab != null && inventoryUI != null)
+    //            {
+    //                GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
+    //                flashlightIcon.name = "Flashlight1";
+    //            }
+
+    //            panel.SetActive(false);
+    //        }
+    //    }
+    //}
+
+    //private void HandleBatteryInteraction()
+    //{
+    //    if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        if (currentBattery != null && currentBattery.CompareTag("Battery"))
+    //        {
+
+    //            if (audioSource != null && batteryPickupSound != null)
+    //            {
+    //                audioSource.PlayOneShot(batteryPickupSound);
+    //            }
+
+    //            Destroy(currentBattery);
+    //            InventoryManager.Instance.AddItem("Battery");
+
+    //            if (batteryImagePrefab != null && inventoryUI != null)
+    //            {
+    //                GameObject batteryIcon = Instantiate(batteryImagePrefab, inventoryUI);
+    //                batteryIcon.name = "Battery";
+    //            }
+
+    //            panel.SetActive(false);
+    //        }
+    //    }
+    //}
 }

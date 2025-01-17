@@ -9,19 +9,38 @@ public class ChestPuzzleWithButtons : MonoBehaviour
 {
     public string correctName = "CAMPFIRE"; // Correct camp name
     public TMP_Text progressText; // Text to show the player's current progress
-    public TMP_Text feedbackText; // Feedback message text
-    //public GameObject chestClosed; // Closed chest object
-    //public GameObject chestOpen; // Open chest object
+    public TMP_Text exitHintText; // Text to show the exit hint
 
     private string currentInput = ""; // Player's current input
+    private bool isHintVisible = false; // Flag to control hint visibility
 
     void Start()
     {
         // Initialize the progress display and chest states
         UpdateProgressText();
-        feedbackText.text = "Guess the camp name!";
-        //chestClosed.SetActive(true);
-        //chestOpen.SetActive(false);
+
+        // Hide exit hint at the start
+        if (exitHintText != null)
+        {
+            exitHintText.text = "Press F to return to the kitchen.";
+            exitHintText.gameObject.SetActive(false);
+        }
+
+    }
+
+    void Update()
+    {
+        // Allow player to return to the kitchen
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ReturnToKitchen();
+        }
+
+        // Show the exit hint after a short delay if not already visible
+        if (!isHintVisible)
+        {
+            StartCoroutine(ShowExitHint());
+        }
     }
 
     public void EnterLetter(string letter)
@@ -48,18 +67,20 @@ public class ChestPuzzleWithButtons : MonoBehaviour
         {
             // Correct input: open the chest
             Debug.Log("Correct! The chest is opening...");
-            feedbackText.text = "Correct! The chest is opening!";
-            //chestClosed.SetActive(false);
-            //chestOpen.SetActive(true);
+
+            // Update the game state
+            GameStateManager.Instance.isChestPuzzleSolved = true;
+
+            // Save progress
+            GameStateManager.Instance.SaveProgress();
 
             // Load the next scene after a delay
-            Invoke("LoadOpenChestScene", 2f);
+            Invoke("ReturnToKitchen", 2f);
         }
         else
         {
             // Incorrect input: reset the progress
             Debug.Log("Incorrect! Try again.");
-            feedbackText.text = "Incorrect! Try again.";
             currentInput = "";
             UpdateProgressText();
         }
@@ -73,11 +94,11 @@ public class ChestPuzzleWithButtons : MonoBehaviour
         {
             if (i < currentInput.Length)
             {
-                display += currentInput[i];
+                display += " " + currentInput[i];
             }
             else
             {
-                display += "_";
+                display += " _";
             }
 
             if (i < correctName.Length - 1)
@@ -88,9 +109,20 @@ public class ChestPuzzleWithButtons : MonoBehaviour
         progressText.text = display;
     }
 
-    private void LoadOpenChestScene()
+    private void ReturnToKitchen()
     {
-        SceneManager.LoadScene("Kitchen"); // Replace with your scene name
+        SceneManager.LoadScene("Kitchen"); 
+    }
+
+    private IEnumerator ShowExitHint()
+    {
+        yield return new WaitForSeconds(1f); // Wait 1 second before showing the hint
+
+        if (exitHintText != null)
+        {
+            exitHintText.gameObject.SetActive(true);
+            isHintVisible = true;
+        }
     }
 }
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 327715404466650966}
   - component: {fileID: 3201512084936947725}
+  - component: {fileID: 2747686912002420541}
   - component: {fileID: 7006774440196357}
   - component: {fileID: 1281074827853251041}
   - component: {fileID: 8869970301776127945}
@@ -55,6 +56,18 @@ MonoBehaviour:
   grassStepSound: {fileID: 8300000, guid: b2eeaef00bc2cb947bae3d5202376391, type: 3}
   woodStepSound: {fileID: 8300000, guid: 9f7af9b4cb0b31a438641d6ff0859d3e, type: 3}
   soundMixerGroup: {fileID: 280508694811508304, guid: 8a7f08bc2c5e76540a71f06aa881cbc8, type: 2}
+--- !u!114 &2747686912002420541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3621462275998570073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8173ce010f526684c814478c68046050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &7006774440196357
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -185,9 +198,9 @@ MonoBehaviour:
   openDoorSound: {fileID: 8300000, guid: eccf2b8a62d094445ae8c907d54d3ccf, type: 3}
   closedDoorSound: {fileID: 8300000, guid: e914254f5ddcae2428fa2f5d81ee0e0e, type: 3}
   itemPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
-  notePickupSound: {fileID: 0}
-  batteryPickupSound: {fileID: 0}
-  flashlightPickupSound: {fileID: 0}
+  notePickupSound: {fileID: 8300000, guid: f1a2607440a7a0d49920deb58c9e583c, type: 3}
+  batteryPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
+  flashlightPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
   panel: {fileID: 0}
   panelText: {fileID: 0}
   keyImagePrefab: {fileID: 9096735647813404745, guid: 03795c95adc5b4d90bff94f42fdf75d6, type: 3}
@@ -197,6 +210,10 @@ MonoBehaviour:
   inventoryUI: {fileID: 0}
   notePanel: {fileID: 0}
   noteTextUI: {fileID: 0}
+  lockerPicture: {fileID: 0}
+  lockerNote: {fileID: 0}
+  lockerTrigger: {fileID: 0}
+  boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
   kitchenSceneName: Kitchen
   upstairsSceneName: Upstairs
   downStairsSceneName: Kitchen

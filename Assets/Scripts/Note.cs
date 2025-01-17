@@ -6,5 +6,11 @@ public class Note : MonoBehaviour
 {
     [TextArea]
     public string noteText; // notes text
+
+    [TextArea]
+    public string closeNoteMessage; // message to display after closing the note
+
+    [TextArea]
+    public string followUpMessage; // second message to display after the first message
 }
 

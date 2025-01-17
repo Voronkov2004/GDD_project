@@ -62,6 +62,21 @@ public class PauseMenu : MonoBehaviour
 
     public void SaveGame()
     {
+        string currentScene = SceneManager.GetActiveScene().name;
+        Transform playerTransform = FindObjectOfType<PlayerInteraction>()?.transform;
+
+        if (playerTransform != null)
+        {
+            Vector3 playerPosition = playerTransform.position;
+
+            GameStateManager.Instance.SavePlayerLocation(currentScene, playerPosition);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerInteraction not found in the scene!");
+        }
+
+        GameStateManager.Instance.SaveProgress();
         Debug.Log("Game was saved!");
     }
 }

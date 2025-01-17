@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,19 +27,22 @@ public class MainMenu : MonoBehaviour
 
     public void ContinueGame()
     {
-        if (PlayerPrefs.HasKey("SavedScene"))
+        string savedScene = GameStateManager.Instance.GetSavedScene();
+
+        if (!string.IsNullOrEmpty(savedScene))
         {
             if (AudioManager.instance != null)
             {
                 AudioManager.instance.StopMusic();
             }
 
-            string sceneName = PlayerPrefs.GetString("SavedScene");
-            SceneManager.LoadScene(sceneName);
+            // Load the saved scene
+            SceneManager.LoadScene(savedScene);
+            Debug.Log($"Continuing game from scene: {savedScene}");
         }
         else
         {
-            Debug.Log("No saved game");
+            Debug.Log("No saved game found!");
         }
     }
 
@@ -51,9 +55,11 @@ public class MainMenu : MonoBehaviour
         }
 
         // If necessary, reset saves
-        PlayerPrefs.DeleteKey("SavedScene");
+        GameStateManager.Instance.ResetProgress();
+
         // Load the opening scene of the game
         SceneManager.LoadScene("GameScene");
+        Debug.Log("Starting a new game...");
     }
 
     public void QuitGame()
