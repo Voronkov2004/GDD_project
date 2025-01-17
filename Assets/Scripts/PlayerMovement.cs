@@ -12,10 +12,17 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
-    public AudioSource audioSource;
-    public AudioClip grassStepSound;
-    public AudioClip woodStepSound;
+    public AudioSource actionAudioSource;
+    public AudioSource walkingAudioSource;
     public AudioMixerGroup soundMixerGroup;
+
+    public AudioClipGroup walkingInsideSounds;
+    public AudioClipGroup walkingOnGrassSounds;
+    public AudioClipGroup walkingOnSandSounds;
+
+    private float stepCooldown = 0.5f; 
+    private float nextStepTime = 0f;
+
 
     private string currentSurface = "Grass";
 
@@ -25,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        audioSource.outputAudioMixerGroup = soundMixerGroup;
+        actionAudioSource.outputAudioMixerGroup = soundMixerGroup;
+        walkingAudioSource.outputAudioMixerGroup = soundMixerGroup;
     }
 
     void Update()
@@ -38,9 +46,15 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isWalking", isWalking);
 
 
-        if (isWalking && !audioSource.isPlaying) 
+        if(isWalking)
         {
             PlayStepSound();
+        } else
+        {
+            if (walkingAudioSource.isPlaying)
+            {
+                walkingAudioSource.Stop();
+            }
         }
 
         if (movement.x != 0)
@@ -54,16 +68,30 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayStepSound()
     {
-        if (currentSurface == "Grass")
+        if (Time.time >= nextStepTime && !walkingAudioSource.isPlaying)
         {
-            audioSource.clip = grassStepSound;
+            nextStepTime = Time.time + stepCooldown;
+
+            if (currentSurface == "Grass")
+            {
+                AudioClip clip = walkingOnGrassSounds.Clips[Random.Range(0, walkingOnGrassSounds.Clips.Count)];
+                walkingAudioSource.PlayOneShot(clip);
+            }
+            else if (currentSurface == "Wood")
+            {
+                AudioClip clip = walkingInsideSounds.Clips[Random.Range(0, walkingInsideSounds.Clips.Count)];
+                walkingAudioSource.PlayOneShot(clip);
+            }
+            else if (currentSurface == "Sand")
+            {
+                AudioClip clip = walkingOnSandSounds.Clips[Random.Range(0, walkingOnSandSounds.Clips.Count)];
+                walkingAudioSource.PlayOneShot(clip);
+            }
+            walkingAudioSource.loop = false; 
+            walkingAudioSource.Play();
         }
-        else if (currentSurface == "Wood")
-        {
-            audioSource.clip = woodStepSound;
-        }
-        audioSource.Play();
     }
+
 
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -76,11 +104,15 @@ public class PlayerMovement : MonoBehaviour
         {
             currentSurface = "Wood";
         }
+        else if (collision.CompareTag("Sand"))
+        {
+            currentSurface = "Sand";
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Grass") || collision.CompareTag("Wood"))
+        if (collision.CompareTag("Grass") || collision.CompareTag("Wood") || collision.CompareTag("Sand"))
         {
             currentSurface = "Grass";
         }
