@@ -190,10 +190,10 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject boltCutterIcon = Instantiate(boltCutterImagePrefab, inventoryUI);
                     boltCutterIcon.name = "BoltCutter";
                 }
-                else if (tag == "Keys_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
+                else if (tag == "Key_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
                 {
                     GameObject boltCutterIcon = Instantiate(theatreKeyImagePrefab, inventoryUI);
-                    boltCutterIcon.name = "Keys_theatre_library";
+                    boltCutterIcon.name = "Key_theatre_library";
                 }
             }
         }
@@ -277,7 +277,7 @@ public class PlayerInteraction : MonoBehaviour
         else if (isInsideTheatreKeyTrigger && Input.GetKeyDown(KeyCode.F))
         {
             audioSource.PlayOneShot(itemPickupSound);
-            ProcessItemPickup(currentTheatreKey, "Keys_theatre_library", theatreKeyImagePrefab);
+            ProcessItemPickup(currentTheatreKey, "Key_theatre_library", theatreKeyImagePrefab);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
     }
@@ -560,24 +560,6 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    //private void RestorePlayerPosition()
-    //{
-    //    string currentSceneName = SceneManager.GetActiveScene().name;
-    //    Vector3? savedPosition = InventoryManager.Instance.GetPlayerPosition(currentSceneName);
-
-    //    if (savedPosition.HasValue)
-    //    {
-    //        transform.position = savedPosition.Value;
-    //        Debug.Log("Restored player position in " + currentSceneName + ": " + savedPosition.Value);
-    //    }
-    //    else
-    //    {
-    //        // Optional: Set a default position if no saved position exists
-    //        // transform.position = new Vector3(0, 0, 0); // Replace with your desired default position
-    //        Debug.Log("No saved position for " + currentSceneName + ". Using default position.");
-    //    }
-    //}
-
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log($"Collision detected with: {collision.gameObject.name}, Tag: {collision.tag}");
@@ -728,7 +710,7 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to inspect the chest.";
             panel?.SetActive(true);
         }
-        else if (collision.CompareTag("Keys_theatre_library"))
+        else if (collision.CompareTag("Key_theatre_library"))
         {
             isInsideTheatreKeyTrigger = true;
             currentTheatreKey = collision.gameObject;
@@ -850,7 +832,7 @@ public class PlayerInteraction : MonoBehaviour
             isInsideChestTrigger = false;
             panel?.SetActive(false);
         }
-        else if (collision.CompareTag("Keys_theatre_library"))
+        else if (collision.CompareTag("Key_theatre_library"))
         {
             isInsideTheatreKeyTrigger = false;
             currentTheatreKey = null;
@@ -885,7 +867,7 @@ public class PlayerInteraction : MonoBehaviour
                     Note noteComponent = currentNote.GetComponent<Note>();
                     if (noteComponent != null && !string.IsNullOrEmpty(noteComponent.closeNoteMessage))
                     {
-                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 4f));
+                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 7f));
                     }
                 }
             }
