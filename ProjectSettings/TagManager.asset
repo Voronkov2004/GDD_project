@@ -34,6 +34,8 @@ TagManager:
   - Cupboard
   - Wood
   - Mirror
+  - Court
+  - StorageBox
   layers:
   - Default
   - TransparentFX
