@@ -28,6 +28,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
+    public GameObject CrowBarImage;
     public Transform inventoryUI;
     public GameObject notePanel;
     public TextMeshProUGUI noteTextUI;
@@ -79,6 +80,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideTowelsGameTrigger = false;
     private bool isTheaterTrigger = false;
     private bool isStorageTrigger = false;
+    private bool isInsideFirstTutorialTrigger = true;
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
     private bool isInsideTentTrigger = false;
@@ -192,8 +194,13 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else if (tag == "Key_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
                 {
-                    GameObject boltCutterIcon = Instantiate(theatreKeyImagePrefab, inventoryUI);
-                    boltCutterIcon.name = "Key_theatre_library";
+                    GameObject theatreKey = Instantiate(theatreKeyImagePrefab, inventoryUI);
+                    theatreKey.name = "Key_theatre_library";
+                }
+                else if (tag == "Crowbar" && CrowBarImage != null && inventoryUI != null)
+                {
+                    GameObject crowBar = Instantiate(CrowBarImage, inventoryUI);
+                    crowBar.name = "Crowbar";
                 }
             }
         }
@@ -209,6 +216,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             CombineFlashlightAndBattery();
         }
+
+        if (isInsideFirstTutorialTrigger)
+            {
+                panelText.text = "To move around in the game, use the keys 'W' - up, 'A' - left, 'S' - down, and 'D' - right.";
+                panel.SetActive(true);
+            }
 
         if (isInsideLockerTrigger && Input.GetKeyDown(KeyCode.F))
         {
@@ -739,6 +752,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideFlashlightTrigger = false;
             currentFlashlight = null;
+        }
+        else if (collision.CompareTag("Tutorial1"))
+        {
+            isInsideFirstTutorialTrigger = false;
+            panel?.SetActive(false);
         }
         else if (collision.CompareTag("Battery"))
         {
