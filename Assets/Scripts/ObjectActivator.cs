@@ -50,6 +50,10 @@ public class ObjectActivator : MonoBehaviour
         {
             return GameStateManager.Instance.isCupboardUnlocked;
         }
+        else if (requiredPuzzle == "Storage")
+        {
+            return GameStateManager.Instance.isCupboardUnlocked;
+        }
         return true;
     }
 }
