@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -37,6 +38,11 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject openLockerPanel;
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
+    public GameObject mirrorCanvas; // Canvas displaying the mirror UI
+    public Image mirrorImage; // Image for the zoomed-in mirror
+    public Image steamImage; // Image for the steam effect
+    public Image dimBackground; // Dimmed background for the mirror
+    public float steamAnimationDuration = 2f; // Duration of the steam animation
 
     // Scene Names
     public string kitchenSceneName;  
@@ -78,6 +84,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
     private bool isInsideCupboardTrigger = false;
+    private bool isNearMirror = false;
+    private bool hasSeenMirrorSteam = false;
 
 
     // Current Objects
@@ -94,6 +102,15 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedLocker.SetActive(false);
         }
+
+        if (mirrorCanvas != null)
+            mirrorCanvas.SetActive(false);
+
+        if (steamImage != null)
+            steamImage.gameObject.SetActive(false);
+
+        if (dimBackground != null)
+            dimBackground.gameObject.SetActive(false);
 
         // Check if the cupboard is already unlocked and make the openedLocker visible if it is
         if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
@@ -169,10 +186,10 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject boltCutterIcon = Instantiate(boltCutterImagePrefab, inventoryUI);
                     boltCutterIcon.name = "BoltCutter";
                 }
-                else if (tag == "Keys_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
+                else if (tag == "Key_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
                 {
                     GameObject boltCutterIcon = Instantiate(theatreKeyImagePrefab, inventoryUI);
-                    boltCutterIcon.name = "Keys_theatre_library";
+                    boltCutterIcon.name = "Key_theatre_library";
                 }
             }
         }
@@ -256,7 +273,7 @@ public class PlayerInteraction : MonoBehaviour
         else if (isInsideTheatreKeyTrigger && Input.GetKeyDown(KeyCode.F))
         {
             audioSource.PlayOneShot(itemPickupSound);
-            ProcessItemPickup(currentTheatreKey, "Keys_theatre_library", theatreKeyImagePrefab);
+            ProcessItemPickup(currentTheatreKey, "Key_theatre_library", theatreKeyImagePrefab);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
     }
@@ -438,6 +455,17 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(storageSceneName);
             }
+            else if (isNearMirror)
+            {
+                if (mirrorCanvas != null && mirrorCanvas.activeSelf)
+                {
+                    CloseMirrorView();
+                }
+                else
+                {
+                    ShowMirrorView();
+                }
+            }
             else if (isLibraryTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -514,24 +542,6 @@ public class PlayerInteraction : MonoBehaviour
             Debug.LogWarning("Cupboard not found!");
         }
     }
-
-    //private void RestorePlayerPosition()
-    //{
-    //    string currentSceneName = SceneManager.GetActiveScene().name;
-    //    Vector3? savedPosition = InventoryManager.Instance.GetPlayerPosition(currentSceneName);
-
-    //    if (savedPosition.HasValue)
-    //    {
-    //        transform.position = savedPosition.Value;
-    //        Debug.Log("Restored player position in " + currentSceneName + ": " + savedPosition.Value);
-    //    }
-    //    else
-    //    {
-    //        // Optional: Set a default position if no saved position exists
-    //        // transform.position = new Vector3(0, 0, 0); // Replace with your desired default position
-    //        Debug.Log("No saved position for " + currentSceneName + ". Using default position.");
-    //    }
-    //}
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -683,12 +693,21 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to inspect the chest.";
             panel?.SetActive(true);
         }
-        else if (collision.CompareTag("Keys_theatre_library"))
+        else if (collision.CompareTag("Key_theatre_library"))
         {
             isInsideTheatreKeyTrigger = true;
             currentTheatreKey = collision.gameObject;
             panelText.text = "Press F to pick up the theatre key.";
             panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Mirror"))
+        {
+            isNearMirror = true;
+            if (panel != null && panelText != null)
+            {
+                panelText.text = "Press F to inspect the mirror.";
+                panel.SetActive(true);
+            }
         }
     }
 
@@ -762,7 +781,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (collision.CompareTag("BackToTheater"))
         {
-            isTheaterTrigger = false;
+            isBackToTheaterTrigger = false;
         }
         else if (collision.CompareTag("Towels"))
         {
@@ -796,11 +815,19 @@ public class PlayerInteraction : MonoBehaviour
             isInsideChestTrigger = false;
             panel?.SetActive(false);
         }
-        else if (collision.CompareTag("Keys_theatre_library"))
+        else if (collision.CompareTag("Key_theatre_library"))
         {
             isInsideTheatreKeyTrigger = false;
             currentTheatreKey = null;
             panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Mirror"))
+        {
+            isNearMirror = false;
+            if (panel != null)
+            {
+                panel.SetActive(false);
+            }
         }
 
         panel?.SetActive(false);
@@ -823,7 +850,7 @@ public class PlayerInteraction : MonoBehaviour
                     Note noteComponent = currentNote.GetComponent<Note>();
                     if (noteComponent != null && !string.IsNullOrEmpty(noteComponent.closeNoteMessage))
                     {
-                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 4f));
+                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 7f));
                     }
                 }
             }
@@ -961,7 +988,7 @@ public class PlayerInteraction : MonoBehaviour
         InventoryManager.Instance.RemoveItem("BoltCutter");
         RemoveItemIconFromUI("BoltCutter");
 
-        //GameStateManager.Instance.SaveProgress();
+        GameStateManager.Instance.SaveProgress();
 
         DisableChainsTrigger();
 
@@ -1057,76 +1084,84 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private void ShowMirrorView()
+    {
+        if (mirrorCanvas != null)
+            mirrorCanvas.SetActive(true);
 
-    //private void HandleKeyInteraction()
-    //{
-    //    if (isInsideKeyTrigger && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        if (currentKey != null && currentKey.CompareTag("Key"))
-    //        {
-    //            audioSource.PlayOneShot(itemPickupSound);
-    //            Destroy(currentKey);
-    //            InventoryManager.Instance.AddItem("Key");
+        if (dimBackground != null)
+            dimBackground.gameObject.SetActive(true);
 
-    //            if (keyImagePrefab != null && inventoryUI != null)
-    //            {
-    //                GameObject keyIcon = Instantiate(keyImagePrefab, inventoryUI);
-    //                keyIcon.name = "Key";
-    //            }
+        if (mirrorImage != null)
+            mirrorImage.gameObject.SetActive(true);
 
-    //            panel.SetActive(false);
-    //        }
-    //    }
-    //}
+        if (hasSeenMirrorSteam || GameStateManager.Instance.hasSeenMirrorSteam)
+        {
+            // If the steam effect was already shown, display it immediately
+            hasSeenMirrorSteam = true;
+            if (steamImage != null)
+                steamImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            // If the steam effect has not been shown, start the animation
+            StartCoroutine(AnimateSteamEffect());
+        }
 
-    //private void HandleFlashlightInteraction()
-    //{
-    //    if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        if (currentFlashlight != null && currentFlashlight.CompareTag("Flashlight1"))
-    //        {
-    //            if (audioSource != null && flashlightPickupSound != null)
-    //            {
-    //                audioSource.PlayOneShot(flashlightPickupSound);
-    //            }
+        // Disable player movement during the interaction
+        DisablePlayerMovement();
+    }
 
-    //            Destroy(currentFlashlight);
-    //            InventoryManager.Instance.AddItem("Flashlight1");
+    private IEnumerator AnimateSteamEffect()
+    {
+        if (steamImage != null)
+        {
+            steamImage.gameObject.SetActive(true);
 
-    //            if (flashlightImagePrefab != null && inventoryUI != null)
-    //            {
-    //                GameObject flashlightIcon = Instantiate(flashlightImagePrefab, inventoryUI);
-    //                flashlightIcon.name = "Flashlight1";
-    //            }
+            // Animate the steam effect from bottom to top
+            RectTransform steamRect = steamImage.GetComponent<RectTransform>();
+            Vector2 originalSize = steamRect.sizeDelta;
+            steamRect.sizeDelta = new Vector2(originalSize.x, 0);
 
-    //            panel.SetActive(false);
-    //        }
-    //    }
-    //}
+            float elapsedTime = 0f;
 
-    //private void HandleBatteryInteraction()
-    //{
-    //    if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        if (currentBattery != null && currentBattery.CompareTag("Battery"))
-    //        {
+            while (elapsedTime < steamAnimationDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float progress = Mathf.Clamp01(elapsedTime / steamAnimationDuration);
+                steamRect.sizeDelta = new Vector2(originalSize.x, originalSize.y * progress);
+                yield return null;
+            }
 
-    //            if (audioSource != null && batteryPickupSound != null)
-    //            {
-    //                audioSource.PlayOneShot(batteryPickupSound);
-    //            }
+            steamRect.sizeDelta = originalSize;
 
-    //            Destroy(currentBattery);
-    //            InventoryManager.Instance.AddItem("Battery");
+            // Mark the steam effect as shown
+            hasSeenMirrorSteam = true;
 
-    //            if (batteryImagePrefab != null && inventoryUI != null)
-    //            {
-    //                GameObject batteryIcon = Instantiate(batteryImagePrefab, inventoryUI);
-    //                batteryIcon.name = "Battery";
-    //            }
+            // Optionally save the state if needed
+            GameStateManager.Instance.hasSeenMirrorSteam = true;
+        }
+    }
 
-    //            panel.SetActive(false);
-    //        }
-    //    }
-    //}
+    public void CloseMirrorView()
+    {
+        // Close the mirror view
+        if (mirrorCanvas != null)
+            mirrorCanvas.SetActive(false);
+
+        if (dimBackground != null)
+            dimBackground.gameObject.SetActive(false);
+
+        if (mirrorImage != null)
+            mirrorImage.gameObject.SetActive(false);
+
+        if (steamImage != null)
+            steamImage.gameObject.SetActive(false);
+
+        EnablePlayerMovement();
+
+        //if (!hasSeenMirrorSteam && steamImage != null)
+        //    steamImage.gameObject.SetActive(false);
+    }
+
 }

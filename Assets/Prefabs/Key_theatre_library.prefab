@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6796089219634024665}
   - component: {fileID: 8743167971878087826}
   m_Layer: 0
-  m_Name: Keys_theatre_library
+  m_Name: Key_theatre_library
   m_TagString: Key_theatre_library
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
