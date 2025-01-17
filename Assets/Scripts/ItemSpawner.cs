@@ -58,6 +58,10 @@ public class ItemSpawner : MonoBehaviour
         {
             return GameStateManager.Instance.isCupboardUnlocked;
         }
+        else if (requiredPuzzle == "Storage")
+        {
+            return GameStateManager.Instance.isStorageSolved;
+        }
         return true;
     }
 

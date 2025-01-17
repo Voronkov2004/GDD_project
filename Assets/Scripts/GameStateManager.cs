@@ -15,6 +15,7 @@ public class GameStateManager : MonoBehaviour
     public bool hasSeenMirrorSteam = false;
     public bool isDugUp = false;
     public bool isTheaterOpen = false;
+    public bool isStorageSolved = false;
 
 
     // Locations
@@ -78,6 +79,7 @@ public class GameStateManager : MonoBehaviour
         PlayerPrefs.SetInt("MirrorSteamSeen", hasSeenMirrorSteam ? 1 : 0); 
         PlayerPrefs.SetInt("DugUp", isDugUp ? 1 : 0); 
         PlayerPrefs.SetInt("TheaterOpen", isTheaterOpen ? 1 : 0); 
+        PlayerPrefs.SetInt("StorageSolved", isStorageSolved ? 1 : 0); 
 
         // Save picked up items
         List<string> savedKeys = new List<string>();
@@ -116,7 +118,9 @@ public class GameStateManager : MonoBehaviour
         isCupboardUnlocked = PlayerPrefs.GetInt("CupboardUnlocked", 0) == 1; // Load cupboard state
         hasSeenMirrorSteam = PlayerPrefs.GetInt("MirrorSteamSeen", 0) == 1; 
         isDugUp = PlayerPrefs.GetInt("DugUp", 0) == 1; 
-        isTheaterOpen = PlayerPrefs.GetInt("TheaterOpen", 0) == 1; 
+        isTheaterOpen = PlayerPrefs.GetInt("TheaterOpen", 0) == 1;
+        isStorageSolved = PlayerPrefs.GetInt("StorageSolved", 0) == 1; 
+
         // Load picked up items
         pickedUpItems = new Dictionary<string, bool>();
         string savedKeysString = PlayerPrefs.GetString("SavedKeys", "");
@@ -167,6 +171,7 @@ public class GameStateManager : MonoBehaviour
         isCupboardUnlocked = false;
         hasSeenMirrorSteam = false;
         isTheaterOpen = false;
+        isStorageSolved = false;
 
         isDugUp = false;
         //items

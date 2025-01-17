@@ -36,7 +36,7 @@ TagManager:
   - Mirror
   - Court
   - StorageBox
-  - Sand
+  - ChestWithCode
   layers:
   - Default
   - TransparentFX

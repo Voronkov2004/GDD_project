@@ -45,6 +45,7 @@ public class PlayerInteraction : MonoBehaviour
     public Image steamImage; // Image for the steam effect
     public Image dimBackground; // Dimmed background for the mirror
     public float steamAnimationDuration = 2f; // Duration of the steam animation
+    public GameObject openChestImage;
 
     // Scene Names
     public string kitchenSceneName;  
@@ -89,6 +90,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideCupboardTrigger = false;
     private bool isNearMirror = false;
     private bool hasSeenMirrorSteam = false;
+    private bool isInsideChestWithCodeTrigger = false;
 
 
     // Current Objects
@@ -147,6 +149,11 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             DeactivateLockerContent();
+        }
+
+        if (GameStateManager.Instance.isStorageSolved && openChestImage != null)
+        {
+            openChestImage.SetActive(true);
         }
 
         if (GameStateManager.Instance.isLockerOpened) openedLockerInScene.SetActive(true);
@@ -501,6 +508,11 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(librarySceneName);
             }
+            else if (isInsideChestWithCodeTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition("ClosedCupboardScene");
+            }
             else if (isInsideCupboardTrigger)
         {
             if (GameStateManager.Instance.isCupboardUnlocked)
@@ -739,6 +751,12 @@ public class PlayerInteraction : MonoBehaviour
                 panel.SetActive(true);
             }
         }
+        else if (collision.CompareTag("ChestWithCode"))
+        {
+            isInsideChestWithCodeTrigger = true;
+            panelText.text = "Press F to inspect the cupboard.";
+            panel?.SetActive(true);
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)
@@ -863,6 +881,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 panel.SetActive(false);
             }
+        }
+        else if (collision.CompareTag("ChestWithCode"))
+        {
+            isInsideChestWithCodeTrigger = false;
+            panel?.SetActive(false);
         }
 
         panel?.SetActive(false);
