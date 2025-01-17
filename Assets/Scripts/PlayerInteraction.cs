@@ -10,10 +10,12 @@ public class PlayerInteraction : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip openDoorSound;
     public AudioClip closedDoorSound;
-    public AudioClip itemPickupSound;
-    public AudioClip notePickupSound;
-    public AudioClip batteryPickupSound;
-    public AudioClip flashlightPickupSound;
+    public AudioClip itemPickupSound; //keys pick up sound
+    public AudioClip notePickupSound; //notes, diary, poster pick up sound
+    public AudioClip batteryPickupSound; // batteries' pick up sound
+    public AudioClip flashlightPickupSound; // flashlight pick up sound
+    public AudioClip metalItemPickupSound; // crowbar, bolt cutter, shovel
+    public AudioClip medallionPickupSound; // medallion pickup sound
 
     // UI and Inventory
     public GameObject panel;
@@ -201,7 +203,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (isInsideKeyTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            audioSource.PlayOneShot(itemPickupSound);
+            if (audioSource != null && itemPickupSound != null)
+            {
+                audioSource.PlayOneShot(itemPickupSound);
+            }
             ProcessItemPickup(currentKey, "Key", keyImagePrefab);
         }
         else if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
@@ -222,9 +227,13 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            audioSource.PlayOneShot(itemPickupSound);
+            if (audioSource != null && metalItemPickupSound != null)
+            {
+                audioSource.PlayOneShot(metalItemPickupSound);
+            }
             ProcessItemPickup(currentBoltCutter, "BoltCutter", boltCutterImagePrefab);
         }
+        // medallion pick up sound dopisat kogda on budet gotov v igre
     }
 
     private void ProcessItemPickup(GameObject item, string defaultItemId, GameObject itemPrefab)

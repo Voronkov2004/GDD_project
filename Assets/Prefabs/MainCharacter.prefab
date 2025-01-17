@@ -197,10 +197,12 @@ MonoBehaviour:
   audioSource: {fileID: 1590149124715476097}
   openDoorSound: {fileID: 8300000, guid: eccf2b8a62d094445ae8c907d54d3ccf, type: 3}
   closedDoorSound: {fileID: 8300000, guid: e914254f5ddcae2428fa2f5d81ee0e0e, type: 3}
-  itemPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
+  itemPickupSound: {fileID: 8300000, guid: 795bbc0d1a8708346965f3bfdf77565a, type: 3}
   notePickupSound: {fileID: 8300000, guid: f1a2607440a7a0d49920deb58c9e583c, type: 3}
   batteryPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
   flashlightPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
+  metalItemPickupSound: {fileID: 8300000, guid: c429540b1630933428ef8abf63b00b66, type: 3}
+  medallionPickupSound: {fileID: 8300000, guid: ed6fba607b5802046bc28e6e34122ef3, type: 3}
   panel: {fileID: 0}
   panelText: {fileID: 0}
   keyImagePrefab: {fileID: 9096735647813404745, guid: 03795c95adc5b4d90bff94f42fdf75d6, type: 3}
