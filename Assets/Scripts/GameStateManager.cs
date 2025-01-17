@@ -10,6 +10,7 @@ public class GameStateManager : MonoBehaviour
     // Tracks the state of puzzles and items
     public bool isTowelPuzzleSolved = false;
     public bool isChestPuzzleSolved = false;
+    public bool isTentLOpened = false;
 
     // Locations
     public bool isKitchenUnlocked = false; // Tracks if the kitchen has been unlocked
@@ -67,6 +68,7 @@ public class GameStateManager : MonoBehaviour
         PlayerPrefs.SetInt("KitchenUnlocked", isKitchenUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("OriginallyLockerOpened", isOriginallyLockerOpened ? 1 : 0);
         PlayerPrefs.SetInt("LockerOpened", isLockerOpened ? 1 : 0);
+        PlayerPrefs.SetInt("TentLOpened", isTentLOpened ? 1 : 0); // Save TentL state
 
         // Save picked up items
         List<string> savedKeys = new List<string>();
@@ -101,6 +103,7 @@ public class GameStateManager : MonoBehaviour
         isKitchenUnlocked = PlayerPrefs.GetInt("KitchenUnlocked", 0) == 1;
         isOriginallyLockerOpened = PlayerPrefs.GetInt("OriginallyLockerOpened", 0) == 1;
         isLockerOpened = PlayerPrefs.GetInt("LockerOpened", 0) == 1;
+        isTentLOpened = PlayerPrefs.GetInt("TentLOpened", 0) == 1; // Load TentL state
 
         // Load picked up items
         pickedUpItems = new Dictionary<string, bool>();
@@ -148,6 +151,7 @@ public class GameStateManager : MonoBehaviour
         isKitchenUnlocked = false;
         isOriginallyLockerOpened = false;
         isLockerOpened = false;
+        isTentLOpened = false;
         //items
         pickedUpItems.Clear();
         //scenes and player locations
