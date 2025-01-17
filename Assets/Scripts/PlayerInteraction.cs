@@ -79,6 +79,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideTowelsGameTrigger = false;
     private bool isTheaterTrigger = false;
     private bool isStorageTrigger = false;
+    private bool isInsideFirstTutorialTrigger = true;
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
     private bool isInsideTentTrigger = false;
@@ -209,6 +210,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             CombineFlashlightAndBattery();
         }
+
+        if (isInsideFirstTutorialTrigger)
+            {
+                panelText.text = "To move around in the game, use the keys 'W' - up, 'A' - left, 'S' - down, and 'D' - right.";
+                panel.SetActive(true);
+            }
 
         if (isInsideLockerTrigger && Input.GetKeyDown(KeyCode.F))
         {
@@ -739,6 +746,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideFlashlightTrigger = false;
             currentFlashlight = null;
+        }
+        else if (collision.CompareTag("Tutorial1"))
+        {
+            isInsideFirstTutorialTrigger = false;
+            panel?.SetActive(false);
         }
         else if (collision.CompareTag("Battery"))
         {

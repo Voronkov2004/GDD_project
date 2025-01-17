@@ -36,6 +36,9 @@ TagManager:
   - Mirror
   - Court
   - StorageBox
+  - Tutorial1
+  - Tutorial2
+  - Tutorial3
   layers:
   - Default
   - TransparentFX
