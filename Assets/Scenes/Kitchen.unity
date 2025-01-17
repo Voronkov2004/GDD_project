@@ -447,7 +447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1756911249748605840, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 3679778073748348696, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_Name
@@ -455,7 +455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3679778073748348696, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7177431114474074992, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_SizeDelta.x
@@ -467,11 +467,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8653549926896818918, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_fontSize
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8653549926896818918, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_fontSizeBase
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2972,10 +2972,10 @@ PrefabInstance:
         we light to chase away the night. I\u2019ve received reports of strange occurrences
         - missing items, shadows where none should be, and laughter in the dead of
         night when no games are being played. I do not believe in ghosts or curses,
-        but there\u2019s a heaviness here I can\u2019t shake. I fear \r\nthat something
-        dark has taken root in our camp, something we cannot see but can feel. \r\nPlease,
+        but there\u2019s a heaviness here I can\u2019t shake. I fear that something
+        dark has taken root in our camp, something we cannot see but can feel. Please,
         watch over the children closely and keep the spirit of Lily Camp alive. It
-        may be our only salvation.\r\nYours sincerely,\r\nDirector Anderson"
+        may be our only salvation.\nYours sincerely, Director Anderson"
       objectReference: {fileID: 0}
     - target: {fileID: 4907739750697850619, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
       propertyPath: closeNoteMessage
@@ -3523,8 +3523,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -84, y: 0}
+  m_SizeDelta: {x: 6572.88, y: 53.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1341257527
 MonoBehaviour:

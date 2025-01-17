@@ -673,7 +673,7 @@ public class PlayerInteraction : MonoBehaviour
                     Note noteComponent = currentNote.GetComponent<Note>();
                     if (noteComponent != null && !string.IsNullOrEmpty(noteComponent.closeNoteMessage))
                     {
-                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 2f));
+                        StartCoroutine(ShowMessageSequence(noteComponent.closeNoteMessage, noteComponent.followUpMessage, 4f));
                     }
                 }
             }
@@ -808,8 +808,10 @@ public class PlayerInteraction : MonoBehaviour
 
         openedLockerInScene.SetActive(true);
 
-        InventoryManager.Instance.RemoveItem("bolt_cutter_test");
-        RemoveItemIconFromUI("bolt_cutter_test");
+        //InventoryManager.Instance.RemoveItem("bolt_cutter_test");
+        //RemoveItemIconFromUI("bolt_cutter_test");
+        InventoryManager.Instance.RemoveItem("BoltCutter");
+        RemoveItemIconFromUI("BoltCutter");
 
         DisableChainsTrigger();
 

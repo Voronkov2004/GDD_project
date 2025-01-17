@@ -1524,11 +1524,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8653549926896818918, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_fontSize
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8653549926896818918, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_fontSizeBase
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1929,7 +1929,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 6500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &816059599
 MonoBehaviour:
@@ -3033,10 +3033,10 @@ PrefabInstance:
         wrong. But it\u2019s not just that - he stands too close, and it makes my
         skin crawl. Yesterday, he grabbed my shoulder and whispered something about
         how I\u2019m his \"favorite.\" I don\u2019t even know what that means, but
-        it \r\ndidn\u2019t feel right. Why does he only do this when no one else
-        is around? I don\u2019t want to tell anyone - I\u2019m scared they won\u2019t
-        believe me. What if they say it\u2019s my fault? \r\nPlease don\u2019t tell
-        anyone I said this. I just needed to tell someone."
+        it didn\u2019t feel right. Why does he only do this when no one else is around?
+        I don\u2019t want to tell anyone - I\u2019m scared they won\u2019t believe
+        me. What if they say it\u2019s my fault? Please don\u2019t tell anyone I
+        said this. I just needed to tell someone."
       objectReference: {fileID: 0}
     - target: {fileID: 4907739750697850619, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
       propertyPath: closeNoteMessage
@@ -3251,6 +3251,53 @@ RectTransform:
   m_AnchoredPosition: {x: 794.99994, y: 15}
   m_SizeDelta: {x: 140.253, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1199545651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1199545653}
+  - component: {fileID: 1199545652}
+  m_Layer: 0
+  m_Name: BoltCutterSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1199545652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199545651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a7e05ec1073d14db9b92ba795ae2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: Bolt_Cutter
+  itemPrefab: {fileID: 6189665146829020371, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
+  requiredPuzzle: 
+--- !u!4 &1199545653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199545651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.3, y: 7.4, z: 0.74558085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1210805917
 GameObject:
   m_ObjectHideFlags: 0
@@ -5219,71 +5266,6 @@ Transform:
   - {fileID: 313632927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5805893205694315765
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6189665146829020371, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_Name
-      value: bolt_cutter_test
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 14.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7377934033798152964, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: da63ba18d4e6ed94d8561fc2b2fba0b1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5305,7 +5287,7 @@ SceneRoots:
   - {fileID: 1147259253}
   - {fileID: 157414644}
   - {fileID: 261431759}
-  - {fileID: 5805893205694315765}
   - {fileID: 839042819}
+  - {fileID: 1199545653}
   - {fileID: 1061487673}
   - {fileID: 1488156444}
