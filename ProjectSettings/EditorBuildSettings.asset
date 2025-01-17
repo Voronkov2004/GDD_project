@@ -56,4 +56,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CupboardOpened.unity
     guid: 22b09e7b3311d4020aabb9bba87c3858
+  - enabled: 1
+    path: Assets/Scenes/ClosedCupboardScene.unity
+    guid: f1f158991396385428db06508a43a723
+  - enabled: 1
+    path: Assets/Scenes/OpenedCupboardScene.unity
+    guid: 62755f3cd1d1ccf4fac3366620e1042b
   m_configObjects: {}
