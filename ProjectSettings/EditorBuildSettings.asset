@@ -26,4 +26,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Toilet.unity
     guid: dad8d866d724b4b1aab0f57bd4fff9bc
+  - enabled: 1
+    path: Assets/Scenes/ClosedChestScene.unity
+    guid: a4109fc11ed3b8245b7b193f013fdd2f
+  - enabled: 1
+    path: Assets/Scenes/Hooks.unity
+    guid: 05b39ba7f79e50d4791acaec552e6512
+  - enabled: 1
+    path: Assets/Scenes/Theater.unity
+    guid: da14671b6b1354e4aa1bcc4be08665c7
+  - enabled: 1
+    path: Assets/Scenes/Storage.unity
+    guid: 04f29e88547d74f52a30967578f1d80b
+  - enabled: 1
+    path: Assets/Scenes/Library.unity
+    guid: 32d2d13150f6548aa87f709c2254b7b3
   m_configObjects: {}

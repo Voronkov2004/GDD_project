@@ -40,6 +40,11 @@ public class PlayerInteraction : MonoBehaviour
     public string boardSceneName;       // Set this to your static scene's name ("Board")
     public string toiletSceneName;
     public string chestPuzzleSceneName;
+    public string towelsGameSceneName;
+    public string theaterSceneName;
+    public string storageSceneName;
+    public string librarySceneName;
+
 
     // Trigger Flags
     private bool isInsideKeyTrigger = false;
@@ -59,6 +64,11 @@ public class PlayerInteraction : MonoBehaviour
     private bool isLockerInteractionActive = false;
     private bool isClosedLockerSceneOpen = false;
     private bool isInsideChestTrigger = false;
+    private bool isInsideTowelsGameTrigger = false;
+    private bool isTheaterTrigger = false;
+    private bool isStorageTrigger = false;
+    private bool isBackToTheaterTrigger = false;
+    private bool isLibraryTrigger = false;
 
 
     // Current Objects
@@ -326,6 +336,16 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition("GameScene");
             }
+            else if (isBackToTheaterTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition(theaterSceneName);
+            }
+            else if (isTheaterTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition(theaterSceneName);
+            }
             else if (isInsideBoardTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -340,6 +360,21 @@ public class PlayerInteraction : MonoBehaviour
             {
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(chestPuzzleSceneName);
+            }
+            else if (isInsideTowelsGameTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition(towelsGameSceneName);
+            }
+            else if (isStorageTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition(storageSceneName);
+            }
+            else if (isLibraryTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition(librarySceneName);
             }
         }
     }
@@ -447,10 +482,40 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to view the board!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Towels"))
+        {
+            isInsideTowelsGameTrigger = true;
+            panelText.text = "Press F to view the towels!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("Toilet"))
         {
             isInsideToiletTrigger = true;
             panelText.text = "Press F to enter the toilet!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Theater"))
+        {
+            isTheaterTrigger = true;
+            panelText.text = "Press F to enter the theater!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("BackToTheater"))
+        {
+            isBackToTheaterTrigger = true;
+            panelText.text = "Press F to enter the theater!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Storage"))
+        {
+            isStorageTrigger = true;
+            panelText.text = "Press F to enter the theater storage room!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Library"))
+        {
+            isLibraryTrigger = true;
+            panelText.text = "Press F to enter the library!";
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Note"))
@@ -474,6 +539,7 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the bolt cutter!";
             panel?.SetActive(true);
         }
+        
         else if (collision.CompareTag("Chains"))
         {
             isInsideLocker_ChainsTrigger = true;
@@ -518,6 +584,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideKitchenTrigger = false;
         }
+        else if (collision.CompareTag("Library"))
+        {
+            isLibraryTrigger = false;
+        }
         else if (collision.CompareTag("Ladder"))
         {
             isInsideLadderTrigger = false;
@@ -537,6 +607,23 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Toilet"))
         {
             isInsideToiletTrigger = false;
+        }
+        else if (collision.CompareTag("Theater"))
+        {
+            isBackToTheaterTrigger = false;
+        }
+        else if (collision.CompareTag("Storage"))
+        {
+            isStorageTrigger = false;
+        }
+        else if (collision.CompareTag("BackToTheater"))
+        {
+            isTheaterTrigger = false;
+        }
+        else if (collision.CompareTag("Towels"))
+        {
+            isInsideTowelsGameTrigger = false;
+            panel?.SetActive(false);
         }
         else if (collision.CompareTag("Note"))
         {
@@ -721,8 +808,8 @@ public class PlayerInteraction : MonoBehaviour
 
         openedLockerInScene.SetActive(true);
 
-        InventoryManager.Instance.RemoveItem("BoltCutter");
-        RemoveItemIconFromUI("BoltCutter");
+        InventoryManager.Instance.RemoveItem("bolt_cutter_test");
+        RemoveItemIconFromUI("bolt_cutter_test");
 
         DisableChainsTrigger();
 

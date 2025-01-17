@@ -23,6 +23,12 @@ TagManager:
   - BoltCutter
   - Key_theatre_library
   - Chest
+  - Towels
+  - Theater
+  - BackToTheater
+  - Storage
+  - Library
+  - Tent
   layers:
   - Default
   - TransparentFX
