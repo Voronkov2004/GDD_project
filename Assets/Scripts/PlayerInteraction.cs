@@ -1476,7 +1476,7 @@ public class PlayerInteraction : MonoBehaviour
         panel?.SetActive(false);
 
         Debug.LogWarning("Now we show the end scene!");
-        //SceneManager.LoadScene("TheEnd");
+        SceneManager.LoadScene("EndingScene");
     }
 
 
