@@ -9155,7 +9155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemId: PondKey
-  itemPrefab: {fileID: 8667894038498653831, guid: b9beb4b9d3b3e465fbc977b7b6819efe, type: 3}
+  itemPrefab: {fileID: 137555599958314129, guid: 8645fd9673003f8468bb9846491c38a5, type: 3}
   requiredPuzzle: Basketball
 --- !u!4 &1166464339
 Transform:

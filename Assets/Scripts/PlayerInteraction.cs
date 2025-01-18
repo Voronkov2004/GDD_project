@@ -105,6 +105,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideNetTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isMacheteTrigger = false;
+    private bool isMapTrigger = false;
     private bool isShovelTrigger = false;
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
@@ -749,7 +750,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     InventoryManager.Instance.RemoveItem("GoldKey");
                     RemoveItemIconFromUI("GoldKey");
-                    GameStateManager.Instance.isStorageSolved = true;
+                    GameStateManager.Instance.isBeachChestOpen = true;
                     GameStateManager.Instance.SaveProgress();
                     beachOpenChest.SetActive(true);
                     beachClosedChest.SetActive(false);
@@ -897,6 +898,12 @@ public class PlayerInteraction : MonoBehaviour
             isInsideKeysGatesToPondTrigger = true;
             currentKeysGatesToPond = collision.gameObject;
             panelText.text = "Press F to pick up the keys for the gates to the pond!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Map"))
+        {
+            isMapTrigger = true;
+            panelText.text = "Based on this drawn map, there seems to be something on the basketball court. I need to go there and check it out.";
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("GoldKey"))
@@ -1158,7 +1165,7 @@ public class PlayerInteraction : MonoBehaviour
             isInsideBatteryTrigger = false;
             currentBattery = null;
         }
-        if (collision.CompareTag("Cupboard"))
+        else if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = false;
             panel?.SetActive(false);
@@ -1175,9 +1182,14 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideClosedCaseTrigger = false;
         }
-        if (collision.CompareTag("Cupboard"))
+        else if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = false;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Map"))
+        {
+            isMapTrigger = false;
             panel?.SetActive(false);
         }
         else if (collision.CompareTag("Kitchen"))
