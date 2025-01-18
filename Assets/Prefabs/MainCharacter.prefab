@@ -205,6 +205,7 @@ MonoBehaviour:
   openDoorSound: {fileID: 8300000, guid: eccf2b8a62d094445ae8c907d54d3ccf, type: 3}
   keyOpeningCupboard: {fileID: 8300000, guid: 3394608702b108f4789a70f1c4d9c295, type: 3}
   chainsSound: {fileID: 8300000, guid: 9807d2c94689f314baca05714ed37b5e, type: 3}
+  knifeCutting: {fileID: 8300000, guid: bd1bb6eadd709b14795ceb9fe3fbed0f, type: 3}
   closedDoorSound: {fileID: 8300000, guid: e914254f5ddcae2428fa2f5d81ee0e0e, type: 3}
   itemPickupSound: {fileID: 8300000, guid: 795bbc0d1a8708346965f3bfdf77565a, type: 3}
   notePickupSound: {fileID: 8300000, guid: f1a2607440a7a0d49920deb58c9e583c, type: 3}

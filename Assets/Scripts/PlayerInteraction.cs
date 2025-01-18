@@ -15,6 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip openDoorSound;
     public AudioClip keyOpeningCupboard; //using key to open cabinets
     public AudioClip chainsSound; //chains
+    public AudioClip knifeCutting; //machete in the end
     public AudioClip closedDoorSound;
     public AudioClip itemPickupSound; //keys pick up sound
     public AudioClip notePickupSound; //notes, diary, poster pick up sound
@@ -1372,6 +1373,8 @@ public class PlayerInteraction : MonoBehaviour
 
         GameStateManager.Instance.isNetCut = true;
         GameStateManager.Instance.SaveProgress();
+
+        interactionAudioSource.PlayOneShot(knifeCutting);
 
         yield return new WaitForSeconds(2f);
 
