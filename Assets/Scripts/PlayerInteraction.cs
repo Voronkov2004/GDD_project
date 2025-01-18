@@ -47,6 +47,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject closedLockerPanel;
     public GameObject openLockerPanel;
     public GameObject dirtPile;
+    public GameObject GoldKeyImage;
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
     public GameObject openedFloor;
@@ -113,6 +114,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideOpenGateTrigger = false;
     private bool isInsideCourtTrigger = false;
     private bool isInsideClosedCaseTrigger = false;
+    private bool isInsideGoldKeyTrigger = false;
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
@@ -124,6 +126,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentKeysGatesToPond;
     private GameObject currentCrowbar;
     private GameObject currentShovel;
+    private GameObject currentGoldKey;
 
     void Start()
     {
@@ -198,10 +201,28 @@ public class PlayerInteraction : MonoBehaviour
         if (GameStateManager.Instance.isStorageSolved && openChestImage != null)
         {
             openChestImage.SetActive(true);
+            foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
         }
         if (GameStateManager.Instance.isStorage2Solved && openChestImage != null)
         {
             openChestImage.SetActive(true);
+            foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
         }
 
         if (GameStateManager.Instance.isLockerOpened) openedLockerInScene.SetActive(true);
@@ -246,6 +267,11 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     GameObject KeysGatesToPondIcon = Instantiate(KeysGatesToPondImagePrefab, inventoryUI);
                     KeysGatesToPondIcon.name = "KeysGatesToPond";
+                }
+                else if (tag == "GoldKey" && GoldKeyImage != null && inventoryUI != null)
+                {
+                    GameObject GoldKey = Instantiate(GoldKeyImage, inventoryUI);
+                    GoldKey.name = "GoldKey";
                 }
                 else if (tag == "BoltCutter" && boltCutterImagePrefab != null && inventoryUI != null)
                 {
@@ -355,6 +381,14 @@ public class PlayerInteraction : MonoBehaviour
                 audioSource.PlayOneShot(itemPickupSound);
             }
             ProcessItemPickup(currentKeysGatesToPond, "KeysGatesToPond", KeysGatesToPondImagePrefab);
+        }
+        else if (isInsideGoldKeyTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && itemPickupSound != null)
+            {
+                audioSource.PlayOneShot(itemPickupSound);
+            }
+            ProcessItemPickup(currentGoldKey, "GoldKey", GoldKeyImage);
         }
         else if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
         {

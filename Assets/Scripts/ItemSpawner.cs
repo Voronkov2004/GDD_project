@@ -74,6 +74,10 @@ public class ItemSpawner : MonoBehaviour
         {
             return GameStateManager.Instance.isDugUp;
         }
+        else if (requiredPuzzle == "LibraryChest")
+        {
+            return GameStateManager.Instance.isStorage2Solved;
+        }
         return true;
     }
 
