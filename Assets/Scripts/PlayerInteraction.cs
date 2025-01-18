@@ -868,14 +868,27 @@ public class PlayerInteraction : MonoBehaviour
         GameObject cupboard = GameObject.FindWithTag("Cupboard");
         if (cupboard != null)
         {
-            cupboard.SetActive(true);
-            Debug.Log("Cupboard unlocked and made visible.");
+            StartCoroutine(UnlockCupboardCoroutine(cupboard));
         }
         else
         {
             Debug.LogWarning("Cupboard not found!");
         }
     }
+
+    private IEnumerator UnlockCupboardCoroutine(GameObject cupboard)
+    {
+        if (interactionAudioSource != null && chainsSound != null)
+        {
+            interactionAudioSource.PlayOneShot(chainsSound);
+        }
+
+        yield return new WaitForSecondsRealtime(2f);
+
+        cupboard.SetActive(true);
+        Debug.Log("Cupboard unlocked and made visible.");
+    }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
