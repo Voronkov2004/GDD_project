@@ -108,7 +108,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideGateTrigger = false;
     private bool isInsideOpenGateTrigger = false;
     private bool isInsideCourtTrigger = false;
-
+    private bool isInsideClosedCaseTrigger = false;
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
@@ -683,6 +683,11 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(librarySceneName);
             }
+            else if (isInsideClosedCaseTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition("ClosedCupboardScene2");
+            }
             else if (isInsideChestWithCodeTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -889,6 +894,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideGateTrigger = true;
         }
+        else if (collision.CompareTag("ClosedCrate"))
+        {
+            isInsideClosedCaseTrigger = true;
+        }
         else if (collision.CompareTag("OpenGates"))
         {
             panelText.text = "Press F to open the gates!";
@@ -1058,6 +1067,10 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("PickMe"))
         {
             isInsidePickMeTrigger = false;
+        }
+        else if (collision.CompareTag("ClosedCrate"))
+        {
+            isInsideClosedCaseTrigger = false;
         }
         if (collision.CompareTag("Cupboard"))
         {
