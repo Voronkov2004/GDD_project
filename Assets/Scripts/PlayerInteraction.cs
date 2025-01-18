@@ -16,6 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip chainsSound; //chains
     public AudioClip knifeCutting; //machete in the end
     public AudioClip closedDoorSound;
+    public AudioClip boltSound;
     public AudioClip shovelSound;
     public AudioClip breakingWood;
     public AudioClip itemPickupSound; //keys pick up sound
@@ -812,23 +813,25 @@ public class PlayerInteraction : MonoBehaviour
                     panelText.text = "Cupboard is already unlocked.";
                     panel.SetActive(true);
                 }
+                else if (InventoryManager.Instance.HasItem("KitchenLockerPrefab"))
+                {
+                    InventoryManager.Instance.RemoveItem("KitchenLockerPrefab");
+                    RemoveItemIconFromUI("KitchenLockerPrefab");
+                    GameStateManager.Instance.isCupboardUnlocked = true;
+                    GameStateManager.Instance.SaveProgress();
+                    SaveCurrentPlayerPosition();
+                    // Эта функция открывает шкаф на кухне, болторез добавляй после неё
+                    //interactionAudioSource.PlayOneShot(chainsSound);
+                    UnlockCupboard();
+                    LoadSceneWithSavedPosition("CupboardClosed");
+                }
+                else
+                {
+                    panelText.text = "You need a key to unlock the cupboard!";
+                    panel.SetActive(true);
+                }
             }
-            else if (InventoryManager.Instance.HasItem("KitchenLockerPrefab"))
-            {
-                InventoryManager.Instance.RemoveItem("KitchenLockerPrefab");
-                RemoveItemIconFromUI("KitchenLockerPrefab");
-                GameStateManager.Instance.isCupboardUnlocked = true;
-                GameStateManager.Instance.SaveProgress();
-                SaveCurrentPlayerPosition();
-                // Эта функция открывает шкаф на кухне, болторез добавляй после неё
-                UnlockCupboard();
-                LoadSceneWithSavedPosition("CupboardClosed");
-            }
-            else
-            {
-                panelText.text = "You need a key to unlock the cupboard!";
-                panel.SetActive(true);
-            }
+            
         }
     }
 
@@ -863,12 +866,33 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    //private void UnlockCupboard()
+    //{
+    //    GameObject cupboard = GameObject.FindWithTag("Cupboard");
+    //    if (cupboard != null)
+    //    {
+    //        cupboard.SetActive(true);
+    //        Debug.Log("Cupboard unlocked and made visible.");
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("Cupboard not found!");
+    //    }
+    //}
+
     private void UnlockCupboard()
+    {
+        StartCoroutine(UnlockCupboardCoroutine());
+    }
+    private IEnumerator UnlockCupboardCoroutine()
     {
         GameObject cupboard = GameObject.FindWithTag("Cupboard");
         if (cupboard != null)
         {
-            StartCoroutine(UnlockCupboardCoroutine(cupboard));
+            interactionAudioSource.PlayOneShot(chainsSound); 
+            yield return new WaitForSecondsRealtime(2f); // Пауза перед открытием
+            cupboard.SetActive(true); 
+            Debug.Log("Cupboard unlocked and made visible.");
         }
         else
         {
@@ -876,18 +900,18 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private IEnumerator UnlockCupboardCoroutine(GameObject cupboard)
-    {
-        if (interactionAudioSource != null && chainsSound != null)
-        {
-            interactionAudioSource.PlayOneShot(chainsSound);
-        }
+    //private IEnumerator UnlockCupboardCoroutine(GameObject cupboard)
+    //{
+    //    if (interactionAudioSource != null && chainsSound != null)
+    //    {
+    //        interactionAudioSource.PlayOneShot(chainsSound);
+    //    }
 
-        yield return new WaitForSecondsRealtime(2f);
+    //    yield return new WaitForSecondsRealtime(2f);
 
-        cupboard.SetActive(true);
-        Debug.Log("Cupboard unlocked and made visible.");
-    }
+    //    cupboard.SetActive(true);
+    //    Debug.Log("Cupboard unlocked and made visible.");
+    //}
 
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -1486,6 +1510,7 @@ public class PlayerInteraction : MonoBehaviour
         ShowClosedLockerUI();
 
         // wait 2 sec
+        interactionAudioSource.PlayOneShot(boltSound);
         yield return new WaitForSecondsRealtime(2f);
 
         closedLockerPanel.SetActive(false);
