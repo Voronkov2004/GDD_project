@@ -19,6 +19,7 @@ public class GameStateManager : MonoBehaviour
     public bool isFloorOpen = false;
     public bool isNetCut = false;
     public bool isGatesOpen = false;
+    public bool isStorage2Solved = false;
 
 
     // Locations
@@ -85,6 +86,9 @@ public class GameStateManager : MonoBehaviour
         PlayerPrefs.SetInt("NetCut", isNetCut ? 1 : 0); 
         PlayerPrefs.SetInt("StorageSolved", isStorageSolved ? 1 : 0); 
         PlayerPrefs.SetInt("FloorOpen", isFloorOpen ? 1 : 0);
+        PlayerPrefs.SetInt("Storage2Solved", isStorage2Solved ? 1 : 0);
+        PlayerPrefs.SetInt("GatesOpened", isGatesOpen ? 1 : 0);
+
         // Save picked up items
         List<string> savedKeys = new List<string>();
         foreach (var item in pickedUpItems)
@@ -126,6 +130,8 @@ public class GameStateManager : MonoBehaviour
         isNetCut = PlayerPrefs.GetInt("NetCut", 0) == 1;
         isStorageSolved = PlayerPrefs.GetInt("StorageSolved", 0) == 1; 
         isFloorOpen = PlayerPrefs.GetInt("FloorOpen", 0) == 1;
+        isStorage2Solved = PlayerPrefs.GetInt("Storage2Solved", 0) == 1;
+        isGatesOpen = PlayerPrefs.GetInt("GatesOpened", 0) == 1;
 
         // Load picked up items
         pickedUpItems = new Dictionary<string, bool>();
@@ -180,7 +186,8 @@ public class GameStateManager : MonoBehaviour
         isNetCut = false;
         isStorageSolved = false;
         isFloorOpen = false;
-
+        isStorage2Solved = false;
+        isGatesOpen = false;
         isDugUp = false;
         //items
         pickedUpItems.Clear();

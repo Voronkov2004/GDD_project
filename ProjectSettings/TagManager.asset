@@ -50,6 +50,7 @@ TagManager:
   - Gates
   - OpenGates
   - Shovel
+  - ClosedCrate
   layers:
   - Default
   - TransparentFX
