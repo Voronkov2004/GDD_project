@@ -70,6 +70,10 @@ public class ObjectActivator : MonoBehaviour
         {
             return GameStateManager.Instance.isStorage2Solved;
         }
+        else if (requiredPuzzle == "BeachChest")
+        {
+            return GameStateManager.Instance.isBeachChestOpen;
+        }
         return true;
     }
 }
