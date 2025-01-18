@@ -259,7 +259,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.11948645, y: -0.1427812}
   serializedVersion: 2
-  m_Radius: 0.56375307
+  m_Radius: 0.7
 --- !u!4 &130562122
 Transform:
   m_ObjectHideFlags: 0
@@ -10110,6 +10110,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491226436}
   m_CullTransparentMesh: 1
+--- !u!1 &1503502878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1503502880}
+  - component: {fileID: 1503502879}
+  m_Layer: 0
+  m_Name: SecondSpawner (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1503502879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503502878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2a7e05ec1073d14db9b92ba795ae2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemId: GoldKey
+  itemPrefab: {fileID: 6589255425042152859, guid: 88115cc898a1d472598b0a5f64b977d7, type: 3}
+  requiredPuzzle: 
+--- !u!4 &1503502880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503502878}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.59, y: -12.5, z: -0.026007526}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518737770
 GameObject:
   m_ObjectHideFlags: 0
@@ -11713,5 +11760,6 @@ SceneRoots:
   - {fileID: 130562122}
   - {fileID: 1427660235}
   - {fileID: 906059285}
+  - {fileID: 1503502880}
   - {fileID: 3268302163895957177}
   - {fileID: 1597035611}
