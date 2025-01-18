@@ -700,11 +700,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.6
+      value: 11.88
       objectReference: {fileID: 0}
     - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15
+      value: -0.73
       objectReference: {fileID: 0}
     - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -752,6 +752,18 @@ PrefabInstance:
         They had so much fun playing hide and seek. Sometimes, I was the counselor,
         and they would run away from me. In those moments, it felt like a real hunt
         for everyone.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7868552081295549851, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7868552081295549851, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_Size.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7868552081295549851, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
