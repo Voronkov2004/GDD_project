@@ -9154,8 +9154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7e05ec1073d14db9b92ba795ae2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: PondKey
-  itemPrefab: {fileID: 137555599958314129, guid: 8645fd9673003f8468bb9846491c38a5, type: 3}
+  itemId: GoldKey
+  itemPrefab: {fileID: 6589255425042152859, guid: 88115cc898a1d472598b0a5f64b977d7, type: 3}
   requiredPuzzle: Basketball
 --- !u!4 &1166464339
 Transform:

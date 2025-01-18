@@ -221,14 +221,14 @@ MonoBehaviour:
   keyKitchenLockerImagePrefab: {fileID: 1688504157269908399, guid: 2eca3e662c84b4cc5827860c0fbe6518, type: 3}
   flashlightImagePrefab: {fileID: 7260888862901825936, guid: 6196f84eb5bae47eea2573c32a42529c, type: 3}
   batteryImagePrefab: {fileID: 4541410994518025369, guid: 0b3b4e7329b86420db65cd765fad92b4, type: 3}
-  shovelImagePrefab: {fileID: 0}
+  shovelImagePrefab: {fileID: 7731866130322580820, guid: 67663d535cb004a1eb23d72cf9f028c3, type: 3}
   lockerMessage: {fileID: 0}
   combinedFlashlightImagePrefab: {fileID: 5395974015940973992, guid: 57d07970aa2114c568d1bf4ae9d77af5, type: 3}
   boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
-  theatreKeyImagePrefab: {fileID: 0}
-  MacheteImagePrefab: {fileID: 0}
-  KeysGatesToPondImagePrefab: {fileID: 0}
-  CrowBarImage: {fileID: 0}
+  theatreKeyImagePrefab: {fileID: 9096735647813404745, guid: 22a91d7f41193f142bce23c1ffd50723, type: 3}
+  MacheteImagePrefab: {fileID: 7260888862901825936, guid: a8badac273bb0dd4888c2cb1106ec52f, type: 3}
+  KeysGatesToPondImagePrefab: {fileID: 7260888862901825936, guid: 45b1c233dbb314c4f9003cc5a6445050, type: 3}
+  CrowBarImage: {fileID: 3563616442808667334, guid: a4928d8bf6dcd43908837b4ac520182c, type: 3}
   inventoryUI: {fileID: 0}
   notePanel: {fileID: 0}
   noteTextUI: {fileID: 0}
