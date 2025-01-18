@@ -13,6 +13,8 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip lockerOpenSound; //wc lockers openings
     public AudioClip lockerBoltCutter; //opening locker with bolt cutter
     public AudioClip openDoorSound;
+    public AudioClip keyOpeningCupboard; //using key to open cabinets
+    public AudioClip chainsSound; //chains
     public AudioClip closedDoorSound;
     public AudioClip itemPickupSound; //keys pick up sound
     public AudioClip notePickupSound; //notes, diary, poster pick up sound
@@ -678,8 +680,11 @@ public class PlayerInteraction : MonoBehaviour
                 GameStateManager.Instance.SaveProgress();
                 SaveCurrentPlayerPosition();
                 // Эта функция открывает шкаф на кухне, болторез добавляй после неё
+                interactionAudioSource.PlayOneShot(keyOpeningCupboard);
                 UnlockCupboard();
-                LoadSceneWithSavedPosition("CupboardClosed");
+                interactionAudioSource.PlayOneShot(chainsSound);
+                StartCoroutine(DelayedSceneLoad("CupboardClosed", chainsSound.length));
+                //LoadSceneWithSavedPosition("CupboardClosed");
             }
             else
             {
