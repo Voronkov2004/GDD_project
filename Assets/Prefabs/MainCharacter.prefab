@@ -240,7 +240,7 @@ MonoBehaviour:
   beachClosedChest: {fileID: 0}
   openLockerPanel: {fileID: 0}
   dirtPile: {fileID: 0}
-  GoldKeyImage: {fileID: 0}
+  GoldKeyImage: {fileID: 1946429003713605189, guid: 4ad813f82bb6e4bad84b8eb0222bbb97, type: 3}
   openedLockerInScene: {fileID: 0}
   openedLocker: {fileID: 0}
   openedFloor: {fileID: 0}
