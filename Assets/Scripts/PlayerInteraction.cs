@@ -41,6 +41,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject dirtPile;
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
+    public GameObject openedFloor;
     public GameObject mirrorCanvas; // Canvas displaying the mirror UI
     public Image mirrorImage; // Image for the zoomed-in mirror
     public Image steamImage; // Image for the steam effect
@@ -94,7 +95,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool hasSeenMirrorSteam = false;
     private bool isInsideChestWithCodeTrigger = false;
     private bool isInsideCrowbarTrigger = false;
-
+    private bool isInsidePickMeTrigger = false;
 
     // Current Objects
     private GameObject currentKey;
@@ -114,6 +115,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedLocker.SetActive(false);
         }
+        if (openedFloor != null)
+        {
+            openedFloor.SetActive(GameStateManager.Instance.isFloorOpen);
+        }
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
 
@@ -127,6 +132,10 @@ public class PlayerInteraction : MonoBehaviour
         if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
         {
             openedLocker.SetActive(true);
+        }
+        if (!GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
+        {
+            openedFloor.SetActive(true);
         }
         if (!GameStateManager.Instance.isDugUp && dirtPile != null)
         {
@@ -491,6 +500,28 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(boardSceneName); // Transition to "Board" scene
             }
+            else if (isInsidePickMeTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("Crowbar"))
+                {
+                    panelText.text = "Press F to break the floor.";
+                    panel.SetActive(true);
+                    if (audioSource != null && metalItemPickupSound != null)
+                    {
+                        audioSource.PlayOneShot(metalItemPickupSound);
+                    }
+                    InventoryManager.Instance.RemoveItem("Crowbar");
+                    RemoveItemIconFromUI("Crowbar");
+                    openedFloor.SetActive(true);
+                    GameStateManager.Instance.isFloorOpen = true;
+                    GameStateManager.Instance.SaveProgress();
+            
+                }
+                else{
+                    panelText.text = "You need a crowbar to break the floor!";
+                    panel.SetActive(true);
+                }
+            }
             else if (isInsideToiletTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -684,6 +715,10 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to view the board!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("PickMe"))
+        {
+            isInsidePickMeTrigger = true;
+        }
         else if (collision.CompareTag("Net"))
         {
             isInsideNetTrigger = true;
@@ -822,6 +857,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideBatteryTrigger = false;
             currentBattery = null;
+        }
+        else if (collision.CompareTag("PickMe"))
+        {
+            isInsidePickMeTrigger = false;
         }
         else if (collision.CompareTag("Battery"))
         {
