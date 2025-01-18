@@ -27,6 +27,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject keyKitchenLockerImagePrefab;
     public GameObject flashlightImagePrefab;
     public GameObject batteryImagePrefab;
+    public GameObject shovelImagePrefab;
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
@@ -95,6 +96,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideNetTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isMacheteTrigger = false;
+    private bool isShovelTrigger = false;
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
     private bool isInsideCupboardTrigger = false;
@@ -116,6 +118,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentTheatreKey;
     private GameObject currentKeysGatesToPond;
     private GameObject currentCrowbar;
+    private GameObject currentShovel;
 
     void Start()
     {
@@ -251,6 +254,11 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject crowBar = Instantiate(CrowBarImage, inventoryUI);
                     crowBar.name = "Crowbar";
                 }
+                else if (tag == "Shovel" && shovelImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject shovel = Instantiate(shovelImagePrefab, inventoryUI);
+                    shovel.name = "Shovel";
+                }
             }
         }
     }
@@ -376,6 +384,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             audioSource.PlayOneShot(itemPickupSound);
             ProcessItemPickup(currentCrowbar, "Crowbar", CrowBarImage);
+        }
+        else if (isShovelTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentShovel, "Shovel", shovelImagePrefab);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
     }
@@ -609,10 +622,19 @@ public class PlayerInteraction : MonoBehaviour
                     openedFloor.SetActive(true);
                     GameStateManager.Instance.isFloorOpen = true;
                     GameStateManager.Instance.SaveProgress();
-            
+
+                    foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
                 }
                 else{
-                    panelText.text = "You need a crowbar to break the floor!";
+                    panelText.text = "I can't pry this board up with my hands. I need some kind of tool.";
                     panel.SetActive(true);
                 }
             }
@@ -768,6 +790,13 @@ public class PlayerInteraction : MonoBehaviour
             isInsideBatteryTrigger = true;
             currentBattery = collision.gameObject;
             panelText.text = "Press F to pick up the battery!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Shovel"))
+        {
+            isShovelTrigger = true;
+            currentShovel = collision.gameObject;
+            panelText.text = "Press F to pick up the shovel!";
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Crowbar"))
@@ -983,14 +1012,19 @@ public class PlayerInteraction : MonoBehaviour
             isInsideBatteryTrigger = false;
             currentBattery = null;
         }
+        if (collision.CompareTag("Cupboard"))
+        {
+            isInsideCupboardTrigger = false;
+            panel?.SetActive(false);
+        }
         else if (collision.CompareTag("PickMe"))
         {
             isInsidePickMeTrigger = false;
         }
         else if (collision.CompareTag("Battery"))
         {
-            isInsideCrowbarTrigger = false;
-            currentCrowbar = null;
+            isInsideBatteryTrigger = false;
+            currentBattery = null;
         }
         if (collision.CompareTag("Cupboard"))
         {
@@ -1086,6 +1120,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             isMacheteTrigger = false;
             currentMachete = null;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Shovel"))
+        {
+            isShovelTrigger = false;
+            currentShovel = null;
             panel?.SetActive(false);
         }
         else if (collision.CompareTag("Chains"))

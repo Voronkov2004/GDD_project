@@ -62,4 +62,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OpenedCupboardScene.unity
     guid: 62755f3cd1d1ccf4fac3366620e1042b
+  - enabled: 1
+    path: Assets/Scenes/Beach.unity
+    guid: 43992b5306e3cde469d3a9d5dbd54278
   m_configObjects: {}
