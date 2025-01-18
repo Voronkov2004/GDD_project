@@ -85,6 +85,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideFirstTutorialTrigger = true;
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
+    private bool isInsideNetTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isMacheteTrigger = false;
     private bool isRealKitchenTrigger = false;
@@ -101,6 +102,8 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentBattery;
     private GameObject currentMachete;
     private GameObject currentNote;
+    public GameObject notePrefab;
+    public Transform noteSpawnPoint;
     private GameObject currentBoltCutter;
     private GameObject currentTheatreKey;
 
@@ -672,6 +675,20 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideBoardTrigger = true;
             panelText.text = "Press F to view the board!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Net"))
+        {
+            isInsideNetTrigger = true;
+
+            if (InventoryManager.Instance.HasItem("Machete"))
+            {
+                panelText.text = "Press F to cut the net with the machete.";
+            }
+            else
+            {
+                panelText.text = "It seems the net got caught on something, I can't get it out. I need something sharp to cut it.";
+            }
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Tent"))

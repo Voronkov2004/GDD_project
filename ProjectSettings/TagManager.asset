@@ -43,6 +43,8 @@ TagManager:
   - Tutorial1
   - Sand
   - Machete
+  - CrowbarImage
+  - Net
   layers:
   - Default
   - TransparentFX
