@@ -858,6 +858,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the keys for the gates to the pond!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("GoldKey"))
+        {
+            isInsideGoldKeyTrigger = true;
+            currentGoldKey = collision.gameObject;
+            panelText.text = "Press F to pick up the gold key!";
+            panel?.SetActive(true);
+        }
         if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = true;
