@@ -37,6 +37,15 @@ TagManager:
   - Court
   - StorageBox
   - ChestWithCode
+  - Crowbar
+  - Tutorial3
+  - Tutorial2
+  - Tutorial1
+  - Sand
+  - Machete
+  - CrowbarImage
+  - Net
+  - KeysGatesToPond
   layers:
   - Default
   - TransparentFX
