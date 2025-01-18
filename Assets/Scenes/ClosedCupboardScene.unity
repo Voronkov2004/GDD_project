@@ -421,6 +421,8 @@ MonoBehaviour:
   correctName: LILY
   progressText: {fileID: 0}
   exitHintText: {fileID: 51694400}
+  audioSource: {fileID: 0}
+  chestOpenSound: {fileID: 0}
 --- !u!4 &380291577
 Transform:
   m_ObjectHideFlags: 0

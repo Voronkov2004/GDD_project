@@ -762,6 +762,10 @@ PrefabInstance:
         in a theater? Maybe it\u2019s about the lead character of a play? And what\u2019s
         a crowbar doing here?"
       objectReference: {fileID: 0}
+    - target: {fileID: 5576527040353664349, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7868552081295549851, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
       propertyPath: m_Size.y
       value: 1.7
@@ -3899,6 +3903,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 935540308749616518, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756911249748605840, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 789.548
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756911249748605840, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 194.936
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756911249748605840, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756911249748605840, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3679778073748348696, guid: d64f393ac5b9d554a867616c9fc7f6f0, type: 3}
