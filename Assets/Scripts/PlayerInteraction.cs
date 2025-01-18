@@ -748,7 +748,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     InventoryManager.Instance.RemoveItem("GoldKey");
                     RemoveItemIconFromUI("GoldKey");
-                    GameStateManager.Instance.isStorageSolved = true;
+                    GameStateManager.Instance.isBeachChestOpen = true;
                     GameStateManager.Instance.SaveProgress();
                     beachOpenChest.SetActive(true);
                     beachClosedChest.SetActive(false);
