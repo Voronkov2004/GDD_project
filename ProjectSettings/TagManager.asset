@@ -49,6 +49,7 @@ TagManager:
   - KeysGatesToPond
   - Gates
   - OpenGates
+  - Shovel
   layers:
   - Default
   - TransparentFX
