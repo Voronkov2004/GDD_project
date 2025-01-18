@@ -62,6 +62,10 @@ public class ItemSpawner : MonoBehaviour
         {
             return GameStateManager.Instance.isStorageSolved;
         }
+        else if (requiredPuzzle == "Machete")
+        {
+            return GameStateManager.Instance.isNetCut;
+        }
         return true;
     }
 

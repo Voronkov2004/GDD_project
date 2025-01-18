@@ -12,5 +12,7 @@ public class Note : MonoBehaviour
 
     [TextArea]
     public string followUpMessage; // second message to display after the first message
+
+    public bool isFinalNote = false;
 }
 

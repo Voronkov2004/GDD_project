@@ -3,7 +3,11 @@ guid: fa2d68b501cec2a44947ec309e39a057
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - progressText: {instanceID: 0}
+  - exitHintText: {instanceID: 0}
+  - audioSource: {instanceID: 0}
+  - chestOpenSound: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

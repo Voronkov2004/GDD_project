@@ -46,6 +46,7 @@ TagManager:
   - CrowbarImage
   - Net
   - PickMe
+  - KeysGatesToPond
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,7 @@ public class GameStateManager : MonoBehaviour
     public bool isTheaterOpen = false;
     public bool isStorageSolved = false;
     public bool isFloorOpen = false;
+    public bool isNetCut = false;
 
 
     // Locations
@@ -80,6 +81,7 @@ public class GameStateManager : MonoBehaviour
         PlayerPrefs.SetInt("MirrorSteamSeen", hasSeenMirrorSteam ? 1 : 0); 
         PlayerPrefs.SetInt("DugUp", isDugUp ? 1 : 0); 
         PlayerPrefs.SetInt("TheaterOpen", isTheaterOpen ? 1 : 0); 
+        PlayerPrefs.SetInt("NetCut", isNetCut ? 1 : 0); 
         PlayerPrefs.SetInt("StorageSolved", isStorageSolved ? 1 : 0); 
         PlayerPrefs.SetInt("FloorOpen", isFloorOpen ? 1 : 0);
         // Save picked up items
@@ -120,6 +122,7 @@ public class GameStateManager : MonoBehaviour
         hasSeenMirrorSteam = PlayerPrefs.GetInt("MirrorSteamSeen", 0) == 1; 
         isDugUp = PlayerPrefs.GetInt("DugUp", 0) == 1; 
         isTheaterOpen = PlayerPrefs.GetInt("TheaterOpen", 0) == 1;
+        isNetCut = PlayerPrefs.GetInt("NetCut", 0) == 1;
         isStorageSolved = PlayerPrefs.GetInt("StorageSolved", 0) == 1; 
         isFloorOpen = PlayerPrefs.GetInt("FloorOpen", 0) == 1;
 
@@ -173,6 +176,7 @@ public class GameStateManager : MonoBehaviour
         isCupboardUnlocked = false;
         hasSeenMirrorSteam = false;
         isTheaterOpen = false;
+        isNetCut = false;
         isStorageSolved = false;
         isFloorOpen = false;
 
