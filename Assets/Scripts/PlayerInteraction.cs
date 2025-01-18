@@ -1512,11 +1512,12 @@ public class PlayerInteraction : MonoBehaviour
         panelText.text = "You found a note.";
         panel?.SetActive(true);
 
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.F));
+        if (currentNote != null) yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.F));
+
         panel?.SetActive(false);
 
         Debug.LogWarning("Now we show the end scene!");
-        //SceneManager.LoadScene("TheEnd");
+        LoadSceneWithSavedPosition("EndingScene");
     }
 
 
