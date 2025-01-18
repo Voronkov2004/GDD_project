@@ -8,6 +8,12 @@ public class BoxPuzzle : MonoBehaviour
 {
     public string correctCode = "123"; // Correct numeric code
     public TMP_Text progressText; // Text to show the player's current progress
+    public TMP_Text exitHintText; // Text to show the exit hint
+
+    public AudioSource audioSource; // Audio source for playing sounds
+    public AudioClip cupboardOpenSound;
+
+    private bool isHintVisible = false; // Flag to control hint visibility
 
     private string currentInput = ""; // Player's current input
 
@@ -15,14 +21,26 @@ public class BoxPuzzle : MonoBehaviour
     {
         // Initialize the progress display
         UpdateProgressText();
+
+        // Hide exit hint at the start
+        if (exitHintText != null)
+        {
+            exitHintText.text = "Press F to return to the library.";
+            exitHintText.gameObject.SetActive(false);
+        }
     }
 
     void Update()
     {
-        // Allow player to return to the kitchen
+        // Allow player to return to the library
         if (Input.GetKeyDown(KeyCode.F))
         {
-            ReturnToKitchen();
+            ReturnToLibrary();
+        }
+        // Show the exit hint after a short delay if not already visible
+        if (!isHintVisible)
+        {
+            StartCoroutine(ShowExitHint());
         }
     }
 
@@ -51,6 +69,8 @@ public class BoxPuzzle : MonoBehaviour
             // Correct input: open the chest
             Debug.Log("Correct! The chest is opening...");
 
+            audioSource.PlayOneShot(cupboardOpenSound);
+
             // Update the game state
             GameStateManager.Instance.isChestPuzzleSolved = true;
 
@@ -58,7 +78,7 @@ public class BoxPuzzle : MonoBehaviour
             GameStateManager.Instance.SaveProgress();
 
             // Load the next scene after a delay
-            Invoke("ReturnToKitchen", 2f);
+            Invoke("ReturnToLibrary", 2f);
         }
         else
         {
@@ -92,8 +112,19 @@ public class BoxPuzzle : MonoBehaviour
         progressText.text = display;
     }
 
-    private void ReturnToKitchen()
+    private void ReturnToLibrary()
     {
-        SceneManager.LoadScene("Kitchen");
+        SceneManager.LoadScene("Library");
+    }
+
+    private IEnumerator ShowExitHint()
+    {
+        yield return new WaitForSeconds(1f); // Wait 1 second before showing the hint
+
+        if (exitHintText != null)
+        {
+            exitHintText.gameObject.SetActive(true);
+            isHintVisible = true;
+        }
     }
 }
