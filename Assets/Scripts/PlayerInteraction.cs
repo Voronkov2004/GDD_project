@@ -532,7 +532,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (isInsideKitchenTrigger)
             {
-                SaveCurrentPlayerPosition(); 
+                SaveCurrentPlayerPosition();
 
                 if (GameStateManager.Instance.isKitchenUnlocked) // StateManager.kitchenUnlocked
                 {
@@ -584,7 +584,7 @@ public class PlayerInteraction : MonoBehaviour
                     panelText.text = "The gates are locked. I need to find the keys.";
                     panel.SetActive(true);
                 }
-                
+
             }
             else if (isInsideLadderDownTrigger)
             {
@@ -694,7 +694,8 @@ public class PlayerInteraction : MonoBehaviour
                         activator.UpdateActivator();
                     }
                 }
-                else{
+                else
+                {
                     panelText.text = "I can't pry this board up with my hands. I need some kind of tool.";
                     panel.SetActive(true);
                 }
@@ -805,11 +806,12 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
             else if (isInsideCupboardTrigger)
-        {
-            if (GameStateManager.Instance.isCupboardUnlocked)
             {
-                panelText.text = "Cupboard is already unlocked.";
-                panel.SetActive(true);
+                if (GameStateManager.Instance.isCupboardUnlocked)
+                {
+                    panelText.text = "Cupboard is already unlocked.";
+                    panel.SetActive(true);
+                }
             }
             else if (InventoryManager.Instance.HasItem("KitchenLockerPrefab"))
             {
@@ -827,7 +829,6 @@ public class PlayerInteraction : MonoBehaviour
                 panelText.text = "You need a key to unlock the cupboard!";
                 panel.SetActive(true);
             }
-        }
         }
     }
 
@@ -1155,11 +1156,6 @@ public class PlayerInteraction : MonoBehaviour
             isInsideKeysGatesToPondTrigger = false;
             currentKeysGatesToPond = null;
         }
-        else if (collision.CompareTag("Tutorial1"))
-        {
-            //isInsideFirstTutorialTrigger = false;
-            panel?.SetActive(false);
-        }
         else if (collision.CompareTag("Battery"))
         {
             isInsideBatteryTrigger = false;
@@ -1181,11 +1177,6 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("ClosedCrate"))
         {
             isInsideClosedCaseTrigger = false;
-        }
-        else if (collision.CompareTag("Cupboard"))
-        {
-            isInsideCupboardTrigger = false;
-            panel?.SetActive(false);
         }
         else if (collision.CompareTag("Map"))
         {
