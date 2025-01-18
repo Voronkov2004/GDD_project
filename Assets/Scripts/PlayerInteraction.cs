@@ -12,7 +12,11 @@ public class PlayerInteraction : MonoBehaviour
     public AudioSource interactionAudioSource; //doors 
     public AudioClip lockerOpenSound; //wc lockers openings
     public AudioClip openDoorSound;
+    public AudioClip keyOpeningCupboard; //using key to open cabinets
+    public AudioClip chainsSound; //chains
+    public AudioClip knifeCutting; //machete in the end
     public AudioClip closedDoorSound;
+    public AudioClip breakingWood;
     public AudioClip itemPickupSound; //keys pick up sound
     public AudioClip notePickupSound; //notes, diary, poster pick up sound
     public AudioClip batteryPickupSound; // batteries' pick up sound
@@ -620,7 +624,7 @@ public class PlayerInteraction : MonoBehaviour
                     panel.SetActive(true);
                     if (audioSource != null && metalItemPickupSound != null)
                     {
-                        audioSource.PlayOneShot(metalItemPickupSound);
+                        audioSource.PlayOneShot(breakingWood);
                     }
                     InventoryManager.Instance.RemoveItem("Crowbar");
                     RemoveItemIconFromUI("Crowbar");
@@ -1455,6 +1459,8 @@ public class PlayerInteraction : MonoBehaviour
 
         GameStateManager.Instance.isNetCut = true;
         GameStateManager.Instance.SaveProgress();
+
+        interactionAudioSource.PlayOneShot(knifeCutting);
 
         yield return new WaitForSeconds(2f);
 
