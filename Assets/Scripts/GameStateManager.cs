@@ -18,6 +18,7 @@ public class GameStateManager : MonoBehaviour
     public bool isStorageSolved = false;
     public bool isFloorOpen = false;
     public bool isNetCut = false;
+    public bool isGatesOpen = false;
 
 
     // Locations

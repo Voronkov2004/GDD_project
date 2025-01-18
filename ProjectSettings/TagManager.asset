@@ -47,6 +47,8 @@ TagManager:
   - Net
   - PickMe
   - KeysGatesToPond
+  - Gates
+  - OpenGates
   layers:
   - Default
   - TransparentFX
