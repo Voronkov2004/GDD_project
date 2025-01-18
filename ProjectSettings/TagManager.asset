@@ -51,6 +51,7 @@ TagManager:
   - OpenGates
   - Shovel
   - ClosedCrate
+  - GoldKey
   layers:
   - Default
   - TransparentFX
