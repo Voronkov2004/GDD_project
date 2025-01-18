@@ -58,7 +58,7 @@ public class MainMenu : MonoBehaviour
         GameStateManager.Instance.ResetProgress();
 
         // Load the opening scene of the game
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("IntroScene");
         Debug.Log("Starting a new game...");
     }
 

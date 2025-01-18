@@ -45,7 +45,10 @@ TagManager:
   - Machete
   - CrowbarImage
   - Net
+  - PickMe
   - KeysGatesToPond
+  - Gates
+  - OpenGates
   layers:
   - Default
   - TransparentFX
