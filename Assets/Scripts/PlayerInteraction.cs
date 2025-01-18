@@ -28,6 +28,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
+    public GameObject MacheteImagePrefab;
     public GameObject CrowBarImage;
     public Transform inventoryUI;
     public GameObject notePanel;
@@ -85,6 +86,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
     private bool isInsideTentTrigger = false;
+    private bool isMacheteTrigger = false;
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
     private bool isInsideCupboardTrigger = false;
@@ -97,6 +99,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentKey;
     private GameObject currentFlashlight;
     private GameObject currentBattery;
+    private GameObject currentMachete;
     private GameObject currentNote;
     private GameObject currentBoltCutter;
     private GameObject currentTheatreKey;
@@ -204,6 +207,11 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject theatreKey = Instantiate(theatreKeyImagePrefab, inventoryUI);
                     theatreKey.name = "Key_theatre_library";
                 }
+                else if (tag == "Machete" && MacheteImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject machete = Instantiate(MacheteImagePrefab, inventoryUI);
+                    machete.name = "Machete";
+                }
                 else if (tag == "Crowbar" && CrowBarImage != null && inventoryUI != null)
                 {
                     GameObject crowBar = Instantiate(CrowBarImage, inventoryUI);
@@ -278,13 +286,21 @@ public class PlayerInteraction : MonoBehaviour
             }
             ProcessItemPickup(currentFlashlight, "Flashlight1", flashlightImagePrefab);
         }
-        else if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
+        else if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            if (audioSource != null && batteryPickupSound != null)
+            if (audioSource != null && flashlightPickupSound != null)
             {
-                audioSource.PlayOneShot(batteryPickupSound);
+                audioSource.PlayOneShot(flashlightPickupSound);
             }
-            ProcessItemPickup(currentBattery, "Battery", batteryImagePrefab);
+            ProcessItemPickup(currentFlashlight, "Flashlight1", flashlightImagePrefab);
+        }
+        else if (isMacheteTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && metalItemPickupSound != null)
+            {
+                audioSource.PlayOneShot(metalItemPickupSound);
+            }
+            ProcessItemPickup(currentMachete, "Machete", MacheteImagePrefab);
         }
         else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
         {
@@ -633,6 +649,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to climb the ladder!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Machete"))
+        {
+            isMacheteTrigger = true;
+            currentMachete = collision.gameObject;
+            panelText.text = "Press F to pick up the machete!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("LadderDown"))
         {
             isInsideLadderDownTrigger = true;
@@ -856,6 +879,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideBoltCutterTrigger = false;
             currentBoltCutter = null;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Machete"))
+        {
+            isMacheteTrigger = false;
+            currentMachete = null;
             panel?.SetActive(false);
         }
         else if (collision.CompareTag("Chains"))
