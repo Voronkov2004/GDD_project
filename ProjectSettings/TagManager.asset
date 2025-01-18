@@ -45,6 +45,7 @@ TagManager:
   - Machete
   - CrowbarImage
   - Net
+  - KeysGatesToPond
   layers:
   - Default
   - TransparentFX

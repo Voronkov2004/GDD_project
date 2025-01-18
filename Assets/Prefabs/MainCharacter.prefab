@@ -216,6 +216,7 @@ MonoBehaviour:
   boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
   theatreKeyImagePrefab: {fileID: 9096735647813404745, guid: 22a91d7f41193f142bce23c1ffd50723, type: 3}
   MacheteImagePrefab: {fileID: 7260888862901825936, guid: a8badac273bb0dd4888c2cb1106ec52f, type: 3}
+  KeysGatesToPondImagePrefab: {fileID: 7260888862901825936, guid: 45b1c233dbb314c4f9003cc5a6445050, type: 3}
   CrowBarImage: {fileID: 3563616442808667334, guid: a4928d8bf6dcd43908837b4ac520182c, type: 3}
   inventoryUI: {fileID: 0}
   notePanel: {fileID: 0}

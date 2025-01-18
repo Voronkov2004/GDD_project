@@ -29,6 +29,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
     public GameObject MacheteImagePrefab;
+    public GameObject KeysGatesToPondImagePrefab;
     public GameObject CrowBarImage;
     public Transform inventoryUI;
     public GameObject notePanel;
@@ -76,10 +77,12 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideLockerTrigger = false;
     private bool isInsideBoltCutterTrigger = false;
     private bool isInsideLocker_ChainsTrigger = false;
+    private bool isFinalNote = false;
     private bool isLockerInteractionActive = false;
     private bool isClosedLockerSceneOpen = false;
     private bool isInsideChestTrigger = false;
     private bool isInsideTowelsGameTrigger = false;
+    private bool isInsideKeysGatesToPondTrigger = false;
     private bool isTheaterTrigger = false;
     private bool isStorageTrigger = false;
     private bool isInsideFirstTutorialTrigger = true;
@@ -102,10 +105,9 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentBattery;
     private GameObject currentMachete;
     private GameObject currentNote;
-    public GameObject notePrefab;
-    public Transform noteSpawnPoint;
     private GameObject currentBoltCutter;
     private GameObject currentTheatreKey;
+    private GameObject currentKeysGatesToPond;
 
     void Start()
     {
@@ -200,6 +202,11 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject combinedIcon = Instantiate(combinedFlashlightImagePrefab, inventoryUI);
                     combinedIcon.name = "CombinedFlashlight";
                 }
+                else if (tag == "KeysGatesToPond" && KeysGatesToPondImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject KeysGatesToPondIcon = Instantiate(KeysGatesToPondImagePrefab, inventoryUI);
+                    KeysGatesToPondIcon.name = "KeysGatesToPond";
+                }
                 else if (tag == "BoltCutter" && boltCutterImagePrefab != null && inventoryUI != null)
                 {
                     GameObject boltCutterIcon = Instantiate(boltCutterImagePrefab, inventoryUI);
@@ -251,6 +258,19 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        if (isInsideNetTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (InventoryManager.Instance.HasItem("Machete"))
+            {
+                StartCoroutine(HandleCuttingNet());
+            }
+            else
+            {
+                panelText.text = "It seems the net got caught on something, I can't get it out. I need something sharp to cut it.";
+                panel?.SetActive(true);
+            }
+        }
+
         if (isInsideLocker_ChainsTrigger && Input.GetKeyDown(KeyCode.F))
         {
             if (isClosedLockerSceneOpen)
@@ -289,13 +309,13 @@ public class PlayerInteraction : MonoBehaviour
             }
             ProcessItemPickup(currentFlashlight, "Flashlight1", flashlightImagePrefab);
         }
-        else if (isInsideFlashlightTrigger && Input.GetKeyDown(KeyCode.F))
+        else if (isInsideKeysGatesToPondTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            if (audioSource != null && flashlightPickupSound != null)
+            if (audioSource != null && itemPickupSound != null)
             {
-                audioSource.PlayOneShot(flashlightPickupSound);
+                audioSource.PlayOneShot(itemPickupSound);
             }
-            ProcessItemPickup(currentFlashlight, "Flashlight1", flashlightImagePrefab);
+            ProcessItemPickup(currentKeysGatesToPond, "KeysGatesToPond", KeysGatesToPondImagePrefab);
         }
         else if (isMacheteTrigger && Input.GetKeyDown(KeyCode.F))
         {
@@ -304,6 +324,14 @@ public class PlayerInteraction : MonoBehaviour
                 audioSource.PlayOneShot(metalItemPickupSound);
             }
             ProcessItemPickup(currentMachete, "Machete", MacheteImagePrefab);
+        }
+        else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && metalItemPickupSound != null)
+            {
+                audioSource.PlayOneShot(metalItemPickupSound);
+            }
+            ProcessItemPickup(currentBoltCutter, "BoltCutter", boltCutterImagePrefab);
         }
         else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
         {
@@ -621,6 +649,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the flashlight!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("KeysGatesToPond"))
+        {
+            isInsideKeysGatesToPondTrigger = true;
+            currentKeysGatesToPond = collision.gameObject;
+            panelText.text = "Press F to pick up the keys for the gates to the pond!";
+            panel?.SetActive(true);
+        }
         if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = true;
@@ -811,6 +846,11 @@ public class PlayerInteraction : MonoBehaviour
             isInsideFlashlightTrigger = false;
             currentFlashlight = null;
         }
+        else if (collision.CompareTag("KeysGatesToPond"))
+        {
+            isInsideKeysGatesToPondTrigger = false;
+            currentKeysGatesToPond = null;
+        }
         else if (collision.CompareTag("Tutorial1"))
         {
             isInsideFirstTutorialTrigger = false;
@@ -898,6 +938,11 @@ public class PlayerInteraction : MonoBehaviour
             currentBoltCutter = null;
             panel?.SetActive(false);
         }
+        else if (collision.CompareTag("Net"))
+        {
+            isInsideNetTrigger = false;
+            panel?.SetActive(false);
+        }
         else if (collision.CompareTag("Machete"))
         {
             isMacheteTrigger = false;
@@ -948,6 +993,11 @@ public class PlayerInteraction : MonoBehaviour
                 Time.timeScale = 1f; // resume the game
                 isNoteOpen = false;
 
+                if (isFinalNote)
+                {
+                    SceneManager.LoadScene("TheEnd");
+                }
+
                 // Show message if defined in the Note
                 if (currentNote != null && currentNote.CompareTag("Note"))
                 {
@@ -972,6 +1022,7 @@ public class PlayerInteraction : MonoBehaviour
                     isNoteOpen = true;
                     panel?.SetActive(false); // hide the hint
 
+                    isFinalNote = noteComponent.isFinalNote;
 
                     if (notePickupSound != null)
                     {
@@ -1167,6 +1218,31 @@ public class PlayerInteraction : MonoBehaviour
             Debug.LogWarning("PlayerMovement not found on MainCharacter!");
         }
     }
+
+    private IEnumerator HandleCuttingNet()
+    {
+        panel?.SetActive(false);
+
+        GameStateManager.Instance.isNetCut = true;
+        GameStateManager.Instance.SaveProgress();
+
+        yield return new WaitForSeconds(2f);
+
+        foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+        {
+            activator.UpdateActivator();
+        }
+
+        panelText.text = "You found a note.";
+        panel?.SetActive(true);
+
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.F));
+        panel?.SetActive(false);
+
+        Debug.LogWarning("Now we show the end scene!");
+        //SceneManager.LoadScene("TheEnd");
+    }
+
 
     private void OpenClosedLockerUI()
     {
