@@ -55,6 +55,7 @@ TagManager:
   - BeachChest
   - BeachChest2
   - FuckingChest
+  - Map
   layers:
   - Default
   - TransparentFX
