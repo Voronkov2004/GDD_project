@@ -9166,7 +9166,7 @@ Transform:
   m_GameObject: {fileID: 1166464337}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.25, y: -3.92, z: -0.03826283}
+  m_LocalPosition: {x: -8.179, y: -3.75, z: -0.03826283}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9467,6 +9467,99 @@ CapsuleCollider2D:
   m_Offset: {x: 13.98, y: 0.03}
   m_Size: {x: 0.42, y: 0.98}
   m_Direction: 0
+--- !u!1001 &1214790646
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1916252096369905805, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_Name
+      value: Paper15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916252096369905805, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.625436
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.5632663
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907739750697850619, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: noteText
+      value: "We laughed and played here every day. But that day was different. She
+        was quieter than usual, her eyes darting to the trees like she was looking
+        for an escape.When he came, the game stopped. His voice cut through the laughter,
+        sharp and cold. He called her over, and she froze. I think she knew - maybe
+        we all did - that this wasn\u2019t just another lecture. By the time we realized
+        she wasn\u2019t coming back, it was already too late"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907739750697850619, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: closeNoteMessage
+      value: "What does all this mean? Whose note is this? Lily\u2019s? Is she talking
+        about Anna? Who is \u2018HE\u2019? Could it be John? Why did he call her,
+        and why did she go?\""
+      objectReference: {fileID: 0}
+    - target: {fileID: 5576527040353664349, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+--- !u!1 &1214790647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1916252096369905805, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+  m_PrefabInstance: {fileID: 1214790646}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1221274571
 GameObject:
   m_ObjectHideFlags: 0
@@ -29922,6 +30015,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1875947665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1875947667}
+  - component: {fileID: 1875947666}
+  m_Layer: 0
+  m_Name: NoteActivator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1875947666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875947665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abe3d05897d9914da42835ec783ab26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 1214790647}
+  requiredPuzzle: Basketball
+--- !u!4 &1875947667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875947665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.7240205, y: -0.7927836, z: 0.038088024}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1876273303
 GameObject:
   m_ObjectHideFlags: 0
@@ -41845,3 +41984,5 @@ SceneRoots:
   - {fileID: 1807000606}
   - {fileID: 1247987511}
   - {fileID: 1166464339}
+  - {fileID: 1214790646}
+  - {fileID: 1875947667}

@@ -62,6 +62,10 @@ public class ObjectActivator : MonoBehaviour
         {
             return GameStateManager.Instance.isFloorOpen;
         }
+        else if (requiredPuzzle == "Basketball")
+        {
+            return GameStateManager.Instance.isDugUp;
+        }
         return true;
     }
 }
