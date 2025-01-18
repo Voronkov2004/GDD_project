@@ -1174,6 +1174,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 602682466}
   m_CullTransparentMesh: 1
+--- !u!1 &618146448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 618146450}
+  - component: {fileID: 618146449}
+  m_Layer: 0
+  m_Name: NoteActivator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &618146449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618146448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abe3d05897d9914da42835ec783ab26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 2079384324}
+  requiredPuzzle: Floor
+--- !u!4 &618146450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618146448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.7240205, y: -0.7927836, z: 0.038088024}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &718644042
 GameObject:
   m_ObjectHideFlags: 0
@@ -4162,6 +4208,92 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 327715404466650966, guid: 4486f8063116d46849db98957d48a681, type: 3}
   m_PrefabInstance: {fileID: 3746539536099273569}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2079384323
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1916252096369905805, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_Name
+      value: Paper12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916252096369905805, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.815
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10.165
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3385922059086369953, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907739750697850619, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: noteText
+      value: "They all turned a blind eye. The counselors, the director - they pretended
+        not to see, to hear. But the children knew. They whispered about me, about
+        her, and yet no one spoke up. No one stopped me.\nI couldn\u2019t help myself.
+        She was perfect, so full of life, and I wanted to take that light and make
+        it mine. At first, I told myself it was discipline, that she needed guidance,
+        but it was always more than that.\r\nWhen it was over, when she stopped fighting,
+        I thought I\u2019d feel relief. Instead, I felt nothing but the weight of
+        her eyes staring back at me, lifeless. The others will never understand -
+        they couldn\u2019t. This was the only way it could end."
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907739750697850619, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+      propertyPath: closeNoteMessage
+      value: "The kids were whispering? Could that be why they were so nervous? And
+        why did the adults ignore it? It all sounds strange and creepy. Maybe the
+        person writing this just isn\u2019t expressing their thoughts clearly? It\u2019s
+        obvious they know they\u2019re doing something wrong, yet they don\u2019t
+        seem to condemn themselves for it."
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+--- !u!1 &2079384324 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1916252096369905805, guid: a25cccc94bde5434ea94292a8d14ad4e, type: 3}
+  m_PrefabInstance: {fileID: 2079384323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3746539536099273569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4380,3 +4512,5 @@ SceneRoots:
   - {fileID: 278157096}
   - {fileID: 550877437}
   - {fileID: 448555352}
+  - {fileID: 2079384323}
+  - {fileID: 618146450}
