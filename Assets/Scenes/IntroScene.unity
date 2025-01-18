@@ -171,10 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -279,7 +279,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.0005188, y: -0.000015259}
-  m_SizeDelta: {x: 639.68, y: 148.61}
+  m_SizeDelta: {x: 1519.582, y: 688.4943}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &782101205
 MonoBehaviour:
@@ -334,8 +334,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -418,8 +418,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000011921, y: 0.0000033081}
-  m_SizeDelta: {x: 1345.7917, y: 702.4075}
+  m_AnchoredPosition: {x: -21.8231, y: 11.6391}
+  m_SizeDelta: {x: 2227.4526, y: 1674.2706}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &801387581
 MonoBehaviour:
@@ -561,8 +561,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000023842, y: -0.0000019073}
-  m_SizeDelta: {x: 639.6821, y: 148.608}
+  m_AnchoredPosition: {x: 0.000091553, y: 11.639}
+  m_SizeDelta: {x: 1519.582, y: 688.4943}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1060896847
 MonoBehaviour:
@@ -585,7 +585,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "This camp has consumed my thoughts for the past 15 years, ever since I
-    worked there as a\r\ncounselor in its final season back in \u201965. I don\u2019t
+    worked there as a counselor in its final season back in \u201965. I don\u2019t
     remember much of what happened \u2014 just\r\nfragments. A year later, I was
     in an accident that left me with amnesia.\r\n\n\n\nSome memories came back over
     time, but the last three years before the crash remain a blur.\r\nAll I know
@@ -618,8 +618,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -702,8 +702,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 205.1, y: -194.8}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0.000015259, y: -452}
+  m_SizeDelta: {x: 444.1298, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1144188374
 MonoBehaviour:
@@ -752,14 +752,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -838,7 +838,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

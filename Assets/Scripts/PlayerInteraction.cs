@@ -1021,11 +1021,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsidePickMeTrigger = false;
         }
-        else if (collision.CompareTag("Battery"))
-        {
-            isInsideBatteryTrigger = false;
-            currentBattery = null;
-        }
         if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = false;

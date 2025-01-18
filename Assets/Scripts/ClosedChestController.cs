@@ -6,6 +6,9 @@ using TMPro;
 
 public class ClosedChestController : MonoBehaviour
 {
+    public AudioSource audioSource; // Audio source for playing sounds
+    public AudioClip chainsSound;
+
     public TMP_InputField codeInputField; 
     public TextMeshProUGUI hintText;
 
@@ -19,15 +22,24 @@ public class ClosedChestController : MonoBehaviour
         {
             Debug.Log($"Correct!");
 
-            GameStateManager.Instance.isStorageSolved = true;
-
-            SceneManager.LoadScene("OpenedCupboardScene");
+            StartCoroutine(HandleCorrectCode123());
         }
         else
         {
             Debug.Log($"Incorrect!");
             hintText.text = "Incorrect code. Try again.";
         }
+    }
+
+    private IEnumerator HandleCorrectCode123()
+    {
+        audioSource.PlayOneShot(chainsSound);
+
+        yield return new WaitForSecondsRealtime(chainsSound.length);
+
+        GameStateManager.Instance.isStorageSolved = true;
+
+        SceneManager.LoadScene("OpenedCupboardScene");
     }
 }
 
