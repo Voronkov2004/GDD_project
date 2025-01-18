@@ -137,6 +137,20 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start()
     {
+        if (GameStateManager.Instance.isStorageSolved)
+        {
+            GameObject chestWithCode = GameObject.FindWithTag("ChestWithCode");
+            if (chestWithCode != null)
+            {
+                chestWithCode.SetActive(false);
+                Debug.Log("ChestWithCode trigger has been disabled because the storage puzzle is solved.");
+            }
+            else
+            {
+                Debug.LogWarning("Object with tag 'ChestWithCode' not found in the scene.");
+            }
+        }
+
         if (openedLocker != null)
         {
             openedLocker.SetActive(false);
@@ -172,7 +186,7 @@ public class PlayerInteraction : MonoBehaviour
             steamImage.gameObject.SetActive(false);
 
         if (dimBackground != null)
-            dimBackground.gameObject.SetActive(false);
+            dimBackground.gameObject.SetActive(false);            
 
         // Check if the cupboard is already unlocked and make the openedLocker visible if it is
         if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
