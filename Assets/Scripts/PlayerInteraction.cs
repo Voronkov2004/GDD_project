@@ -46,6 +46,8 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject lockerNote;
     public GameObject lockerTrigger;
     public GameObject closedLockerPanel;
+    public GameObject beachOpenChest;
+    public GameObject beachClosedChest;
     public GameObject openLockerPanel;
     public GameObject dirtPile;
     public GameObject GoldKeyImage;
@@ -116,6 +118,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideCourtTrigger = false;
     private bool isInsideClosedCaseTrigger = false;
     private bool isInsideGoldKeyTrigger = false;
+    private bool isInsideBeachChestTrigger = false;
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
@@ -146,6 +149,14 @@ public class PlayerInteraction : MonoBehaviour
         if (closedGates != null)
         {
             closedGates.SetActive(!GameStateManager.Instance.isGatesOpen);
+        }
+        if (beachOpenChest != null)
+        {
+            beachOpenChest.SetActive(GameStateManager.Instance.isBeachChestOpen);
+        }
+        if (beachClosedChest != null)
+        {
+            beachClosedChest.SetActive(!GameStateManager.Instance.isBeachChestOpen);
         }
         if (dirtPile != null)
         {
@@ -731,6 +742,34 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition("ClosedCupboardScene2");
             }
+            else if (isInsideBeachChestTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("GoldKey"))
+                {
+                    InventoryManager.Instance.RemoveItem("GoldKey");
+                    RemoveItemIconFromUI("GoldKey");
+                    GameStateManager.Instance.isStorageSolved = true;
+                    GameStateManager.Instance.SaveProgress();
+                    beachOpenChest.SetActive(true);
+                    beachClosedChest.SetActive(false);
+                    panel.SetActive(false);
+
+                    foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
+                }
+                else
+                {
+                    panelText.text = "I need a key to open this chest.";
+                    panel.SetActive(true);
+                }
+            }
             else if (isInsideChestWithCodeTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -944,6 +983,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideGateTrigger = true;
         }
+        else if (collision.CompareTag("FuckingChest"))
+        {
+            isInsideBeachChestTrigger = true;
+            panelText.text = "Press F to see chest!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("ClosedCrate"))
         {
             isInsideClosedCaseTrigger = true;
@@ -1119,6 +1164,10 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("PickMe"))
         {
             isInsidePickMeTrigger = false;
+        }
+        else if (collision.CompareTag("FuckingChest"))
+        {
+            isInsideBeachChestTrigger = false;
         }
         else if (collision.CompareTag("ClosedCrate"))
         {
@@ -1543,7 +1592,7 @@ public class PlayerInteraction : MonoBehaviour
             isClosedLockerSceneOpen = true;
             if (!InventoryManager.Instance.HasItem("BoltCutter"))
             {
-                lockerMessage.SetActive(true);
+                //lockerMessage.SetActive(true);
             }
         }
     }
@@ -1555,7 +1604,7 @@ public class PlayerInteraction : MonoBehaviour
             closedLockerPanel.SetActive(false);
             EnablePlayerMovement();
             isClosedLockerSceneOpen = false;
-            lockerMessage.SetActive(false);
+            //lockerMessage.SetActive(false);
         }
     }
 

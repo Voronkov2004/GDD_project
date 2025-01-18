@@ -52,6 +52,9 @@ TagManager:
   - Shovel
   - ClosedCrate
   - GoldKey
+  - BeachChest
+  - BeachChest2
+  - FuckingChest
   layers:
   - Default
   - TransparentFX
