@@ -45,6 +45,8 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
     public GameObject openedFloor;
+    public GameObject openedGates;
+    public GameObject closedGates;
     public GameObject mirrorCanvas; // Canvas displaying the mirror UI
     public Image mirrorImage; // Image for the zoomed-in mirror
     public Image steamImage; // Image for the steam effect
@@ -101,6 +103,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideChestWithCodeTrigger = false;
     private bool isInsideCrowbarTrigger = false;
     private bool isInsidePickMeTrigger = false;
+    private bool isInsideGateTrigger = false;
+    private bool isInsideOpenGateTrigger = false;
 
     // Current Objects
     private GameObject currentKey;
@@ -122,6 +126,14 @@ public class PlayerInteraction : MonoBehaviour
         if (openedFloor != null)
         {
             openedFloor.SetActive(GameStateManager.Instance.isFloorOpen);
+        }
+        if (openedGates != null)
+        {
+            openedGates.SetActive(GameStateManager.Instance.isGatesOpen);
+        }
+        if (closedGates != null)
+        {
+            closedGates.SetActive(!GameStateManager.Instance.isGatesOpen);
         }
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
@@ -482,6 +494,24 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 SceneManager.LoadScene(upstairsSceneName);
             }
+            else if (isInsideGateTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("KeysGatesToPond"))
+                {
+                    InventoryManager.Instance.RemoveItem("KeysGatesToPond");
+                    RemoveItemIconFromUI("KeysGatesToPond");
+                    GameStateManager.Instance.isGatesOpen = true;
+                    GameStateManager.Instance.SaveProgress();
+                    closedGates.SetActive(false);
+                    openedGates.SetActive(true);
+                }
+                else
+                {
+                    panelText.text = "The gates are locked. I need to find the keys.";
+                    panel.SetActive(true);
+                }
+                
+            }
             else if (isInsideLadderDownTrigger)
             {
                 SaveCurrentPlayerPosition();
@@ -520,6 +550,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(theaterSceneName);
+            }
+            else if (isInsideOpenGateTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition("Beach");
             }
             else if (isRealKitchenTrigger)
             {
@@ -789,6 +824,16 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsidePickMeTrigger = true;
         }
+        else if (collision.CompareTag("Gates"))
+        {
+            isInsideGateTrigger = true;
+        }
+        else if (collision.CompareTag("OpenGates"))
+        {
+            panelText.text = "Press F to open the gates!";
+            panel?.SetActive(true);
+            isInsideOpenGateTrigger = true;
+        }
         else if (collision.CompareTag("Net"))
         {
             isInsideNetTrigger = true;
@@ -956,6 +1001,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideKitchenTrigger = false;
         }
+        else if (collision.CompareTag("OpenGates"))
+        {
+            isInsideOpenGateTrigger = false;
+        }
         else if (collision.CompareTag("Library"))
         {
             isLibraryTrigger = false;
@@ -963,6 +1012,10 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Ladder"))
         {
             isInsideLadderTrigger = false;
+        }
+        else if (collision.CompareTag("Gates"))
+        {
+            isInsideGateTrigger = false;
         }
         else if (collision.CompareTag("LadderDown"))
         {
