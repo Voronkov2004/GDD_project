@@ -20,6 +20,8 @@ public class GameStateManager : MonoBehaviour
     public bool isNetCut = false;
     public bool isGatesOpen = false;
     public bool isStorage2Solved = false;
+    public bool isBeachChestOpen = false;
+
 
 
     // Locations
@@ -88,6 +90,7 @@ public class GameStateManager : MonoBehaviour
         PlayerPrefs.SetInt("FloorOpen", isFloorOpen ? 1 : 0);
         PlayerPrefs.SetInt("Storage2Solved", isStorage2Solved ? 1 : 0);
         PlayerPrefs.SetInt("GatesOpened", isGatesOpen ? 1 : 0);
+        PlayerPrefs.SetInt("BeachChestOpened", isBeachChestOpen ? 1 : 0);
 
         // Save picked up items
         List<string> savedKeys = new List<string>();
@@ -132,6 +135,7 @@ public class GameStateManager : MonoBehaviour
         isFloorOpen = PlayerPrefs.GetInt("FloorOpen", 0) == 1;
         isStorage2Solved = PlayerPrefs.GetInt("Storage2Solved", 0) == 1;
         isGatesOpen = PlayerPrefs.GetInt("GatesOpened", 0) == 1;
+        isBeachChestOpen = PlayerPrefs.GetInt("BeachChestOpened", 0) == 1;
 
         // Load picked up items
         pickedUpItems = new Dictionary<string, bool>();
@@ -189,6 +193,7 @@ public class GameStateManager : MonoBehaviour
         isStorage2Solved = false;
         isGatesOpen = false;
         isDugUp = false;
+        isBeachChestOpen = false;
         //items
         pickedUpItems.Clear();
         //scenes and player locations
