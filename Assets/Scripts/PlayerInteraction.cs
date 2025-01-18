@@ -11,7 +11,6 @@ public class PlayerInteraction : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource interactionAudioSource; //doors 
     public AudioClip lockerOpenSound; //wc lockers openings
-    public AudioClip lockerBoltCutter; //opening locker with bolt cutter
     public AudioClip openDoorSound;
     public AudioClip keyOpeningCupboard; //using key to open cabinets
     public AudioClip chainsSound; //chains
@@ -31,6 +30,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject keyKitchenLockerImagePrefab;
     public GameObject flashlightImagePrefab;
     public GameObject batteryImagePrefab;
+    public GameObject shovelImagePrefab;
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
@@ -99,6 +99,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideNetTrigger = false;
     private bool isInsideTentTrigger = false;
     private bool isMacheteTrigger = false;
+    private bool isShovelTrigger = false;
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
     private bool isInsideCupboardTrigger = false;
@@ -109,6 +110,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsidePickMeTrigger = false;
     private bool isInsideGateTrigger = false;
     private bool isInsideOpenGateTrigger = false;
+    private bool isInsideCourtTrigger = false;
 
     // Current Objects
     private GameObject currentKey;
@@ -120,6 +122,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentTheatreKey;
     private GameObject currentKeysGatesToPond;
     private GameObject currentCrowbar;
+    private GameObject currentShovel;
 
     void Start()
     {
@@ -139,6 +142,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             closedGates.SetActive(!GameStateManager.Instance.isGatesOpen);
         }
+        if (dirtPile != null)
+        {
+            dirtPile.SetActive(GameStateManager.Instance.isDugUp);
+        }
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
 
@@ -157,9 +164,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedFloor.SetActive(true);
         }
-        if (!GameStateManager.Instance.isDugUp && dirtPile != null)
+        if (GameStateManager.Instance.isDugUp && dirtPile != null)
         {
-            dirtPile.SetActive(false);
+            dirtPile.SetActive(true);
         }
         if (InventoryManager.Instance == null)
         {
@@ -255,6 +262,11 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject crowBar = Instantiate(CrowBarImage, inventoryUI);
                     crowBar.name = "Crowbar";
                 }
+                else if (tag == "Shovel" && shovelImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject shovel = Instantiate(shovelImagePrefab, inventoryUI);
+                    shovel.name = "Shovel";
+                }
             }
         }
     }
@@ -275,7 +287,6 @@ public class PlayerInteraction : MonoBehaviour
             if (!GameStateManager.Instance.isOriginallyLockerOpened)
             {
                 GameStateManager.Instance.isOriginallyLockerOpened = true;
-                interactionAudioSource.PlayOneShot(lockerOpenSound);
                 ActivateLockerContent();
                 GameStateManager.Instance.SaveProgress();
             }
@@ -381,6 +392,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             audioSource.PlayOneShot(itemPickupSound);
             ProcessItemPickup(currentCrowbar, "Crowbar", CrowBarImage);
+        }
+        else if (isShovelTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentShovel, "Shovel", shovelImagePrefab);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
     }
@@ -614,10 +630,19 @@ public class PlayerInteraction : MonoBehaviour
                     openedFloor.SetActive(true);
                     GameStateManager.Instance.isFloorOpen = true;
                     GameStateManager.Instance.SaveProgress();
-            
+
+                    foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
                 }
                 else{
-                    panelText.text = "You need a crowbar to break the floor!";
+                    panelText.text = "I can't pry this board up with my hands. I need some kind of tool.";
                     panel.SetActive(true);
                 }
             }
@@ -666,6 +691,33 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition("ClosedCupboardScene");
             }
+            else if (isInsideCourtTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("Shovel"))
+                {
+                    InventoryManager.Instance.RemoveItem("Shovel");
+                    RemoveItemIconFromUI("Shovel");
+                    dirtPile.SetActive(true);
+                    GameStateManager.Instance.isDugUp = true;
+                    GameStateManager.Instance.SaveProgress();
+                    panel.SetActive(false);
+
+                    foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
+                }
+                else
+                {
+                    panelText.text = "I need a shovel to dig here.";
+                    panel.SetActive(true);
+                }
+            }
             else if (isInsideCupboardTrigger)
         {
             if (GameStateManager.Instance.isCupboardUnlocked)
@@ -681,11 +733,8 @@ public class PlayerInteraction : MonoBehaviour
                 GameStateManager.Instance.SaveProgress();
                 SaveCurrentPlayerPosition();
                 // Эта функция открывает шкаф на кухне, болторез добавляй после неё
-                interactionAudioSource.PlayOneShot(keyOpeningCupboard);
                 UnlockCupboard();
-                interactionAudioSource.PlayOneShot(chainsSound);
-                StartCoroutine(DelayedSceneLoad("CupboardClosed", chainsSound.length));
-                //LoadSceneWithSavedPosition("CupboardClosed");
+                LoadSceneWithSavedPosition("CupboardClosed");
             }
             else
             {
@@ -778,6 +827,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the battery!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Shovel"))
+        {
+            isShovelTrigger = true;
+            currentShovel = collision.gameObject;
+            panelText.text = "Press F to pick up the shovel!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("Crowbar"))
         {
             isInsideCrowbarTrigger = true;
@@ -828,7 +884,7 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to view the board!";
             panel?.SetActive(true);
         }
-        else if (collision.CompareTag("PickMe"))
+        else if (collision.CompareTag("PickMe") && !GameStateManager.Instance.isFloorOpen)
         {
             isInsidePickMeTrigger = true;
         }
@@ -841,6 +897,12 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to open the gates!";
             panel?.SetActive(true);
             isInsideOpenGateTrigger = true;
+        }
+        else if (collision.CompareTag("Court") && !GameStateManager.Instance.isDugUp)
+        {
+            panelText.text = "Press F to Dig!";
+            panel?.SetActive(true);
+            isInsideCourtTrigger = true;
         }
         else if (collision.CompareTag("Net"))
         {
@@ -991,14 +1053,14 @@ public class PlayerInteraction : MonoBehaviour
             isInsideBatteryTrigger = false;
             currentBattery = null;
         }
+        if (collision.CompareTag("Cupboard"))
+        {
+            isInsideCupboardTrigger = false;
+            panel?.SetActive(false);
+        }
         else if (collision.CompareTag("PickMe"))
         {
             isInsidePickMeTrigger = false;
-        }
-        else if (collision.CompareTag("Battery"))
-        {
-            isInsideCrowbarTrigger = false;
-            currentCrowbar = null;
         }
         if (collision.CompareTag("Cupboard"))
         {
@@ -1008,6 +1070,10 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Kitchen"))
         {
             isInsideKitchenTrigger = false;
+        }
+        else if (collision.CompareTag("Court"))
+        {
+            isInsideCourtTrigger = false;
         }
         else if (collision.CompareTag("OpenGates"))
         {
@@ -1094,6 +1160,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             isMacheteTrigger = false;
             currentMachete = null;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Shovel"))
+        {
+            isShovelTrigger = false;
+            currentShovel = null;
             panel?.SetActive(false);
         }
         else if (collision.CompareTag("Chains"))
@@ -1234,6 +1306,7 @@ public class PlayerInteraction : MonoBehaviour
         if (lockerPicture != null)
         {
             lockerPicture.SetActive(true);
+            interactionAudioSource.PlayOneShot(lockerOpenSound);
         }
 
         if (lockerNote != null)
@@ -1273,7 +1346,6 @@ public class PlayerInteraction : MonoBehaviour
         ShowClosedLockerUI();
 
         // wait 2 sec
-        interactionAudioSource.PlayOneShot(lockerBoltCutter);
         yield return new WaitForSecondsRealtime(2f);
 
         closedLockerPanel.SetActive(false);
@@ -1390,7 +1462,7 @@ public class PlayerInteraction : MonoBehaviour
         panel?.SetActive(false);
 
         Debug.LogWarning("Now we show the end scene!");
-        SceneManager.LoadScene("EndingScene");
+        //SceneManager.LoadScene("TheEnd");
     }
 
 

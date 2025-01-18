@@ -3162,6 +3162,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1858553526}
     - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: CrowBarImage
+      value: 
+      objectReference: {fileID: 3563616442808667334, guid: a4928d8bf6dcd43908837b4ac520182c, type: 3}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: librarySceneName
       value: Library
       objectReference: {fileID: 0}
@@ -3173,6 +3177,22 @@ PrefabInstance:
       propertyPath: theaterSceneName
       value: Theater
       objectReference: {fileID: 0}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: shovelImagePrefab
+      value: 
+      objectReference: {fileID: 7731866130322580820, guid: 67663d535cb004a1eb23d72cf9f028c3, type: 3}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: MacheteImagePrefab
+      value: 
+      objectReference: {fileID: 7260888862901825936, guid: a8badac273bb0dd4888c2cb1106ec52f, type: 3}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: theatreKeyImagePrefab
+      value: 
+      objectReference: {fileID: 9096735647813404745, guid: 22a91d7f41193f142bce23c1ffd50723, type: 3}
+    - target: {fileID: 2781973134370221224, guid: 4486f8063116d46849db98957d48a681, type: 3}
+      propertyPath: KeysGatesToPondImagePrefab
+      value: 
+      objectReference: {fileID: 7260888862901825936, guid: 45b1c233dbb314c4f9003cc5a6445050, type: 3}
     - target: {fileID: 3201512084936947725, guid: 4486f8063116d46849db98957d48a681, type: 3}
       propertyPath: moveSpeed
       value: 2

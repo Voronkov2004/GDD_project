@@ -66,6 +66,14 @@ public class ItemSpawner : MonoBehaviour
         {
             return GameStateManager.Instance.isNetCut;
         }
+        else if (requiredPuzzle == "Floor")
+        {
+            return GameStateManager.Instance.isFloorOpen;
+        }
+        else if (requiredPuzzle == "Basketball")
+        {
+            return GameStateManager.Instance.isDugUp;
+        }
         return true;
     }
 
