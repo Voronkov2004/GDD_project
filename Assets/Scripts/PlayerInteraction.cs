@@ -32,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject flashlightImagePrefab;
     public GameObject batteryImagePrefab;
     public GameObject shovelImagePrefab;
+    public TextMeshProUGUI lockerMessage;
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
@@ -858,6 +859,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the keys for the gates to the pond!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("GoldKey"))
+        {
+            isInsideGoldKeyTrigger = true;
+            currentGoldKey = collision.gameObject;
+            panelText.text = "Press F to pick up the gold key!";
+            panel?.SetActive(true);
+        }
         if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = true;
@@ -1528,6 +1536,10 @@ public class PlayerInteraction : MonoBehaviour
             closedLockerPanel.SetActive(true);
             DisablePlayerMovement();
             isClosedLockerSceneOpen = true;
+            if (!InventoryManager.Instance.HasItem("BoltCutter"))
+            {
+                lockerMessage.SetActive(true);
+            }
         }
     }
 
@@ -1538,6 +1550,7 @@ public class PlayerInteraction : MonoBehaviour
             closedLockerPanel.SetActive(false);
             EnablePlayerMovement();
             isClosedLockerSceneOpen = false;
+            lockerMessage.SetActive(false);
         }
     }
 
