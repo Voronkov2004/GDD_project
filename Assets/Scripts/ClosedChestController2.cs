@@ -22,7 +22,7 @@ public class ClosedChestController2 : MonoBehaviour
         {
             Debug.Log($"Correct!");
 
-            StartCoroutine(HandleCorrectCode123());
+            StartCoroutine(HandleCorrectCode3708());
         }
         else
         {
@@ -31,15 +31,17 @@ public class ClosedChestController2 : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleCorrectCode123()
+    private IEnumerator HandleCorrectCode3708()
     {
+
+        if (chainsSound != null){
         audioSource.PlayOneShot(chainsSound);
 
         yield return new WaitForSecondsRealtime(chainsSound.length);
+        }
+        GameStateManager.Instance.isStorage2Solved = true;
 
-        GameStateManager.Instance.isStorageSolved = true;
-
-        SceneManager.LoadScene("OpenedCupboardScene");
+        SceneManager.LoadScene("OpenedCupboardScene2");
     }
 }
 

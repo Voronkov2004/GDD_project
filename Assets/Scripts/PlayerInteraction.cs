@@ -199,6 +199,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             openChestImage.SetActive(true);
         }
+        if (GameStateManager.Instance.isStorage2Solved && openChestImage != null)
+        {
+            openChestImage.SetActive(true);
+        }
 
         if (GameStateManager.Instance.isLockerOpened) openedLockerInScene.SetActive(true);
 
@@ -901,6 +905,8 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("ClosedCrate"))
         {
             isInsideClosedCaseTrigger = true;
+            panelText.text = "Press F to open the chest!";
+            panel?.SetActive(true);
         }
         else if (collision.CompareTag("OpenGates"))
         {
