@@ -11,6 +11,9 @@ public class ChestPuzzleWithButtons : MonoBehaviour
     public TMP_Text progressText; // Text to show the player's current progress
     public TMP_Text exitHintText; // Text to show the exit hint
 
+    public AudioSource audioSource; // Audio source for playing sounds
+    public AudioClip chestOpenSound;
+
     private string currentInput = ""; // Player's current input
     private bool isHintVisible = false; // Flag to control hint visibility
 
@@ -67,6 +70,8 @@ public class ChestPuzzleWithButtons : MonoBehaviour
         {
             // Correct input: open the chest
             Debug.Log("Correct! The chest is opening...");
+
+            audioSource.PlayOneShot(chestOpenSound);
 
             // Update the game state
             GameStateManager.Instance.isChestPuzzleSolved = true;

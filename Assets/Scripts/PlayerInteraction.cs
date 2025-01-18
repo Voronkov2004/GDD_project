@@ -9,6 +9,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     //Audio
     public AudioSource audioSource;
+    public AudioSource interactionAudioSource; //doors 
+    public AudioClip lockerOpenSound; //wc lockers openings
     public AudioClip openDoorSound;
     public AudioClip closedDoorSound;
     public AudioClip itemPickupSound; //keys pick up sound
@@ -367,6 +369,13 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private IEnumerator DelayedSceneLoad(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        LoadSceneWithSavedPosition(sceneName);
+    }
+
+
     private void HandleSceneTransitions()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -377,29 +386,29 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (GameStateManager.Instance.isKitchenUnlocked) // StateManager.kitchenUnlocked
                 {
-                    if (audioSource != null && openDoorSound != null)
+                    if (interactionAudioSource != null && openDoorSound != null)
                     {
-                        audioSource.PlayOneShot(openDoorSound);
+                        interactionAudioSource.PlayOneShot(openDoorSound);
+                        StartCoroutine(DelayedSceneLoad(kitchenSceneName, openDoorSound.length));
                     }
-                    LoadSceneWithSavedPosition(kitchenSceneName);
                 }
                 else if (InventoryManager.Instance.HasItem("Key"))
                 {
                     InventoryManager.Instance.RemoveItem("Key");
-                    if (audioSource != null && openDoorSound != null)
-                    {
-                        audioSource.PlayOneShot(openDoorSound);
-                    }
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad(kitchenSceneName, openDoorSound.length));
 
                     // Remove one key icon from the inventory UI
                     RemoveItemIconFromUI("Key");
 
                     GameStateManager.Instance.isKitchenUnlocked = true; //StateManager.kitchenUnlocked = true;
-                    LoadSceneWithSavedPosition(kitchenSceneName);
                 }
                 else
                 {
-                    audioSource.PlayOneShot(closedDoorSound);
+                    if (audioSource != null && closedDoorSound != null)
+                    {
+                        audioSource.PlayOneShot(closedDoorSound);
+                    }
                     panelText.text = "You need a key to unlock this door!";
                     panel.SetActive(true);
                 }
@@ -437,7 +446,11 @@ public class PlayerInteraction : MonoBehaviour
             else if (isInsideOutsideTrigger)
             {
                 SaveCurrentPlayerPosition();
-                LoadSceneWithSavedPosition("GameScene");
+                if (interactionAudioSource != null && openDoorSound != null)
+                {
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad("GameScene", openDoorSound.length));
+                }
             }
             else if (isBackToTheaterTrigger)
             {
@@ -454,15 +467,25 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 if (GameStateManager.Instance.isTheaterOpen)
                 {
-                    LoadSceneWithSavedPosition(theaterSceneName);
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad(theaterSceneName, openDoorSound.length));
                 }
                 else if (InventoryManager.Instance.HasItem("Key_theatre_library"))
                 {
                     GameStateManager.Instance.isTentLOpened = true;
                     GameStateManager.Instance.SaveProgress();
-                    LoadSceneWithSavedPosition(theaterSceneName);
+                    if (interactionAudioSource != null && openDoorSound != null)
+                    {
+                        interactionAudioSource.PlayOneShot(openDoorSound);
+                        StartCoroutine(DelayedSceneLoad(theaterSceneName, openDoorSound.length));
+                    }
                 }
-                else{
+                else
+                {
+                    if (audioSource != null && closedDoorSound != null)
+                    {
+                        audioSource.PlayOneShot(closedDoorSound);
+                    }
                     panelText.text = "You need a key to unlock the theater!";
                     panel.SetActive(true);
                 }
@@ -475,7 +498,11 @@ public class PlayerInteraction : MonoBehaviour
             else if (isInsideToiletTrigger)
             {
                 SaveCurrentPlayerPosition();
-                LoadSceneWithSavedPosition(toiletSceneName);
+                if (interactionAudioSource != null && openDoorSound != null)
+                {
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad(toiletSceneName, openDoorSound.length));
+                }
             }
             else if (isInsideChestTrigger)
             {
@@ -990,6 +1017,7 @@ public class PlayerInteraction : MonoBehaviour
         if (lockerPicture != null)
         {
             lockerPicture.SetActive(true);
+            interactionAudioSource.PlayOneShot(lockerOpenSound);
         }
 
         if (lockerNote != null)
