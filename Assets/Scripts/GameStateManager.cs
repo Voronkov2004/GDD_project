@@ -13,6 +13,12 @@ public class GameStateManager : MonoBehaviour
     public bool isTentLOpened = false;
     public bool isCupboardUnlocked = false; // Tracks if the cupboard has been unlocked
     public bool hasSeenMirrorSteam = false;
+    public bool isDugUp = false;
+    public bool isTheaterOpen = false;
+    public bool isStorageSolved = false;
+    public bool isFloorOpen = false;
+    public bool isNetCut = false;
+
 
     // Locations
     public bool isKitchenUnlocked = false; // Tracks if the kitchen has been unlocked
@@ -73,7 +79,11 @@ public class GameStateManager : MonoBehaviour
         PlayerPrefs.SetInt("TentLOpened", isTentLOpened ? 1 : 0); // Save TentL state
         PlayerPrefs.SetInt("CupboardUnlocked", isCupboardUnlocked ? 1 : 0); // Save cupboard state
         PlayerPrefs.SetInt("MirrorSteamSeen", hasSeenMirrorSteam ? 1 : 0); 
-
+        PlayerPrefs.SetInt("DugUp", isDugUp ? 1 : 0); 
+        PlayerPrefs.SetInt("TheaterOpen", isTheaterOpen ? 1 : 0); 
+        PlayerPrefs.SetInt("NetCut", isNetCut ? 1 : 0); 
+        PlayerPrefs.SetInt("StorageSolved", isStorageSolved ? 1 : 0); 
+        PlayerPrefs.SetInt("FloorOpen", isFloorOpen ? 1 : 0);
         // Save picked up items
         List<string> savedKeys = new List<string>();
         foreach (var item in pickedUpItems)
@@ -110,6 +120,11 @@ public class GameStateManager : MonoBehaviour
         isTentLOpened = PlayerPrefs.GetInt("TentLOpened", 0) == 1; // Load TentL state
         isCupboardUnlocked = PlayerPrefs.GetInt("CupboardUnlocked", 0) == 1; // Load cupboard state
         hasSeenMirrorSteam = PlayerPrefs.GetInt("MirrorSteamSeen", 0) == 1; 
+        isDugUp = PlayerPrefs.GetInt("DugUp", 0) == 1; 
+        isTheaterOpen = PlayerPrefs.GetInt("TheaterOpen", 0) == 1;
+        isNetCut = PlayerPrefs.GetInt("NetCut", 0) == 1;
+        isStorageSolved = PlayerPrefs.GetInt("StorageSolved", 0) == 1; 
+        isFloorOpen = PlayerPrefs.GetInt("FloorOpen", 0) == 1;
 
         // Load picked up items
         pickedUpItems = new Dictionary<string, bool>();
@@ -160,6 +175,12 @@ public class GameStateManager : MonoBehaviour
         isTentLOpened = false;
         isCupboardUnlocked = false;
         hasSeenMirrorSteam = false;
+        isTheaterOpen = false;
+        isNetCut = false;
+        isStorageSolved = false;
+        isFloorOpen = false;
+
+        isDugUp = false;
         //items
         pickedUpItems.Clear();
         //scenes and player locations

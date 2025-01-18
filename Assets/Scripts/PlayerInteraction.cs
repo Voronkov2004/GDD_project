@@ -9,6 +9,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     //Audio
     public AudioSource audioSource;
+    public AudioSource interactionAudioSource; //doors 
+    public AudioClip lockerOpenSound; //wc lockers openings
     public AudioClip openDoorSound;
     public AudioClip closedDoorSound;
     public AudioClip itemPickupSound; //keys pick up sound
@@ -28,6 +30,9 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
+    public GameObject MacheteImagePrefab;
+    public GameObject KeysGatesToPondImagePrefab;
+    public GameObject CrowBarImage;
     public Transform inventoryUI;
     public GameObject notePanel;
     public TextMeshProUGUI noteTextUI;
@@ -36,13 +41,16 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject lockerTrigger;
     public GameObject closedLockerPanel;
     public GameObject openLockerPanel;
+    public GameObject dirtPile;
     public GameObject openedLockerInScene;
     public GameObject openedLocker;
+    public GameObject openedFloor;
     public GameObject mirrorCanvas; // Canvas displaying the mirror UI
     public Image mirrorImage; // Image for the zoomed-in mirror
     public Image steamImage; // Image for the steam effect
     public Image dimBackground; // Dimmed background for the mirror
     public float steamAnimationDuration = 2f; // Duration of the steam animation
+    public GameObject openChestImage;
 
     // Scene Names
     public string kitchenSceneName;  
@@ -72,29 +80,38 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideLockerTrigger = false;
     private bool isInsideBoltCutterTrigger = false;
     private bool isInsideLocker_ChainsTrigger = false;
+    private bool isFinalNote = false;
     private bool isLockerInteractionActive = false;
     private bool isClosedLockerSceneOpen = false;
     private bool isInsideChestTrigger = false;
     private bool isInsideTowelsGameTrigger = false;
+    private bool isInsideKeysGatesToPondTrigger = false;
     private bool isTheaterTrigger = false;
     private bool isStorageTrigger = false;
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
+    private bool isInsideNetTrigger = false;
     private bool isInsideTentTrigger = false;
+    private bool isMacheteTrigger = false;
     private bool isRealKitchenTrigger = false;
     private bool isInsideTheatreKeyTrigger = false;
     private bool isInsideCupboardTrigger = false;
     private bool isNearMirror = false;
     private bool hasSeenMirrorSteam = false;
-
+    private bool isInsideChestWithCodeTrigger = false;
+    private bool isInsideCrowbarTrigger = false;
+    private bool isInsidePickMeTrigger = false;
 
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
     private GameObject currentBattery;
+    private GameObject currentMachete;
     private GameObject currentNote;
     private GameObject currentBoltCutter;
     private GameObject currentTheatreKey;
+    private GameObject currentKeysGatesToPond;
+    private GameObject currentCrowbar;
 
     void Start()
     {
@@ -102,7 +119,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedLocker.SetActive(false);
         }
-
+        if (openedFloor != null)
+        {
+            openedFloor.SetActive(GameStateManager.Instance.isFloorOpen);
+        }
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
 
@@ -116,6 +136,14 @@ public class PlayerInteraction : MonoBehaviour
         if (GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
         {
             openedLocker.SetActive(true);
+        }
+        if (!GameStateManager.Instance.isCupboardUnlocked && openedLocker != null)
+        {
+            openedFloor.SetActive(true);
+        }
+        if (!GameStateManager.Instance.isDugUp && dirtPile != null)
+        {
+            dirtPile.SetActive(false);
         }
         if (InventoryManager.Instance == null)
         {
@@ -141,6 +169,11 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             DeactivateLockerContent();
+        }
+
+        if (GameStateManager.Instance.isStorageSolved && openChestImage != null)
+        {
+            openChestImage.SetActive(true);
         }
 
         if (GameStateManager.Instance.isLockerOpened) openedLockerInScene.SetActive(true);
@@ -181,6 +214,11 @@ public class PlayerInteraction : MonoBehaviour
                     GameObject combinedIcon = Instantiate(combinedFlashlightImagePrefab, inventoryUI);
                     combinedIcon.name = "CombinedFlashlight";
                 }
+                else if (tag == "KeysGatesToPond" && KeysGatesToPondImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject KeysGatesToPondIcon = Instantiate(KeysGatesToPondImagePrefab, inventoryUI);
+                    KeysGatesToPondIcon.name = "KeysGatesToPond";
+                }
                 else if (tag == "BoltCutter" && boltCutterImagePrefab != null && inventoryUI != null)
                 {
                     GameObject boltCutterIcon = Instantiate(boltCutterImagePrefab, inventoryUI);
@@ -188,8 +226,18 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else if (tag == "Key_theatre_library" && theatreKeyImagePrefab != null && inventoryUI != null)
                 {
-                    GameObject boltCutterIcon = Instantiate(theatreKeyImagePrefab, inventoryUI);
-                    boltCutterIcon.name = "Key_theatre_library";
+                    GameObject theatreKey = Instantiate(theatreKeyImagePrefab, inventoryUI);
+                    theatreKey.name = "Key_theatre_library";
+                }
+                else if (tag == "Machete" && MacheteImagePrefab != null && inventoryUI != null)
+                {
+                    GameObject machete = Instantiate(MacheteImagePrefab, inventoryUI);
+                    machete.name = "Machete";
+                }
+                else if (tag == "Crowbar" && CrowBarImage != null && inventoryUI != null)
+                {
+                    GameObject crowBar = Instantiate(CrowBarImage, inventoryUI);
+                    crowBar.name = "Crowbar";
                 }
             }
         }
@@ -213,6 +261,19 @@ public class PlayerInteraction : MonoBehaviour
                 GameStateManager.Instance.isOriginallyLockerOpened = true;
                 ActivateLockerContent();
                 GameStateManager.Instance.SaveProgress();
+            }
+        }
+
+        if (isInsideNetTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (InventoryManager.Instance.HasItem("Machete"))
+            {
+                StartCoroutine(HandleCuttingNet());
+            }
+            else
+            {
+                panelText.text = "It seems the net got caught on something, I can't get it out. I need something sharp to cut it.";
+                panel?.SetActive(true);
             }
         }
 
@@ -254,6 +315,14 @@ public class PlayerInteraction : MonoBehaviour
             }
             ProcessItemPickup(currentFlashlight, "Flashlight1", flashlightImagePrefab);
         }
+        else if (isInsideKeysGatesToPondTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && itemPickupSound != null)
+            {
+                audioSource.PlayOneShot(itemPickupSound);
+            }
+            ProcessItemPickup(currentKeysGatesToPond, "KeysGatesToPond", KeysGatesToPondImagePrefab);
+        }
         else if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
         {
             if (audioSource != null && batteryPickupSound != null)
@@ -261,6 +330,22 @@ public class PlayerInteraction : MonoBehaviour
                 audioSource.PlayOneShot(batteryPickupSound);
             }
             ProcessItemPickup(currentBattery, "Battery", batteryImagePrefab);
+        }
+        else if (isMacheteTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && metalItemPickupSound != null)
+            {
+                audioSource.PlayOneShot(metalItemPickupSound);
+            }
+            ProcessItemPickup(currentMachete, "Machete", MacheteImagePrefab);
+        }
+        else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && metalItemPickupSound != null)
+            {
+                audioSource.PlayOneShot(metalItemPickupSound);
+            }
+            ProcessItemPickup(currentBoltCutter, "BoltCutter", boltCutterImagePrefab);
         }
         else if (isInsideBoltCutterTrigger && Input.GetKeyDown(KeyCode.F))
         {
@@ -274,6 +359,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             audioSource.PlayOneShot(itemPickupSound);
             ProcessItemPickup(currentTheatreKey, "Key_theatre_library", theatreKeyImagePrefab);
+        }
+        else if (isInsideCrowbarTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentCrowbar, "Crowbar", CrowBarImage);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
     }
@@ -343,6 +433,13 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private IEnumerator DelayedSceneLoad(string sceneName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        LoadSceneWithSavedPosition(sceneName);
+    }
+
+
     private void HandleSceneTransitions()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -353,29 +450,29 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (GameStateManager.Instance.isKitchenUnlocked) // StateManager.kitchenUnlocked
                 {
-                    if (audioSource != null && openDoorSound != null)
+                    if (interactionAudioSource != null && openDoorSound != null)
                     {
-                        audioSource.PlayOneShot(openDoorSound);
+                        interactionAudioSource.PlayOneShot(openDoorSound);
+                        StartCoroutine(DelayedSceneLoad(kitchenSceneName, openDoorSound.length));
                     }
-                    LoadSceneWithSavedPosition(kitchenSceneName);
                 }
                 else if (InventoryManager.Instance.HasItem("Key"))
                 {
                     InventoryManager.Instance.RemoveItem("Key");
-                    if (audioSource != null && openDoorSound != null)
-                    {
-                        audioSource.PlayOneShot(openDoorSound);
-                    }
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad(kitchenSceneName, openDoorSound.length));
 
                     // Remove one key icon from the inventory UI
                     RemoveItemIconFromUI("Key");
 
                     GameStateManager.Instance.isKitchenUnlocked = true; //StateManager.kitchenUnlocked = true;
-                    LoadSceneWithSavedPosition(kitchenSceneName);
                 }
                 else
                 {
-                    audioSource.PlayOneShot(closedDoorSound);
+                    if (audioSource != null && closedDoorSound != null)
+                    {
+                        audioSource.PlayOneShot(closedDoorSound);
+                    }
                     panelText.text = "You need a key to unlock this door!";
                     panel.SetActive(true);
                 }
@@ -413,7 +510,11 @@ public class PlayerInteraction : MonoBehaviour
             else if (isInsideOutsideTrigger)
             {
                 SaveCurrentPlayerPosition();
-                LoadSceneWithSavedPosition("GameScene");
+                if (interactionAudioSource != null && openDoorSound != null)
+                {
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad("GameScene", openDoorSound.length));
+                }
             }
             else if (isBackToTheaterTrigger)
             {
@@ -428,17 +529,66 @@ public class PlayerInteraction : MonoBehaviour
             else if (isTheaterTrigger)
             {
                 SaveCurrentPlayerPosition();
-                LoadSceneWithSavedPosition(theaterSceneName);
+                if (GameStateManager.Instance.isTheaterOpen)
+                {
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad(theaterSceneName, openDoorSound.length));
+                }
+                else if (InventoryManager.Instance.HasItem("Key_theatre_library"))
+                {
+                    GameStateManager.Instance.isTentLOpened = true;
+                    GameStateManager.Instance.SaveProgress();
+                    if (interactionAudioSource != null && openDoorSound != null)
+                    {
+                        interactionAudioSource.PlayOneShot(openDoorSound);
+                        StartCoroutine(DelayedSceneLoad(theaterSceneName, openDoorSound.length));
+                    }
+                }
+                else
+                {
+                    if (audioSource != null && closedDoorSound != null)
+                    {
+                        audioSource.PlayOneShot(closedDoorSound);
+                    }
+                    panelText.text = "You need a key to unlock the theater!";
+                    panel.SetActive(true);
+                }
             }
             else if (isInsideBoardTrigger)
             {
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(boardSceneName); // Transition to "Board" scene
             }
+            else if (isInsidePickMeTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("Crowbar"))
+                {
+                    panelText.text = "Press F to break the floor.";
+                    panel.SetActive(true);
+                    if (audioSource != null && metalItemPickupSound != null)
+                    {
+                        audioSource.PlayOneShot(metalItemPickupSound);
+                    }
+                    InventoryManager.Instance.RemoveItem("Crowbar");
+                    RemoveItemIconFromUI("Crowbar");
+                    openedFloor.SetActive(true);
+                    GameStateManager.Instance.isFloorOpen = true;
+                    GameStateManager.Instance.SaveProgress();
+            
+                }
+                else{
+                    panelText.text = "You need a crowbar to break the floor!";
+                    panel.SetActive(true);
+                }
+            }
             else if (isInsideToiletTrigger)
             {
                 SaveCurrentPlayerPosition();
-                LoadSceneWithSavedPosition(toiletSceneName);
+                if (interactionAudioSource != null && openDoorSound != null)
+                {
+                    interactionAudioSource.PlayOneShot(openDoorSound);
+                    StartCoroutine(DelayedSceneLoad(toiletSceneName, openDoorSound.length));
+                }
             }
             else if (isInsideChestTrigger)
             {
@@ -470,6 +620,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(librarySceneName);
+            }
+            else if (isInsideChestWithCodeTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition("ClosedCupboardScene");
             }
             else if (isInsideCupboardTrigger)
         {
@@ -560,6 +715,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the flashlight!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("KeysGatesToPond"))
+        {
+            isInsideKeysGatesToPondTrigger = true;
+            currentKeysGatesToPond = collision.gameObject;
+            panelText.text = "Press F to pick up the keys for the gates to the pond!";
+            panel?.SetActive(true);
+        }
         if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = true;
@@ -571,6 +733,13 @@ public class PlayerInteraction : MonoBehaviour
             isInsideBatteryTrigger = true;
             currentBattery = collision.gameObject;
             panelText.text = "Press F to pick up the battery!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("Crowbar"))
+        {
+            isInsideCrowbarTrigger = true;
+            currentCrowbar = collision.gameObject;
+            panelText.text = "Press F to pick up the crowbar!";
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Kitchen"))
@@ -591,6 +760,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to climb the ladder!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Machete"))
+        {
+            isMacheteTrigger = true;
+            currentMachete = collision.gameObject;
+            panelText.text = "Press F to pick up the machete!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("LadderDown"))
         {
             isInsideLadderDownTrigger = true;
@@ -607,6 +783,24 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideBoardTrigger = true;
             panelText.text = "Press F to view the board!";
+            panel?.SetActive(true);
+        }
+        else if (collision.CompareTag("PickMe"))
+        {
+            isInsidePickMeTrigger = true;
+        }
+        else if (collision.CompareTag("Net"))
+        {
+            isInsideNetTrigger = true;
+
+            if (InventoryManager.Instance.HasItem("Machete"))
+            {
+                panelText.text = "Press F to cut the net with the machete.";
+            }
+            else
+            {
+                panelText.text = "It seems the net got caught on something, I can't get it out. I need something sharp to cut it.";
+            }
             panel?.SetActive(true);
         }
         else if (collision.CompareTag("Tent"))
@@ -709,6 +903,12 @@ public class PlayerInteraction : MonoBehaviour
                 panel.SetActive(true);
             }
         }
+        else if (collision.CompareTag("ChestWithCode"))
+        {
+            isInsideChestWithCodeTrigger = true;
+            panelText.text = "Press F to inspect the cupboard.";
+            panel?.SetActive(true);
+        }
     }
 
     void OnTriggerExit2D(Collider2D collision)
@@ -723,10 +923,29 @@ public class PlayerInteraction : MonoBehaviour
             isInsideFlashlightTrigger = false;
             currentFlashlight = null;
         }
+        else if (collision.CompareTag("KeysGatesToPond"))
+        {
+            isInsideKeysGatesToPondTrigger = false;
+            currentKeysGatesToPond = null;
+        }
+        else if (collision.CompareTag("Tutorial1"))
+        {
+            //isInsideFirstTutorialTrigger = false;
+            panel?.SetActive(false);
+        }
         else if (collision.CompareTag("Battery"))
         {
             isInsideBatteryTrigger = false;
             currentBattery = null;
+        }
+        else if (collision.CompareTag("PickMe"))
+        {
+            isInsidePickMeTrigger = false;
+        }
+        else if (collision.CompareTag("Battery"))
+        {
+            isInsideCrowbarTrigger = false;
+            currentCrowbar = null;
         }
         if (collision.CompareTag("Cupboard"))
         {
@@ -805,6 +1024,17 @@ public class PlayerInteraction : MonoBehaviour
             currentBoltCutter = null;
             panel?.SetActive(false);
         }
+        else if (collision.CompareTag("Net"))
+        {
+            isInsideNetTrigger = false;
+            panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("Machete"))
+        {
+            isMacheteTrigger = false;
+            currentMachete = null;
+            panel?.SetActive(false);
+        }
         else if (collision.CompareTag("Chains"))
         {
             isInsideLocker_ChainsTrigger = false;
@@ -829,6 +1059,11 @@ public class PlayerInteraction : MonoBehaviour
                 panel.SetActive(false);
             }
         }
+        else if (collision.CompareTag("ChestWithCode"))
+        {
+            isInsideChestWithCodeTrigger = false;
+            panel?.SetActive(false);
+        }
 
         panel?.SetActive(false);
     }
@@ -843,6 +1078,11 @@ public class PlayerInteraction : MonoBehaviour
                 CloseNoteUI();
                 Time.timeScale = 1f; // resume the game
                 isNoteOpen = false;
+
+                if (isFinalNote)
+                {
+                    SceneManager.LoadScene("TheEnd");
+                }
 
                 // Show message if defined in the Note
                 if (currentNote != null && currentNote.CompareTag("Note"))
@@ -868,6 +1108,7 @@ public class PlayerInteraction : MonoBehaviour
                     isNoteOpen = true;
                     panel?.SetActive(false); // hide the hint
 
+                    isFinalNote = noteComponent.isFinalNote;
 
                     if (notePickupSound != null)
                     {
@@ -932,6 +1173,7 @@ public class PlayerInteraction : MonoBehaviour
         if (lockerPicture != null)
         {
             lockerPicture.SetActive(true);
+            interactionAudioSource.PlayOneShot(lockerOpenSound);
         }
 
         if (lockerNote != null)
@@ -1063,6 +1305,31 @@ public class PlayerInteraction : MonoBehaviour
             Debug.LogWarning("PlayerMovement not found on MainCharacter!");
         }
     }
+
+    private IEnumerator HandleCuttingNet()
+    {
+        panel?.SetActive(false);
+
+        GameStateManager.Instance.isNetCut = true;
+        GameStateManager.Instance.SaveProgress();
+
+        yield return new WaitForSeconds(2f);
+
+        foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+        {
+            activator.UpdateActivator();
+        }
+
+        panelText.text = "You found a note.";
+        panel?.SetActive(true);
+
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.F));
+        panel?.SetActive(false);
+
+        Debug.LogWarning("Now we show the end scene!");
+        //SceneManager.LoadScene("TheEnd");
+    }
+
 
     private void OpenClosedLockerUI()
     {

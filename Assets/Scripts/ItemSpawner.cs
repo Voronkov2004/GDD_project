@@ -58,6 +58,14 @@ public class ItemSpawner : MonoBehaviour
         {
             return GameStateManager.Instance.isCupboardUnlocked;
         }
+        else if (requiredPuzzle == "Storage")
+        {
+            return GameStateManager.Instance.isStorageSolved;
+        }
+        else if (requiredPuzzle == "Machete")
+        {
+            return GameStateManager.Instance.isNetCut;
+        }
         return true;
     }
 

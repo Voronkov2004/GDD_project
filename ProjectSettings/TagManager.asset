@@ -34,6 +34,19 @@ TagManager:
   - Cupboard
   - Wood
   - Mirror
+  - Court
+  - StorageBox
+  - ChestWithCode
+  - Crowbar
+  - Tutorial3
+  - Tutorial2
+  - Tutorial1
+  - Sand
+  - Machete
+  - CrowbarImage
+  - Net
+  - PickMe
+  - KeysGatesToPond
   layers:
   - Default
   - TransparentFX
