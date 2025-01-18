@@ -1291,6 +1291,12 @@ public class PlayerInteraction : MonoBehaviour
             currentShovel = null;
             panel?.SetActive(false);
         }
+        else if (collision.CompareTag("Crowbar"))
+        {
+            isInsideCrowbarTrigger = false;
+            currentCrowbar = null;
+            panel?.SetActive(false);
+        }
         else if (collision.CompareTag("Chains"))
         {
             isInsideLocker_ChainsTrigger = false;
