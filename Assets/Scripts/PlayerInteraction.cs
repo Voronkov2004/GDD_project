@@ -12,7 +12,11 @@ public class PlayerInteraction : MonoBehaviour
     public AudioSource interactionAudioSource; //doors 
     public AudioClip lockerOpenSound; //wc lockers openings
     public AudioClip openDoorSound;
+    public AudioClip keyOpeningCupboard; //using key to open cabinets
+    public AudioClip chainsSound; //chains
+    public AudioClip knifeCutting; //machete in the end
     public AudioClip closedDoorSound;
+    public AudioClip breakingWood;
     public AudioClip itemPickupSound; //keys pick up sound
     public AudioClip notePickupSound; //notes, diary, poster pick up sound
     public AudioClip batteryPickupSound; // batteries' pick up sound
@@ -107,7 +111,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsidePickMeTrigger = false;
     private bool isInsideGateTrigger = false;
     private bool isInsideOpenGateTrigger = false;
-
+    private bool isInsideCourtTrigger = false;
+    private bool isInsideClosedCaseTrigger = false;
     // Current Objects
     private GameObject currentKey;
     private GameObject currentFlashlight;
@@ -138,6 +143,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             closedGates.SetActive(!GameStateManager.Instance.isGatesOpen);
         }
+        if (dirtPile != null)
+        {
+            dirtPile.SetActive(GameStateManager.Instance.isDugUp);
+        }
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
 
@@ -156,9 +165,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedFloor.SetActive(true);
         }
-        if (!GameStateManager.Instance.isDugUp && dirtPile != null)
+        if (GameStateManager.Instance.isDugUp && dirtPile != null)
         {
-            dirtPile.SetActive(false);
+            dirtPile.SetActive(true);
         }
         if (InventoryManager.Instance == null)
         {
@@ -615,7 +624,7 @@ public class PlayerInteraction : MonoBehaviour
                     panel.SetActive(true);
                     if (audioSource != null && metalItemPickupSound != null)
                     {
-                        audioSource.PlayOneShot(metalItemPickupSound);
+                        audioSource.PlayOneShot(breakingWood);
                     }
                     InventoryManager.Instance.RemoveItem("Crowbar");
                     RemoveItemIconFromUI("Crowbar");
@@ -678,10 +687,42 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition(librarySceneName);
             }
+            else if (isInsideClosedCaseTrigger)
+            {
+                SaveCurrentPlayerPosition();
+                LoadSceneWithSavedPosition("ClosedCupboardScene2");
+            }
             else if (isInsideChestWithCodeTrigger)
             {
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition("ClosedCupboardScene");
+            }
+            else if (isInsideCourtTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("Shovel"))
+                {
+                    InventoryManager.Instance.RemoveItem("Shovel");
+                    RemoveItemIconFromUI("Shovel");
+                    dirtPile.SetActive(true);
+                    GameStateManager.Instance.isDugUp = true;
+                    GameStateManager.Instance.SaveProgress();
+                    panel.SetActive(false);
+
+                    foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
+                }
+                else
+                {
+                    panelText.text = "I need a shovel to dig here.";
+                    panel.SetActive(true);
+                }
             }
             else if (isInsideCupboardTrigger)
         {
@@ -849,7 +890,7 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to view the board!";
             panel?.SetActive(true);
         }
-        else if (collision.CompareTag("PickMe"))
+        else if (collision.CompareTag("PickMe") && !GameStateManager.Instance.isFloorOpen)
         {
             isInsidePickMeTrigger = true;
         }
@@ -857,11 +898,21 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideGateTrigger = true;
         }
+        else if (collision.CompareTag("ClosedCrate"))
+        {
+            isInsideClosedCaseTrigger = true;
+        }
         else if (collision.CompareTag("OpenGates"))
         {
             panelText.text = "Press F to open the gates!";
             panel?.SetActive(true);
             isInsideOpenGateTrigger = true;
+        }
+        else if (collision.CompareTag("Court") && !GameStateManager.Instance.isDugUp)
+        {
+            panelText.text = "Press F to Dig!";
+            panel?.SetActive(true);
+            isInsideCourtTrigger = true;
         }
         else if (collision.CompareTag("Net"))
         {
@@ -1021,6 +1072,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsidePickMeTrigger = false;
         }
+        else if (collision.CompareTag("ClosedCrate"))
+        {
+            isInsideClosedCaseTrigger = false;
+        }
         if (collision.CompareTag("Cupboard"))
         {
             isInsideCupboardTrigger = false;
@@ -1029,6 +1084,10 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Kitchen"))
         {
             isInsideKitchenTrigger = false;
+        }
+        else if (collision.CompareTag("Court"))
+        {
+            isInsideCourtTrigger = false;
         }
         else if (collision.CompareTag("OpenGates"))
         {
@@ -1400,6 +1459,8 @@ public class PlayerInteraction : MonoBehaviour
 
         GameStateManager.Instance.isNetCut = true;
         GameStateManager.Instance.SaveProgress();
+
+        interactionAudioSource.PlayOneShot(knifeCutting);
 
         yield return new WaitForSeconds(2f);
 

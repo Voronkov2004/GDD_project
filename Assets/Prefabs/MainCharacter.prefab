@@ -201,11 +201,12 @@ MonoBehaviour:
   audioSource: {fileID: 1590149124715476097}
   interactionAudioSource: {fileID: 2102048380413639210}
   lockerOpenSound: {fileID: 8300000, guid: 7676064c4bb2c044789360d1306268d5, type: 3}
-  lockerBoltCutter: {fileID: 8300000, guid: 22eb9b0eec6914945a3d108a9cba32f8, type: 3}
   openDoorSound: {fileID: 8300000, guid: eccf2b8a62d094445ae8c907d54d3ccf, type: 3}
   keyOpeningCupboard: {fileID: 8300000, guid: 3394608702b108f4789a70f1c4d9c295, type: 3}
   chainsSound: {fileID: 8300000, guid: 9807d2c94689f314baca05714ed37b5e, type: 3}
+  knifeCutting: {fileID: 8300000, guid: bd1bb6eadd709b14795ceb9fe3fbed0f, type: 3}
   closedDoorSound: {fileID: 8300000, guid: e914254f5ddcae2428fa2f5d81ee0e0e, type: 3}
+  breakingWood: {fileID: 8300000, guid: e7724fe1ad995914f99051a1bcbec988, type: 3}
   itemPickupSound: {fileID: 8300000, guid: 795bbc0d1a8708346965f3bfdf77565a, type: 3}
   notePickupSound: {fileID: 8300000, guid: f1a2607440a7a0d49920deb58c9e583c, type: 3}
   batteryPickupSound: {fileID: 8300000, guid: f7947ed0399d1a34688b2304309e0273, type: 3}
@@ -218,6 +219,7 @@ MonoBehaviour:
   keyKitchenLockerImagePrefab: {fileID: 1688504157269908399, guid: 2eca3e662c84b4cc5827860c0fbe6518, type: 3}
   flashlightImagePrefab: {fileID: 7260888862901825936, guid: 6196f84eb5bae47eea2573c32a42529c, type: 3}
   batteryImagePrefab: {fileID: 4541410994518025369, guid: 0b3b4e7329b86420db65cd765fad92b4, type: 3}
+  shovelImagePrefab: {fileID: 0}
   combinedFlashlightImagePrefab: {fileID: 5395974015940973992, guid: 57d07970aa2114c568d1bf4ae9d77af5, type: 3}
   boltCutterImagePrefab: {fileID: 9096735647813404745, guid: 87b2ca8a9f06c7c48ab6f7b9e4ac7cfa, type: 3}
   theatreKeyImagePrefab: {fileID: 0}
