@@ -430,12 +430,12 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (isInsideCrowbarTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            audioSource.PlayOneShot(itemPickupSound);
+            audioSource.PlayOneShot(metalItemPickupSound);
             ProcessItemPickup(currentCrowbar, "Crowbar", CrowBarImage);
         }
         else if (isShovelTrigger && Input.GetKeyDown(KeyCode.F))
         {
-            audioSource.PlayOneShot(itemPickupSound);
+            audioSource.PlayOneShot(metalItemPickupSound);
             ProcessItemPickup(currentShovel, "Shovel", shovelImagePrefab);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
@@ -1258,6 +1258,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             isInsideChestWithCodeTrigger = false;
             panel?.SetActive(false);
+        }
+        else if (collision.CompareTag("GoldKey"))
+        {
+            isInsideGoldKeyTrigger = false;
+            currentGoldKey = null;
         }
 
         panel?.SetActive(false);
