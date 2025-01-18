@@ -85,7 +85,6 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsideKeysGatesToPondTrigger = false;
     private bool isTheaterTrigger = false;
     private bool isStorageTrigger = false;
-    private bool isInsideFirstTutorialTrigger = true;
     private bool isBackToTheaterTrigger = false;
     private bool isLibraryTrigger = false;
     private bool isInsideNetTrigger = false;
@@ -97,6 +96,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isNearMirror = false;
     private bool hasSeenMirrorSteam = false;
     private bool isInsideChestWithCodeTrigger = false;
+    private bool isInsideCrowbarTrigger = false;
 
 
     // Current Objects
@@ -108,6 +108,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject currentBoltCutter;
     private GameObject currentTheatreKey;
     private GameObject currentKeysGatesToPond;
+    private GameObject currentCrowbar;
 
     void Start()
     {
@@ -242,12 +243,6 @@ public class PlayerInteraction : MonoBehaviour
             CombineFlashlightAndBattery();
         }
 
-        if (isInsideFirstTutorialTrigger)
-            {
-                panelText.text = "To move around in the game, use the keys 'W' - up, 'A' - left, 'S' - down, and 'D' - right.";
-                panel.SetActive(true);
-            }
-
         if (isInsideLockerTrigger && Input.GetKeyDown(KeyCode.F))
         {
             if (!GameStateManager.Instance.isOriginallyLockerOpened)
@@ -317,6 +312,14 @@ public class PlayerInteraction : MonoBehaviour
             }
             ProcessItemPickup(currentKeysGatesToPond, "KeysGatesToPond", KeysGatesToPondImagePrefab);
         }
+        else if (isInsideBatteryTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (audioSource != null && batteryPickupSound != null)
+            {
+                audioSource.PlayOneShot(batteryPickupSound);
+            }
+            ProcessItemPickup(currentBattery, "Battery", batteryImagePrefab);
+        }
         else if (isMacheteTrigger && Input.GetKeyDown(KeyCode.F))
         {
             if (audioSource != null && metalItemPickupSound != null)
@@ -345,6 +348,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             audioSource.PlayOneShot(itemPickupSound);
             ProcessItemPickup(currentTheatreKey, "Key_theatre_library", theatreKeyImagePrefab);
+        }
+        else if (isInsideCrowbarTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            audioSource.PlayOneShot(itemPickupSound);
+            ProcessItemPickup(currentCrowbar, "Crowbar", CrowBarImage);
         }
         // medallion pick up sound dopisat kogda on budet gotov v igre
     }
@@ -669,6 +677,13 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to pick up the battery!";
             panel?.SetActive(true);
         }
+        else if (collision.CompareTag("Crowbar"))
+        {
+            isInsideCrowbarTrigger = true;
+            currentCrowbar = collision.gameObject;
+            panelText.text = "Press F to pick up the crowbar!";
+            panel?.SetActive(true);
+        }
         else if (collision.CompareTag("Kitchen"))
         {
             isInsideKitchenTrigger = true;
@@ -853,13 +868,18 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (collision.CompareTag("Tutorial1"))
         {
-            isInsideFirstTutorialTrigger = false;
+            //isInsideFirstTutorialTrigger = false;
             panel?.SetActive(false);
         }
         else if (collision.CompareTag("Battery"))
         {
             isInsideBatteryTrigger = false;
             currentBattery = null;
+        }
+        else if (collision.CompareTag("Battery"))
+        {
+            isInsideCrowbarTrigger = false;
+            currentCrowbar = null;
         }
         if (collision.CompareTag("Cupboard"))
         {
