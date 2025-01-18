@@ -16,6 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip chainsSound; //chains
     public AudioClip knifeCutting; //machete in the end
     public AudioClip closedDoorSound;
+    public AudioClip breakingWood;
     public AudioClip itemPickupSound; //keys pick up sound
     public AudioClip notePickupSound; //notes, diary, poster pick up sound
     public AudioClip batteryPickupSound; // batteries' pick up sound
@@ -623,7 +624,7 @@ public class PlayerInteraction : MonoBehaviour
                     panel.SetActive(true);
                     if (audioSource != null && metalItemPickupSound != null)
                     {
-                        audioSource.PlayOneShot(metalItemPickupSound);
+                        audioSource.PlayOneShot(breakingWood);
                     }
                     InventoryManager.Instance.RemoveItem("Crowbar");
                     RemoveItemIconFromUI("Crowbar");
