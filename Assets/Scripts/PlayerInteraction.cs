@@ -16,6 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     public AudioClip chainsSound; //chains
     public AudioClip knifeCutting; //machete in the end
     public AudioClip closedDoorSound;
+    public AudioClip shovelSound;
     public AudioClip breakingWood;
     public AudioClip itemPickupSound; //keys pick up sound
     public AudioClip notePickupSound; //notes, diary, poster pick up sound
@@ -1004,6 +1005,7 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Court") && !GameStateManager.Instance.isDugUp)
         {
             panelText.text = "Press F to Dig!";
+            interactionAudioSource.PlayOneShot(shovelSound);
             panel?.SetActive(true);
             isInsideCourtTrigger = true;
         }
