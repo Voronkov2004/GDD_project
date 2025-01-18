@@ -107,6 +107,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool isInsidePickMeTrigger = false;
     private bool isInsideGateTrigger = false;
     private bool isInsideOpenGateTrigger = false;
+    private bool isInsideCourtTrigger = false;
 
     // Current Objects
     private GameObject currentKey;
@@ -138,6 +139,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             closedGates.SetActive(!GameStateManager.Instance.isGatesOpen);
         }
+        if (dirtPile != null)
+        {
+            dirtPile.SetActive(GameStateManager.Instance.isDugUp);
+        }
         if (mirrorCanvas != null)
             mirrorCanvas.SetActive(false);
 
@@ -156,9 +161,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             openedFloor.SetActive(true);
         }
-        if (!GameStateManager.Instance.isDugUp && dirtPile != null)
+        if (GameStateManager.Instance.isDugUp && dirtPile != null)
         {
-            dirtPile.SetActive(false);
+            dirtPile.SetActive(true);
         }
         if (InventoryManager.Instance == null)
         {
@@ -683,6 +688,33 @@ public class PlayerInteraction : MonoBehaviour
                 SaveCurrentPlayerPosition();
                 LoadSceneWithSavedPosition("ClosedCupboardScene");
             }
+            else if (isInsideCourtTrigger)
+            {
+                if (InventoryManager.Instance.HasItem("Shovel"))
+                {
+                    InventoryManager.Instance.RemoveItem("Shovel");
+                    RemoveItemIconFromUI("Shovel");
+                    dirtPile.SetActive(true);
+                    GameStateManager.Instance.isDugUp = true;
+                    GameStateManager.Instance.SaveProgress();
+                    panel.SetActive(false);
+
+                    foreach (ItemSpawner spawner in FindObjectsOfType<ItemSpawner>())
+                    {
+                        spawner.UpdateItemSpawner();
+                    }
+
+                    foreach (ObjectActivator activator in FindObjectsOfType<ObjectActivator>())
+                    {
+                        activator.UpdateActivator();
+                    }
+                }
+                else
+                {
+                    panelText.text = "I need a shovel to dig here.";
+                    panel.SetActive(true);
+                }
+            }
             else if (isInsideCupboardTrigger)
         {
             if (GameStateManager.Instance.isCupboardUnlocked)
@@ -849,7 +881,7 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to view the board!";
             panel?.SetActive(true);
         }
-        else if (collision.CompareTag("PickMe"))
+        else if (collision.CompareTag("PickMe") && !GameStateManager.Instance.isFloorOpen)
         {
             isInsidePickMeTrigger = true;
         }
@@ -862,6 +894,12 @@ public class PlayerInteraction : MonoBehaviour
             panelText.text = "Press F to open the gates!";
             panel?.SetActive(true);
             isInsideOpenGateTrigger = true;
+        }
+        else if (collision.CompareTag("Court") && !GameStateManager.Instance.isDugUp)
+        {
+            panelText.text = "Press F to Dig!";
+            panel?.SetActive(true);
+            isInsideCourtTrigger = true;
         }
         else if (collision.CompareTag("Net"))
         {
@@ -1029,6 +1067,10 @@ public class PlayerInteraction : MonoBehaviour
         else if (collision.CompareTag("Kitchen"))
         {
             isInsideKitchenTrigger = false;
+        }
+        else if (collision.CompareTag("Court"))
+        {
+            isInsideCourtTrigger = false;
         }
         else if (collision.CompareTag("OpenGates"))
         {
