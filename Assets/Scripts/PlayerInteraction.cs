@@ -32,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject flashlightImagePrefab;
     public GameObject batteryImagePrefab;
     public GameObject shovelImagePrefab;
+    public TextMeshProUGUI lockerMessage;
     public GameObject combinedFlashlightImagePrefab;
     public GameObject boltCutterImagePrefab;
     public GameObject theatreKeyImagePrefab;
@@ -1535,6 +1536,10 @@ public class PlayerInteraction : MonoBehaviour
             closedLockerPanel.SetActive(true);
             DisablePlayerMovement();
             isClosedLockerSceneOpen = true;
+            if (!InventoryManager.Instance.HasItem("BoltCutter"))
+            {
+                lockerMessage.SetActive(true);
+            }
         }
     }
 
@@ -1545,6 +1550,7 @@ public class PlayerInteraction : MonoBehaviour
             closedLockerPanel.SetActive(false);
             EnablePlayerMovement();
             isClosedLockerSceneOpen = false;
+            lockerMessage.SetActive(false);
         }
     }
 
