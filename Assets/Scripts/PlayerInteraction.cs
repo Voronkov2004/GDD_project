@@ -11,6 +11,7 @@ public class PlayerInteraction : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource interactionAudioSource; //doors 
     public AudioClip lockerOpenSound; //wc lockers openings
+    public AudioClip lockerBoltCutter; //opening locker with bolt cutter
     public AudioClip openDoorSound;
     public AudioClip closedDoorSound;
     public AudioClip itemPickupSound; //keys pick up sound
@@ -250,6 +251,7 @@ public class PlayerInteraction : MonoBehaviour
             if (!GameStateManager.Instance.isOriginallyLockerOpened)
             {
                 GameStateManager.Instance.isOriginallyLockerOpened = true;
+                interactionAudioSource.PlayOneShot(lockerOpenSound);
                 ActivateLockerContent();
                 GameStateManager.Instance.SaveProgress();
             }
@@ -1134,7 +1136,6 @@ public class PlayerInteraction : MonoBehaviour
         if (lockerPicture != null)
         {
             lockerPicture.SetActive(true);
-            interactionAudioSource.PlayOneShot(lockerOpenSound);
         }
 
         if (lockerNote != null)
@@ -1174,6 +1175,7 @@ public class PlayerInteraction : MonoBehaviour
         ShowClosedLockerUI();
 
         // wait 2 sec
+        interactionAudioSource.PlayOneShot(lockerBoltCutter);
         yield return new WaitForSecondsRealtime(2f);
 
         closedLockerPanel.SetActive(false);
